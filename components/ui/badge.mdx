@@ -1,0 +1,75 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks"
+import * as BadgeStories from "./badge.stories"
+
+<Meta of={BadgeStories} />
+
+## Guidance
+
+Badge is a short static label. `variant` is an emphasis ranking only: default, secondary, and outline step the label down, and destructive marks a dangerous or blocking classification. It does not carry success, warning, or info. Those statuses are not Badge variants.
+
+<Canvas of={BadgeStories.Default} />
+<Canvas of={BadgeStories.Secondary} />
+<Canvas of={BadgeStories.Destructive} />
+<Canvas of={BadgeStories.Outline} />
+
+## When to use / When not to use
+
+Use Badge for a compact classification next to a title or list row: "New", "Draft", "Blocked".
+
+Do not use Badge for an action. That is Button. Do not use it for a count that the user clicks, or for success, warning, and info status. Badge has no hover, active, or disabled state.
+
+## Do / Don't
+
+**Do**
+
+- Keep the label to one or two words. The component is a `span` with `whitespace` left to the caller, `text-xs`, and `leading-none`.
+- Pick `variant` for emphasis only. Outline is the quietest: transparent fill, `foreground` text, `border` stroke.
+- Leave it static. There is no `disabled` prop, no `loading`, and no `asChild`.
+
+**Don't**
+
+- Don't add hover, active, or disabled colors. This component has a default state only.
+- Don't put a focus ring on it. Badge is not keyboard-operable, so it does not use `focus-visible:border-ring`.
+- Don't use the destructive variant as an error banner. Destructive is a stronger label, not an alert.
+
+<Canvas of={BadgeStories.States} />
+
+## Accessibility in practice
+
+Badge renders a `span`. It is not a button, link, or checkbox, so it has no keyboard behavior and no focus ring. The visible text is the accessible name. Do not hide that text. There is no icon-only size and no `aria-label` requirement.
+
+## Content guidelines
+
+- Name the classification, not the action: "Draft", "Archived", "Blocked".
+- Use one or two words. A sentence belongs in body text.
+- Do not put a verb-plus-object action here. "Delete project" is a Button label.
+
+## Token trail
+
+Resting colors only. No hover, active, disabled, or focus classes exist.
+
+- **default.** Background `primary` → `primary-900`. Text `primary-foreground` → `secondary-50`.
+- **secondary.** Background `secondary` → `secondary-100`. Text `secondary-foreground` → `primary-900`.
+- **destructive.** Background `destructive` → `danger-600`. Text `destructive-foreground` → `danger-50`.
+- **outline.** Background `transparent`. Text `foreground` → `neutral-950`. Border `border` → `neutral-200`.
+- **Shape.** Radius `radius-4` (`rounded-sm`). Type `font-size-12`. Padding `spacing-8` by `spacing-2`.
+
+## Figma parity
+
+Last synced with Figma: 1 October 2026.
+
+## Props
+
+The table is generated from `BadgeProps`. Docgen lists `variant` and `children`. `variant` includes `null` because that is what `VariantProps` allows. The default is `default` in `badgeVariants`, which this table does not show. There is no `size` axis. Inherited span attributes are part of the type and are not listed.
+
+<ArgTypes of={BadgeStories} />
+
+## Accessibility results
+
+Ran the Storybook a11y addon’s axe check (same setup as the addon: `document.body`, Storybook’s `.sb-wrapper` excluded, `region` rule disabled) against Default, Secondary, Destructive, Outline, and States on 1 October 2026. Confirm these in the Accessibility panel.
+
+No violations on any of the five stories. Each passed `color-contrast`. Badge is not a control, so `button-name` did not apply. Hover, active, disabled, and focus were not measured because those states are not implemented.
+
+## Status
+
+beta

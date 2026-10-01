@@ -34,6 +34,8 @@
   --shadow-focus: 0px 0px 0px 3px rgb(163 163 163 / 0.5);
   --shadow-focus-destructive: 0px 0px 0px 3px rgb(220 38 38 / 0.2);
 
+  --radius-14: 0.875rem;
+
   --spacing-76: 4.75rem;
 }
 

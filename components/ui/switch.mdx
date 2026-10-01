@@ -1,0 +1,75 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks"
+import * as SwitchStories from "./switch.stories"
+
+<Meta of={SwitchStories} />
+
+## Guidance
+
+Switch turns one setting on or off. `variant` is an emphasis ranking, and this component has only `default`. On and off are the checked state, not extra variants. It does not carry status. Success, warning, and informational status belong on Badge or Alert.
+
+<Canvas of={SwitchStories.Default} />
+
+## When to use / When not to use
+
+Use Switch when a change takes effect immediately: a preference, a feature flag, a visibility toggle.
+
+Do not use Switch to submit a form or to pick one option from a list. Use Button for an action and Radio for a single choice among several. Do not use it to show status.
+
+## Do / Don't
+
+**Do**
+
+- Give the control an accessible name. The root does not render a label. Pair it with `Label` or pass `aria-label`.
+- Turn it off with the `disabled` prop. That sets the native disabled state on the Radix root.
+- Use `checked` and `onCheckedChange` for a controlled switch. The story's On control does this so the thumb stays on.
+
+**Don't**
+
+- Don't invent a hover fill. Figma's Switch set has Default and Focus only, for both off and on.
+- Don't fake disabled with a class and no `disabled` prop.
+- Don't pass `asChild`. The root is the Radix switch, not a Slot.
+- Don't add a loading state. The control does not start an action that stays in progress.
+
+<Canvas of={SwitchStories.States} />
+
+## Accessibility in practice
+
+Focus removes the outline, switches the 2px border to `ring`, and paints `shadow-focus`: a 3px spread of ash (`#A3A3A3`) at 50% opacity. PATTERNS.md specifies focus as `focus-visible:border-ring` only. Figma also draws the ash shadow, so this component follows Figma. Figma's focus stroke is 1px and the resting stroke is 2px white. The component keeps `border-2` in both states so the 36×20 box does not shift. The resting border stays `white`.
+
+The control is a `switch` from Radix. Space toggles it. A disabled switch is not in the tab order. There is no loading state and no icon-only glyph. The thumb is presentational.
+
+## Content guidelines
+
+- Name the setting, not the control: "Email alerts", not "Switch".
+- Put that name in a `Label` or in `aria-label`. The component does not ship a text child.
+- If you add the Figma description, it is 14px regular `neutral-500` under the label. That pair fails 4.5:1. Do not treat the description as the accessible name.
+
+## Token trail
+
+No new theme key. Off, on, thumb, border, and focus all resolve to tokens already on main. Tailwind `shadow-lg` matches the thumb's two drop shadows.
+
+- **default, off.** Track `neutral-200` (`#e4e4e9`), the same hex as `border`. Size `spacing-36` by `spacing-20` (`w-9 h-5`). Horizontal padding `spacing-2` (`px-0.5`). Border 2px `white`. Radius full. Thumb `spacing-16` (`size-4`), fill `background` (`#f7f8fb`), shadow `shadow-lg`.
+- **default, on.** Track `primary` → `primary-900` (`#2c2d41`). Thumb fill does not change. Travel is 12px (`translate-x-3`).
+- **Focus.** Border `ring` → `info-600` (`#006bd0`) plus `shadow-focus`. Figma uses a 1px ring stroke; the component keeps 2px.
+- **Disabled.** Figma's Switch set has no disabled variant. The component uses the shared `opacity-50` treatment and `disabled:pointer-events-none`. No disabled fill was added.
+- **Hover.** Not in Figma. No hover class.
+
+## Figma parity
+
+Last synced with Figma: 1 October 2026.
+
+## Props
+
+The table is generated from `SwitchProps`. Docgen lists `variant` and `size`. Both include `null` because that is what `VariantProps` allows. Both default to `default` in `switchVariants`, which this table does not show. `checked`, `disabled`, `onCheckedChange`, and `aria-label` are part of the Radix root props and are usually absent from the table. `disabled` is the real attribute, covered above.
+
+<ArgTypes of={SwitchStories} />
+
+## Accessibility results
+
+Ran axe against Default and States on 1 October 2026 (`document.body`, excluding `.sb-wrapper`, `#storybook-docs`, and `#storybook-highlights-root`, `region` rule disabled).
+
+No violations on Default or States. Both passed `button-name` for the switch role's accessible name (`aria-label`). `color-contrast` did not flag the track or thumb because they contain no text. Axe skips disabled elements, so the disabled switch was not a contrast check. The focus control in States is the resting control with `border-ring` and `shadow-focus` applied through `className`, because this project has no pseudo-state addon.
+
+## Status
+
+beta

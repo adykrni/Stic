@@ -27,7 +27,7 @@ Do not use Button to show status, counts, or categories. Do not use the link var
 - Compose with `asChild` onto one element, such as an `<a>`. Radix Slot merges the button classes onto that child. The child must be a single element.
 - Turn the action off with the `disabled` prop. The component sets the native `disabled` attribute, so the control leaves the tab order and does not fire a click.
 - Use `loading` while the action is in progress. The label stays in the layout with `visibility: hidden`, so the width holds, and a centered spinner replaces it. Pointer events are turned off and the click handler returns early. The resting background does not change.
-- Name an icon-only button with `aria-label`. Size `icon` only sets `size-10`. It does not add a name.
+- Name an icon-only button with `aria-label`. Size `icon` only sets `size-9` (36px). It does not add a name.
 
 <Canvas of={ButtonStories.AsChild} />
 
@@ -60,10 +60,10 @@ Semantic names resolve through the light theme. Hover, active, and the default d
 
 - **default.** Background `primary` → `primary-900`. Text `primary-foreground` → `secondary-50`. Hover `primary-800`. Active `primary-700`. Disabled background `neutral-200`.
 - **destructive.** Background `destructive` → `danger-600`. Text `destructive-foreground` → `danger-50`. Hover `danger-700`. Active `danger-800`. No disabled fill.
-- **outline.** Background `transparent`. Hover `neutral-100`. Border `border` → `neutral-200`. Text `foreground` → `neutral-950`.
+- **outline.** Background `background` → `secondary-50`. Hover background `neutral-100`. Hover text `neutral-900`. Border `border` → `neutral-200`. Text `foreground` → `neutral-950`.
 - **secondary.** Background `secondary` → `secondary-100`. Hover `secondary-200`. Text `secondary-foreground` → `primary-900`.
-- **ghost.** Background `transparent`. Hover `accent` → `neutral-100`. Text `foreground` → `neutral-950`.
-- **link.** Text `primary` → `primary-900`. Hover text `primary-700`. No fill.
+- **ghost.** Background `transparent`. Hover background `accent` → `neutral-100`. Hover text `neutral-900`. Text `foreground` → `neutral-950`.
+- **link.** Text `primary` → `primary-900`. Hover underlines the label. No fill.
 - **Focus, every variant.** Border `ring` → `info-600`.
 - **Loading.** Same background as that variant's rest state. No loading color token.
 

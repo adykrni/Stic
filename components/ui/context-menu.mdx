@@ -1,0 +1,24 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks"
+import * as ContextMenuStories from "./context-menu.stories"
+
+<Meta of={ContextMenuStories} />
+
+## Guidance
+
+Context Menu reuses `menu-item.tsx` (byte-identical to Dropdown Menu PR #29). Merge Dropdown first or keep identical `menu-item.tsx` until both land.
+
+<Canvas of={ContextMenuStories.Default} />
+
+## Figma parity
+
+Last synced with Figma: 2 October 2026 (item metrics match Dropdown SubTrigger: 32px height, 6/8px padding, 6px radius).
+
+## Accessibility results
+
+axe iframe run 2 October 2026: Default, States, AsChild — no violations recorded.
+
+## Status
+
+beta
+
+<ArgTypes of={ContextMenuStories} />

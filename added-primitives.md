@@ -22,7 +22,7 @@ Tailwind’s default spacing scale already equals several of these px values und
 | `--ori-colour-scarlet` | `#DC2626` | Button Destructive focus shadow at alpha 0.2. Danger 600 is `#CB131C`. | Colour of `shadow-focus-destructive` |
 | `--ori-shadow-black-2` | `0px 1px 2px 0px rgba(0, 0, 0, 0.05)` | Resting shadow on Button, Outline, Checkbox, Input, Textarea. Not `--ori-shadow-2` (`rgba(25, 26, 41, 0.08)`). | `shadow-button` |
 | `--ori-shadow-focus-ash` | `0px 0px 0px 3px rgba(163, 163, 163, 0.5)` | Focus on Button (except Destructive), Ghost, Link, Outline, Checkbox, Radio, Input, Textarea | `shadow-focus` |
-| `--ori-shadow-focus-scarlet` | `0px 0px 0px 3px rgba(220, 38, 38, 0.2)` | Button Destructive focus | `shadow-focus-destructive` |
+| `--ori-shadow-focus-scarlet` | `0px 0px 0px 3px rgba(220, 38, 38, 0.2)` | Button Destructive focus. Input and Textarea error focus, which keeps the danger border. | `shadow-focus-destructive` |
 | `--ori-font-family-geist` | Geist, then Noto Sans | Typeface on the built components | `font-geist` |
 
 ## Wired, not added

@@ -2,7 +2,7 @@
 
 **Layer:** Primitives (layer 1 of 3: primitives → semantic → component)  
 **Scope:** Light mode; desktop and mobile. Dark mode is out of scope for now.  
-**Total:** 212 tokens
+**Total:** 220 tokens
 
 Primitives are raw values with no meaning attached. Components never reference them directly. They are consumed by the semantic layer (e.g. `surface-default` → `--ori-colour-secondary-100`).
 
@@ -182,6 +182,8 @@ Only two alpha ramps, one per brand surface: **Primary 900** (dark layer on ligh
 
 ---
 
+`--ori-colour-ash` is `#A3A3A3`. It is the Select focus shadow colour. Neutral 400 is `#ABACB1`, so this is not that stop.
+
 ## 2. Shadows
 
 Raw box-shadow values. **Number = blur radius of the outermost layer in px.** Each shadow is two layers (a tight contact shadow plus a soft ambient one); larger shadows use negative spread so they stay tight instead of bloating. Every layer is tinted with **Primary 950** (`rgb(25, 26, 41)`) rather than black, so shadows feel part of the brand palette. Shadows stay in px (they should not scale with font size).
@@ -193,6 +195,9 @@ Raw box-shadow values. **Number = blur radius of the outermost layer in px.** Ea
 | `--ori-shadow-8` | `0px 2px 4px 0px rgba(25, 26, 41, 0.05), 0px 4px 8px 0px rgba(25, 26, 41, 0.1)` | Floating: menus, dropdowns, popovers |
 | `--ori-shadow-16` | `0px 4px 8px -2px rgba(25, 26, 41, 0.06), 0px 8px 16px -2px rgba(25, 26, 41, 0.12)` | Overlay: drawers, side panels, toasts |
 | `--ori-shadow-32` | `0px 8px 16px -4px rgba(25, 26, 41, 0.08), 0px 16px 32px -4px rgba(25, 26, 41, 0.16)` | Modal: dialogs, command palette |
+| `--ori-shadow-black-2` | `0px 1px 2px 0px rgba(0, 0, 0, 0.05)` | Select trigger rest shadow. Not `--ori-shadow-2`. |
+| `--ori-shadow-focus-ash` | `0px 0px 0px 3px rgba(163, 163, 163, 0.5)` | Select trigger focus. Ash is `#A3A3A3`, not neutral-400. |
+| `--ori-shadow-menu` | `0px 2px 4px -2px rgba(0, 0, 0, 0.1), 0px 4px 6px -1px rgba(0, 0, 0, 0.1)` | Select menu. Not `--ori-shadow-8`. |
 
 > The shadow colour is a literal rgba value (CSS shadows cannot take an alpha of a token). If Primary 950 ever changes, update all five.
 
@@ -207,6 +212,7 @@ Raw box-shadow values. **Number = blur radius of the outermost layer in px.** Ea
 | `--ori-spacing-0` | 0px | 0 |
 | `--ori-spacing-2` | 2px | 0.125rem |
 | `--ori-spacing-4` | 4px | 0.25rem |
+| `--ori-spacing-6` | 6px | 0.375rem |
 | `--ori-spacing-8` | 8px | 0.5rem |
 | `--ori-spacing-12` | 12px | 0.75rem |
 | `--ori-spacing-16` | 16px | 1rem |
@@ -229,6 +235,7 @@ Medium-soft personality: friendly enough for a career product, still precise. `f
 |---|---|---|---|
 | `--ori-radius-0` | 0px | 0 | Square: tables, dividers, full-bleed media |
 | `--ori-radius-4` | 4px | 0.25rem | Small elements: tags, checkboxes, tooltips |
+| `--ori-radius-6` | 6px | 0.375rem | Select menu item. Tailwind `rounded-md` is this value. |
 | `--ori-radius-8` | 8px | 0.5rem | Default: buttons, inputs, selects |
 | `--ori-radius-12` | 12px | 0.75rem | Cards, panels, dropdown menus |
 | `--ori-radius-16` | 16px | 1rem | Modals, large cards, drawers |
@@ -297,6 +304,7 @@ The two colour rows are **aliases** to colour primitives, included here so the r
 | `--ori-opacity-0` | 0 | 0% | Fully transparent (fade-out end state) |
 | `--ori-opacity-20` | 0.2 | 20% | Faint: ghosted skeletons, watermarks |
 | `--ori-opacity-40` | 0.4 | 40% | Disabled controls |
+| `--ori-opacity-50` | 0.5 | 50% | Select trigger disabled |
 | `--ori-opacity-60` | 0.6 | 60% | De-emphasised / inactive content |
 | `--ori-opacity-80` | 0.8 | 80% | Slightly dimmed, hover on media |
 | `--ori-opacity-100` | 1 | 100% | Fully opaque (default) |
@@ -389,6 +397,7 @@ Fonts are Google Fonts. Atomic primitives only; composite text styles (heading-l
 | Token | Value |
 |---|---|
 | `--ori-font-family-sans` | `"Noto Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif` |
+| `--ori-font-family-geist` | `"Geist", "Noto Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif` |
 | `--ori-font-family-serif` | `"Noto Serif", Georgia, "Times New Roman", serif` |
 
 Google Fonts has **Noto Sans** and **Noto Serif** (there is no family called "Noto Sans Serif"), so the serif token assumes Noto Serif. Both are variable fonts; load weights 400–700 only.

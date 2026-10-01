@@ -1,0 +1,79 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks"
+import * as SelectStories from "./select.stories"
+
+<Meta of={SelectStories} />
+
+## Guidance
+
+Select asks for one choice from a list. `variant` is not a status. There is one emphasis, `default`. Success, warning, and error belong on Badge or Alert, not on this control.
+
+<Canvas of={SelectStories.Default} />
+
+## When to use / When not to use
+
+Use Select when the choices are known and one of them is the value: a fruit, a role, a timezone.
+
+Do not use Select for a free-text value. That is Input. Do not use it for several choices at once. That is Checkbox. Do not use it for a short mutually exclusive list that should stay visible. That is Radio Group.
+
+## Do / Don't
+
+**Do**
+
+- Give the trigger a name with Label and `htmlFor`, or with `aria-label` when the label is not visible. The stories use `aria-label`.
+- Turn the control off with the `disabled` prop on `Select` and on `SelectTrigger`. Radix sets the native disabled state, so the trigger leaves the tab order.
+- Let Radix own the menu. `SelectContent` renders through `Select.Portal`, so the menu is not clipped by a parent with `overflow: hidden`.
+
+**Don't**
+
+- Don't build keyboard, typeahead, or positioning logic. Arrow keys, typeahead, and the popper come from Radix.
+- Don't invent a hover fill for the trigger. Figma's trigger set has no hover state, so the Hover row matches Default.
+- Don't treat an open menu as a second color. Figma has no open variant. Open uses the focus border and the ash focus shadow. An empty open trigger also uses `accent`, which is the empty focus fill.
+- Don't add `loading`. Select does not start an action that stays in progress.
+
+<Canvas of={SelectStories.States} />
+
+## Accessibility in practice
+
+Focus uses `focus-visible:border-ring` (`info-600`) and `shadow-focus`, a 3px ash spread at 50% opacity. The outline is removed. The border is already 1px, so the box does not grow. An empty trigger also switches its fill to `accent` while focused. A filled trigger keeps `background`.
+
+Keyboard behavior is Radix Select. The trigger opens with Enter, Space, or Arrow Down. Inside the menu, arrows move, typeahead jumps, Enter selects, and Escape closes. This component adds no key handlers. A disabled trigger is not in the tab order. A disabled item stays in the list and does not select. There is no icon-only trigger. The chevron and the check are `aria-hidden`. The visible value is the name, together with the trigger's label.
+
+## Content guidelines
+
+- Name the field as a noun phrase: "Fruit", "Time zone".
+- Keep each item to a few words. A sentence belongs in the description, which this component does not render.
+- Do not put the instruction "Select…" in the accessible name. The placeholder can say "Select a fruit". The label says "Fruit".
+
+## Token trail
+
+- **trigger, default.** Height `spacing-36` (`h-9`). Padding `spacing-8` by `spacing-12`. Gap `spacing-8`. Radius `radius-8`. Type Geist Regular `font-size-14` / `line-height-20`. Background `background` → `secondary-50`. Border `border` → `neutral-200` (`base/input`). Text `foreground` → `neutral-950`. Placeholder `neutral-500` (`base/muted-foreground`). Rest shadow `shadow-black-2`.
+- **trigger, focus.** Border `ring` → `info-600`. Shadow `shadow-focus-ash`. Empty focus fill `accent` → `neutral-100`. Filled focus keeps `background`.
+- **trigger, open.** Same border and shadow as focus. Figma has no separate open variant.
+- **trigger, hover.** No token. Figma does not draw one.
+- **trigger, disabled.** Resting fill at `opacity-50`.
+- **menu.** Padding `spacing-4`. Radius `radius-8`. Border `border`. Fill `background`. Shadow `shadow-menu`. Layer `z-index-200`.
+- **item.** Height `spacing-32`. Padding `spacing-6` by `spacing-8`, with `spacing-32` on the end for the check. Radius `radius-6` (`rounded-md`). Highlight fill `accent` → `neutral-100`. Text `foreground`. Check glyph `spacing-16`.
+- **item, disabled.** Not in the Figma item set. The trigger's measured `opacity-50` is reused so the Radix disabled prop is visible.
+
+## Figma parity
+
+Last synced with Figma: 1 October 2026.
+
+## Props
+
+`SelectTrigger` is the documented component. Docgen lists `variant`, `size`, and `children`. Both axes include `null` because `VariantProps` allows it. The only keys are `default`, set in `selectVariants`. `disabled` is a Radix prop and is usually absent from the table. `Select`, `SelectValue`, `SelectContent`, `SelectItem`, and `SelectIcon` are the other parts. `SelectContent` always mounts Radix Portal.
+
+<ArgTypes of={SelectStories} />
+
+## Accessibility results
+
+Axe ran in the Storybook iframe on 1 October 2026, against `document.body`, with `.sb-wrapper`, `#storybook-docs`, and `#storybook-highlights-root` excluded, and the `region` rule turned off.
+
+| Story | Result |
+|---|---|
+| Default | `color-contrast` on the placeholder, `neutral-500` (`#85868B`) on `background` (`#F7F8FB`). That pair is the Figma placeholder colour. Axe skips disabled controls, so this is the only finding. |
+| States | Same `color-contrast` finding on the Default, Hover, Open, and Focus placeholders. `aria-hidden-focus` on `#storybook-root`: the Open row forces the menu open, Radix hides the page behind the portaled menu, and the trigger sits inside that hidden tree. |
+
+## Status
+
+beta

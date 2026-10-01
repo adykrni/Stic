@@ -1,0 +1,78 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks"
+import * as TabsStories from "./tabs.stories"
+
+<Meta of={TabsStories} />
+
+## Guidance
+
+Tabs switch one panel of the same page. `variant` is not a status. There is one emphasis, `default`. Success, warning, and error belong on Badge or Alert, not on a tab.
+
+<Canvas of={TabsStories.Default} />
+
+## When to use / When not to use
+
+Use Tabs when a few peer views belong on one page and only one is visible.
+
+Do not use Tabs for a step sequence. Do not use them for a choice that submits a value. That is Radio Group or Select. Do not use them for a destination in the site. That is a link.
+
+## Do / Don't
+
+**Do**
+
+- Pass `activationMode="automatic"` or `"manual"`. Automatic selects the tab as focus moves. Manual selects on Enter or Space. Arrow keys move focus in both modes. That behavior is Radix Tabs.
+- Turn a tab off with the `disabled` prop. Radix sets the native disabled state, so that tab leaves the tab order.
+- Pair every trigger with a `TabsContent` of the same value.
+
+**Don't**
+
+- Don't invent a hover fill. Figma's trigger set has no hover state, so the Hover row matches Default.
+- Don't add `loading`. Tabs do not start an action that stays in progress.
+- Don't put a status colour on a tab.
+
+<Canvas of={TabsStories.States} />
+
+## Accessibility in practice
+
+Focus uses `focus-visible:border-ring` (`info-600`) and `shadow-focus`, a 3px ash spread at 50% opacity. The outline is removed. The border is transparent until focus, so the box does not grow. Figma draws that focus treatment on the selected trigger. The same classes apply when any trigger is focused.
+
+Keyboard behavior is Radix Tabs. Left and Right (or Up and Down, when the list is vertical) move between tabs. Home and End jump to the ends. In automatic mode, moving focus selects the tab. In manual mode, Enter or Space selects it. A disabled trigger is not in the tab order. The stories are text labels, so there is no icon-only trigger.
+
+## Content guidelines
+
+- Name a tab with one or two words: "Account", "Password".
+- The panel holds the content. The tab does not describe the panel in a sentence.
+- Do not number tabs unless the order is a sequence the person already knows.
+
+## Token trail
+
+- **list.** Height `spacing-36` (`h-9`). Padding `spacing-3` on every side, wired as `p-3px` so it does not replace Tailwind's `3` spacing key (12px). Radius `radius-10`. Fill `accent` → `neutral-100`. 3px plus the 28px trigger plus 3px is 34px, and the frame is 36px, so the list is `h-9` and the triggers are centered.
+- **trigger, default.** Height `spacing-28` is not a token; the frame is 28px, which is `h-7` (1.75rem). Padding `spacing-4` by `spacing-8`. Gap `spacing-8`. Radius `radius-8`. Type Geist Medium `font-size-14` / `line-height-20`, `foreground` → `neutral-950`. No fill. Border is present and transparent, matching the white stroke at opacity 0 on the selected rest state.
+- **trigger, selected.** Fill `background` → `secondary-50`. Shadow `shadow-tabs`.
+- **trigger, focus.** Border `ring` → `info-600`. Shadow `shadow-focus-ash`. The selected shadow is replaced by the focus shadow.
+- **trigger, hover.** No token. Figma does not draw one.
+- **trigger, disabled.** Resting trigger at `opacity-50`.
+- **content.** Figma does not specify a content chrome, so `TabsContent` adds none.
+
+## Figma parity
+
+Last synced with Figma: 1 October 2026.
+
+## Props
+
+`TabsTrigger` is the documented component. Docgen lists `variant`, `size`, and `children`. Both axes include `null` because `VariantProps` allows it. The only keys are `default`, set in `tabsTriggerVariants`. `disabled` and `value` are Radix props. `Tabs` accepts `activationMode`. `TabsList` and `TabsContent` are the other parts.
+
+<ArgTypes of={TabsStories} />
+
+## Accessibility results
+
+Axe ran in the Storybook iframe on 1 October 2026, against `document.body`, with `.sb-wrapper`, `#storybook-docs`, and `#storybook-highlights-root` excluded, and the `region` rule turned off.
+
+| Story | Result |
+|---|---|
+| Default | No violations. |
+| Manual | No violations. |
+| States | No violations. Axe skips disabled controls, so the disabled trigger has no contrast result. |
+
+## Status
+
+beta

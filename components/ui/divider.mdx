@@ -1,0 +1,67 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks"
+import * as DividerStories from "./divider.stories"
+
+<Meta of={DividerStories} />
+
+## Guidance
+
+Divider is a 1px rule that separates regions. `variant` is orientation, not emphasis: `horizontal` or `vertical`. It has no color variants and no interactive states.
+
+<Canvas of={DividerStories.Horizontal} />
+<Canvas of={DividerStories.Vertical} />
+
+## When to use / When not to use
+
+Use Divider between sections, list groups, or toolbar clusters.
+
+Do not use Divider as a border on a card, input, or button. Those components own their own `border` token. Do not use it as a progress bar or a focus indicator.
+
+## Do / Don't
+
+**Do**
+
+- Use `horizontal` for a full-width rule (`h-px w-full`).
+- Use `vertical` inside a flex or grid row that has height. The rule is `w-px`, stretches with `h-full`, and keeps `min-h-4` so it does not collapse to nothing.
+- Leave the color alone. Both orientations use `bg-border`.
+
+**Don't**
+
+- Don't add hover, active, disabled, loading, or a focus ring. There is no States story because there are no states.
+- Don't make it clickable and don't pass `asChild`. It is a `div` with `role="separator"`.
+- Don't set a text label on the rule. It has no content model for a labeled divider.
+
+## Accessibility in practice
+
+The root is `role="separator"` with `aria-orientation` set from `variant` (`horizontal` unless `variant` is `vertical`). It is not focusable, so it has no keyboard behavior and does not use `focus-visible:border-ring`. A non-focusable separator does not need an accessible name. There is no icon-only case.
+
+## Content guidelines
+
+- Do not put words inside the divider.
+- Do not use it in place of a heading that should name the next region.
+- If two regions need a name, label those regions. The rule stays empty.
+
+## Token trail
+
+- **horizontal.** Fill `border` → `neutral-200`. Thickness `border-width-1` (`h-px`). Width is the parent.
+- **vertical.** Fill `border` → `neutral-200`. Thickness `border-width-1` (`w-px`). Minimum block size `spacing-16` (`min-h-4`).
+- No text, hover, active, disabled, or focus token.
+
+## Figma parity
+
+Last synced with Figma: 1 October 2026.
+
+## Props
+
+The table is generated from `DividerProps`. Docgen lists `variant`. `variant` includes `null` because that is what `VariantProps` allows. The default is `horizontal` in `dividerVariants`, which this table does not show. There is no `size` axis. Inherited div attributes are part of the type and are not listed.
+
+<ArgTypes of={DividerStories} />
+
+## Accessibility results
+
+Ran the Storybook a11y addon’s axe check (same setup as the addon: `document.body`, Storybook’s `.sb-wrapper` excluded, `region` rule disabled) against Horizontal and Vertical on 1 October 2026. Confirm these in the Accessibility panel.
+
+No violations on either story. Both passed the separator-related ARIA rules that applied (`aria-allowed-role`, `aria-required-attr`, `aria-valid-attr`). `color-contrast` did not apply because the rule has no text. No other states exist to measure.
+
+## Status
+
+beta

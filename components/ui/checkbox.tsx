@@ -12,17 +12,17 @@ function cn(...inputs: ClassValue[]) {
 }
 
 const checkboxVariants = cva(
-  "group inline-flex size-4 shrink-0 items-center justify-center rounded-sm border border-border bg-transparent text-primary-foreground focus-visible:border-ring focus-visible:outline-none disabled:pointer-events-none disabled:opacity-40 data-[state=checked]:border-primary data-[state=checked]:bg-primary data-[state=indeterminate]:border-primary data-[state=indeterminate]:bg-primary",
+  "group inline-flex size-4 shrink-0 items-center justify-center rounded-sm border border-border bg-background text-primary-foreground shadow-button focus-visible:border-ring focus-visible:shadow-focus focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 data-[state=checked]:border-primary data-[state=checked]:bg-primary data-[state=indeterminate]:border-primary data-[state=indeterminate]:bg-primary",
 )
 
 function CheckIcon() {
   return (
     <svg
       viewBox="0 0 16 16"
-      className="size-3 group-data-[state=indeterminate]:hidden"
+      className="size-3.5 group-data-[state=indeterminate]:hidden"
       fill="none"
       stroke="currentColor"
-      strokeWidth="2"
+      strokeWidth="1.33"
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"
@@ -36,10 +36,10 @@ function MinusIcon() {
   return (
     <svg
       viewBox="0 0 16 16"
-      className="hidden size-3 group-data-[state=indeterminate]:block"
+      className="hidden size-3.5 group-data-[state=indeterminate]:block"
       fill="none"
       stroke="currentColor"
-      strokeWidth="2"
+      strokeWidth="1.33"
       strokeLinecap="round"
       aria-hidden="true"
     >

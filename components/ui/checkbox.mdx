@@ -22,7 +22,7 @@ Do not use Checkbox for a single choice among mutually exclusive options. That i
 - Leave selection to Radix. Pass `checked` and `onCheckedChange` when the value is controlled, or leave it uncontrolled. `checked="indeterminate"` is Radix's mixed state.
 - Turn it off with the `disabled` prop. Radix sets the native `disabled` attribute on the button. The same prop is forwarded to Label, which dims with `opacity-40`.
 - Pass `label` when the choice has a visible name. Label is not restyled here. The control `id` and the label `htmlFor` are the same.
-- Keep the focus ring. `focus-visible:border-ring` replaces the border color. The base border is already 1px, so the box does not grow.
+- Keep the focus ring. `focus-visible:border-ring` replaces the border color, and `shadow-focus` adds a 3px ash spread at 50% opacity. The base border is already 1px, so the box does not grow.
 
 **Don't**
 
@@ -35,7 +35,7 @@ Do not use Checkbox for a single choice among mutually exclusive options. That i
 
 ## Accessibility in practice
 
-Radix renders a `button` with `role="checkbox"`. Space toggles it. It is not a radio, so arrow keys do not move between checkboxes. Focus uses the semantic `ring` token (`info-600`) as `focus-visible:border-ring`, and the outline is removed. This project has no pseudo-state addon, so the Focus row in States forces `border-ring` in `className` to show that color. Disabled sets the native disabled attribute, so the control leaves the tab order. The visible label is the accessible name. There is no icon-only `aria-label`. The check and minus icons are `aria-hidden`.
+Radix renders a `button` with `role="checkbox"`. Space toggles it. It is not a radio, so arrow keys do not move between checkboxes. Focus uses the semantic `ring` token (`info-600`) as `focus-visible:border-ring`, plus a 3px ash shadow at 50% opacity, and the outline is removed. This project has no pseudo-state addon, so the Focus row in States forces `border-ring` and `shadow-focus` in `className` to show that treatment. Disabled sets the native disabled attribute, so the control leaves the tab order. The visible label is the accessible name. There is no icon-only `aria-label`. The check and minus icons are `aria-hidden`.
 
 ## Content guidelines
 
@@ -47,12 +47,12 @@ Radix renders a `button` with `role="checkbox"`. Space toggles it. It is not a r
 
 There is one visual treatment. State classes live on the Radix root.
 
-- **unchecked.** Background `transparent`. Border `border` → `neutral-200`.
-- **checked.** Background `primary` → `primary-900`. Border `primary` → `primary-900`. Indicator `primary-foreground` → `secondary-50`.
-- **indeterminate.** Same fill, border, and indicator as checked. The icon is a minus, selected with Radix `data-state="indeterminate"`.
-- **disabled.** Primitive `opacity-40` (0.4) on the control. No separate disabled fill. The paired Label uses its own `opacity-40`.
-- **focus.** Border `ring` → `info-600`.
-- **Shape.** `spacing-16` (`size-4`). Radius `radius-4` (`rounded-sm`).
+- **unchecked.** Background `background` → `secondary-50`. Border `border` → `neutral-200`. Rest shadow `shadow-black-2`.
+- **checked.** Background `primary` → `primary-900`. Border `primary` → `primary-900`. Indicator `primary-foreground` → `secondary-50`. The check is `spacing-14` with a 1.33px stroke.
+- **indeterminate.** Same fill, border, and indicator as checked. The icon is a minus, selected with Radix `data-state="indeterminate"`. Figma has no indeterminate variant.
+- **disabled.** `opacity-50` on the box. No separate disabled fill.
+- **focus.** Border `ring` → `info-600`, plus `shadow-focus-ash`.
+- **Shape.** `spacing-16` (`size-4`). Radius `radius-4` (`rounded-sm`). Gap to the label `spacing-8`.
 
 ## Figma parity
 
@@ -68,7 +68,7 @@ The table is generated from `CheckboxProps`. `label` is the only prop added here
 
 Ran the Storybook a11y addon’s axe check (same setup as the addon: `document.body`, Storybook’s `.sb-wrapper` excluded, `region` rule disabled) against Default and States on 1 October 2026. Confirm these in the Accessibility panel.
 
-No violations on either story. Both passed `button-name`, `color-contrast`, and `nested-interactive`. `color-contrast` in States measured the Unchecked, Checked, Indeterminate, and Focus labels. It did not measure the Disabled label. That label is `aria-disabled`, and axe skips it. The checkbox fill is not text, so the box colors were not a contrast node. The Focus row is a resting control with `border-ring` applied in `className`. It is not a real `:focus-visible` probe.
+No violations on either story. Both passed `button-name`, `color-contrast`, and `nested-interactive`. `color-contrast` in States measured the Unchecked, Checked, Indeterminate, and Focus labels. It did not measure the Disabled label. That label is `aria-disabled`, and axe skips it. The checkbox fill is not text, so the box colors were not a contrast node. The Focus row is a resting control with `border-ring` and `shadow-focus` applied in `className`. It is not a real `:focus-visible` probe.
 
 ## Status
 

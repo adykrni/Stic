@@ -24,7 +24,7 @@ export const States: Story = {
       <Checkbox label="Checked" checked onCheckedChange={() => {}} />
       <Checkbox label="Indeterminate" checked="indeterminate" onCheckedChange={() => {}} />
       <Checkbox label="Disabled" disabled />
-      <Checkbox label="Focus" className="border-ring" />
+      <Checkbox label="Focus" className="border-ring shadow-focus" />
     </div>
   ),
 }

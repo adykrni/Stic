@@ -1,0 +1,73 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks"
+import * as SkeletonStories from "./skeleton.stories"
+
+<Meta of={SkeletonStories} />
+
+## Guidance
+
+Skeleton is a placeholder for content that has not loaded. `variant` is shape only: `text`, `circular`, or `rectangular`. It is not an emphasis ranking. The only state is the default pulse.
+
+<Canvas of={SkeletonStories.Text} />
+<Canvas of={SkeletonStories.Circular} />
+<Canvas of={SkeletonStories.Rectangular} />
+
+## When to use / When not to use
+
+Use Skeleton while a name, avatar, or card body is loading, in the same slot the content will occupy.
+
+Do not use Skeleton as a spinner on a Button. Button's `loading` prop does that. Do not use it as an empty-state illustration or a progress bar.
+
+## Do / Don't
+
+**Do**
+
+- Match the shape to the content it replaces. `text` is a 16px line. `circular` is a 40px circle. `rectangular` is a 96px block.
+- Let the parent announce loading. The skeleton itself is `aria-hidden`.
+- Keep the pulse. That animation is the only state.
+
+**Don't**
+
+- Don't add hover, active, disabled, or a focus ring. It is not a control and does not use Slot.
+- Don't put text or an accessible name on it. The words belong on the loaded content.
+- Don't treat `opacity-20` as this component's fill. That primitive is the faint ghost token. This component uses the `accent` surface plus `animate-pulse` instead, because the specified state is a pulse, not a static 20% dim.
+
+<Canvas of={SkeletonStories.States} />
+
+## Accessibility in practice
+
+The root is `aria-hidden="true"`, so assistive tech skips the pulsing shape. It is not focusable and has no keyboard behavior, so it does not use `focus-visible:border-ring`. The parent that is waiting on data should expose the loading status. There is no icon-only label to name.
+
+## Content guidelines
+
+- Do not write a label inside the skeleton.
+- Do not use the shape name ("text", "circle") as screen-reader copy.
+- Tell the user what is loading on the parent, in a verb plus object if it is a status: "Loading messages".
+
+## Token trail
+
+Every shape uses the same fill. Pulse is motion, not a color token.
+
+- **text.** Fill `accent` → `neutral-100`. Height `line-height-16` (`h-4`). Radius `radius-4` (`rounded-sm`).
+- **circular.** Fill `accent` → `neutral-100`. Size `spacing-40` (`size-10`). Radius `radius-full`.
+- **rectangular.** Fill `accent` → `neutral-100`. Height `spacing-96` (`h-24`). Radius `radius-8` (`rounded-lg`).
+- No text, border, hover, active, disabled, or focus token.
+
+## Figma parity
+
+Last synced with Figma: 1 October 2026.
+
+## Props
+
+The table is generated from `SkeletonProps`. Docgen lists `variant`. `variant` includes `null` because that is what `VariantProps` allows. The default is `text` in `skeletonVariants`, which this table does not show. There is no `size` axis. Inherited div attributes are part of the type and are not listed.
+
+<ArgTypes of={SkeletonStories} />
+
+## Accessibility results
+
+Ran the Storybook a11y addon’s axe check (same setup as the addon: `document.body`, Storybook’s `.sb-wrapper` excluded, `region` rule disabled) against Text, Circular, Rectangular, and States on 1 October 2026. Confirm these in the Accessibility panel.
+
+No violations on any of the four stories. `color-contrast` was inapplicable on each of them because the shape is `aria-hidden`, so the addon did not measure the accent fill. No other states exist to measure.
+
+## Status
+
+beta

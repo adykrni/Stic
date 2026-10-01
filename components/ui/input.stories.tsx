@@ -46,7 +46,7 @@ export const States: Story = {
   render: (args) => (
     <div className="grid w-64 gap-3">
       <Input {...args} aria-label="Default" placeholder="Default" />
-      <Input {...args} aria-label="Focus" placeholder="Focus" className="border-ring" />
+      <Input {...args} aria-label="Focus" placeholder="Focus" className="border-ring shadow-focus" />
       <Input {...args} aria-label="Disabled" placeholder="Disabled" disabled />
       <Input {...args} variant="error" aria-label="Error" placeholder="Error" />
     </div>

@@ -2,7 +2,7 @@
 
 **Layer:** Primitives (layer 1 of 3: primitives → semantic → component)  
 **Scope:** Light mode; desktop and mobile. Dark mode is out of scope for now.  
-**Total:** 212 tokens
+**Total:** 230 tokens
 
 Primitives are raw values with no meaning attached. Components never reference them directly. They are consumed by the semantic layer (e.g. `surface-default` → `--ori-colour-secondary-100`).
 
@@ -179,12 +179,25 @@ Only two alpha ramps, one per brand surface: **Primary 900** (dark layer on ligh
 | `secondary-alpha-100-10` over Primary 900 | `#3F4053` | Secondary 100 text: 8.82:1 |
 | `secondary-alpha-100-20` over Primary 900 | `#535465` | Secondary 100 text: 6.46:1 |
 
+### 1.10 Measured literals
+
+These colours were read off built components in the ShadCN UI Kit file. They are not stops on the OKLCH ramps. Do not round them onto a nearby stop.
+
+| Token | Value | Measured on |
+|---|---|---|
+| `--ori-colour-white` | `#FFFFFF` | Badge destructive text. Ghost and Link fills are white at alpha 0 (transparent), not this solid. |
+| `--ori-colour-white-alpha-10` | `rgba(255, 255, 255, 0.1)` | Button Default hover, painted over Primary 900 |
+| `--ori-colour-white-alpha-20` | `rgba(255, 255, 255, 0.2)` | Button Secondary hover, and Badge Default hover |
+| `--ori-colour-ash` | `#A3A3A3` | Focus shadow colour. Neutral 400 is `#ABACB1`. |
+| `--ori-colour-scarlet` | `#DC2626` | Button Destructive focus shadow, at alpha 0.2. Danger 500 is `#EF433D`. Danger 600 is `#CB131C`. |
 
 ---
 
 ## 2. Shadows
 
-Raw box-shadow values. **Number = blur radius of the outermost layer in px.** Each shadow is two layers (a tight contact shadow plus a soft ambient one); larger shadows use negative spread so they stay tight instead of bloating. Every layer is tinted with **Primary 950** (`rgb(25, 26, 41)`) rather than black, so shadows feel part of the brand palette. Shadows stay in px (they should not scale with font size).
+Raw box-shadow values. **Number = blur radius of the outermost layer in px** for the five scale shadows. Each of those is two layers (a tight contact shadow plus a soft ambient one); larger shadows use negative spread so they stay tight instead of bloating. Those five layers are tinted with **Primary 950** (`rgb(25, 26, 41)`) rather than black. Shadows stay in px (they should not scale with font size).
+
+The three measured literals below are copied from component effects. They are black or ash or scarlet, not Primary 950, and they are not part of the blur-radius scale.
 
 | Token | Value | Typical use |
 |---|---|---|
@@ -193,29 +206,39 @@ Raw box-shadow values. **Number = blur radius of the outermost layer in px.** Ea
 | `--ori-shadow-8` | `0px 2px 4px 0px rgba(25, 26, 41, 0.05), 0px 4px 8px 0px rgba(25, 26, 41, 0.1)` | Floating: menus, dropdowns, popovers |
 | `--ori-shadow-16` | `0px 4px 8px -2px rgba(25, 26, 41, 0.06), 0px 8px 16px -2px rgba(25, 26, 41, 0.12)` | Overlay: drawers, side panels, toasts |
 | `--ori-shadow-32` | `0px 8px 16px -4px rgba(25, 26, 41, 0.08), 0px 16px 32px -4px rgba(25, 26, 41, 0.16)` | Modal: dialogs, command palette |
+| `--ori-shadow-black-2` | `0px 1px 2px 0px rgba(0, 0, 0, 0.05)` | Button, Outline, Checkbox, Input, and Textarea resting shadow. Not `--ori-shadow-2`. |
+| `--ori-shadow-focus-ash` | `0px 0px 0px 3px rgba(163, 163, 163, 0.5)` | Focus ring on Button (except Destructive), Ghost, Link, Outline, Checkbox, Radio, Input, Textarea |
+| `--ori-shadow-focus-scarlet` | `0px 0px 0px 3px rgba(220, 38, 38, 0.2)` | Button Destructive focus |
 
-> The shadow colour is a literal rgba value (CSS shadows cannot take an alpha of a token). If Primary 950 ever changes, update all five.
+> The shadow colour is a literal rgba value (CSS shadows cannot take an alpha of a token). If Primary 950 ever changes, update the five scale shadows. Leave the three measured literals alone.
 
 ---
 
 ## 3. Spacing
 
-4px base with 2px for hairline adjustments. Named by px value, so `spacing-16` is always 16px. Used for padding, margin, gap and sizing.
+4px base with 2px for hairline adjustments. Named by px value, so `spacing-16` is always 16px. Used for padding, margin, gap and sizing. Steps 1, 3, 6, 10, 14, 36, and 76 were added from component measurements. They are exact px values.
 
 | Token | px | rem |
 |---|---|---|
 | `--ori-spacing-0` | 0px | 0 |
+| `--ori-spacing-1` | 1px | 0.0625rem |
 | `--ori-spacing-2` | 2px | 0.125rem |
+| `--ori-spacing-3` | 3px | 0.1875rem |
 | `--ori-spacing-4` | 4px | 0.25rem |
+| `--ori-spacing-6` | 6px | 0.375rem |
 | `--ori-spacing-8` | 8px | 0.5rem |
+| `--ori-spacing-10` | 10px | 0.625rem |
 | `--ori-spacing-12` | 12px | 0.75rem |
+| `--ori-spacing-14` | 14px | 0.875rem |
 | `--ori-spacing-16` | 16px | 1rem |
 | `--ori-spacing-20` | 20px | 1.25rem |
 | `--ori-spacing-24` | 24px | 1.5rem |
 | `--ori-spacing-32` | 32px | 2rem |
+| `--ori-spacing-36` | 36px | 2.25rem |
 | `--ori-spacing-40` | 40px | 2.5rem |
 | `--ori-spacing-48` | 48px | 3rem |
 | `--ori-spacing-64` | 64px | 4rem |
+| `--ori-spacing-76` | 76px | 4.75rem |
 | `--ori-spacing-80` | 80px | 5rem |
 | `--ori-spacing-96` | 96px | 6rem |
 
@@ -262,6 +285,7 @@ Named levels 0–5 that map onto the shadow scale. A shadow is a raw value; an e
 |---|---|---|---|
 | `--ori-border-width-0` | 0px | 0 | Reset / remove border |
 | `--ori-border-width-1` | 1px | 0.0625rem | Default: inputs, cards, dividers |
+| `--ori-border-width-1-33` | 1.33px | 0.083125rem | Checkbox check stroke and Radio selected-dot stroke |
 | `--ori-border-width-2` | 2px | 0.125rem | Emphasis: selected, error, active states |
 | `--ori-border-width-4` | 4px | 0.25rem | Heavy accents: progress, indicator bars |
 
@@ -296,8 +320,9 @@ The two colour rows are **aliases** to colour primitives, included here so the r
 |---|---|---|---|
 | `--ori-opacity-0` | 0 | 0% | Fully transparent (fade-out end state) |
 | `--ori-opacity-20` | 0.2 | 20% | Faint: ghosted skeletons, watermarks |
-| `--ori-opacity-40` | 0.4 | 40% | Disabled controls |
-| `--ori-opacity-60` | 0.6 | 60% | De-emphasised / inactive content |
+| `--ori-opacity-40` | 0.4 | 40% | Disabled controls that Figma still draws at 0.4 |
+| `--ori-opacity-50` | 0.5 | 50% | Button disabled and loading. Checkbox, Input, and Textarea disabled |
+| `--ori-opacity-60` | 0.6 | 60% | Button pressed |
 | `--ori-opacity-80` | 0.8 | 80% | Slightly dimmed, hover on media |
 | `--ori-opacity-100` | 1 | 100% | Fully opaque (default) |
 
@@ -390,6 +415,9 @@ Fonts are Google Fonts. Atomic primitives only; composite text styles (heading-l
 |---|---|
 | `--ori-font-family-sans` | `"Noto Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif` |
 | `--ori-font-family-serif` | `"Noto Serif", Georgia, "Times New Roman", serif` |
+| `--ori-font-family-geist` | `"Geist", "Noto Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif` |
+
+Geist is the typeface on the built components in Figma (Button, Badge, Avatar, Label, Checkbox, Radio, Input, Textarea). Noto Sans stays the default sans token. Load Geist at weights 400–700.
 
 Google Fonts has **Noto Sans** and **Noto Serif** (there is no family called "Noto Sans Serif"), so the serif token assumes Noto Serif. Both are variable fonts; load weights 400–700 only.
 
@@ -441,7 +469,7 @@ Suggested size → line-height pairings for the semantic layer: 12→16, 14→20
 
 | Token | Value | Use |
 |---|---|---|
-| `--ori-line-height-none` | 1 (100%) | Single-line labels in buttons, badges, chips, tabs, tags |
+| `--ori-line-height-none` | 1 (100%) | Single-line labels whose measured line height is 100%, such as Label |
 
 **Rules for `line-height-none`**
 

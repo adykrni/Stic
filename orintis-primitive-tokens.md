@@ -2,7 +2,7 @@
 
 **Layer:** Primitives (layer 1 of 3: primitives → semantic → component)  
 **Scope:** Light mode; desktop and mobile. Dark mode is out of scope for now.  
-**Total:** 230 tokens
+**Total:** 232 tokens
 
 Primitives are raw values with no meaning attached. Components never reference them directly. They are consumed by the semantic layer (e.g. `surface-default` → `--ori-colour-secondary-100`).
 
@@ -197,7 +197,7 @@ These colours were read off built components in the ShadCN UI Kit file. They are
 
 Raw box-shadow values. **Number = blur radius of the outermost layer in px** for the five scale shadows. Each of those is two layers (a tight contact shadow plus a soft ambient one); larger shadows use negative spread so they stay tight instead of bloating. Those five layers are tinted with **Primary 950** (`rgb(25, 26, 41)`) rather than black. Shadows stay in px (they should not scale with font size).
 
-The three measured literals below are copied from component effects. They are black or ash or scarlet, not Primary 950, and they are not part of the blur-radius scale.
+The measured literals below are copied from component effects. They are black or ash or scarlet, not Primary 950, and they are not part of the blur-radius scale.
 
 | Token | Value | Typical use |
 |---|---|---|
@@ -209,8 +209,10 @@ The three measured literals below are copied from component effects. They are bl
 | `--ori-shadow-black-2` | `0px 1px 2px 0px rgba(0, 0, 0, 0.05)` | Button, Outline, Checkbox, Input, and Textarea resting shadow. Not `--ori-shadow-2`. |
 | `--ori-shadow-focus-ash` | `0px 0px 0px 3px rgba(163, 163, 163, 0.5)` | Focus ring on Button (except Destructive), Ghost, Link, Outline, Checkbox, Radio, Input, Textarea |
 | `--ori-shadow-focus-scarlet` | `0px 0px 0px 3px rgba(220, 38, 38, 0.2)` | Button Destructive focus |
+| `--ori-shadow-toast` | `0px 4px 12px -1px rgba(0, 0, 0, 0.1)` | Toast rest. Not `--ori-shadow-16`. |
+| `--ori-shadow-toast-focus` | `0px 4px 12px 0px rgba(0, 0, 0, 0.1), 0px 0px 0px 2px rgba(0, 0, 0, 0.2)` | Toast focus. Not the ash focus shadow. |
 
-> The shadow colour is a literal rgba value (CSS shadows cannot take an alpha of a token). If Primary 950 ever changes, update the five scale shadows. Leave the three measured literals alone.
+> The shadow colour is a literal rgba value (CSS shadows cannot take an alpha of a token). If Primary 950 ever changes, update the five scale shadows. Leave the measured literals alone.
 
 ---
 

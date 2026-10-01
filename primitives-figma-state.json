@@ -1,0 +1,25 @@
+{
+  "file": "ShadCN UI Kit & Components",
+  "fileKey": "7ZzhgX8noYLSjAXLvr0Lo8",
+  "collection": {
+    "name": "Primitives",
+    "id": "VariableCollectionId:18624:207252",
+    "modes": ["Light"]
+  },
+  "completedSections": ["1. Colour", "2. Shadows", "3. Spacing", "4. Radius", "5. Elevations", "6. Borders", "7. Opacity", "8. Breakpoints", "9. Z-index", "10. Layout", "11. Typography"],
+  "counts": {
+    "colour": 88,
+    "shadows": 5,
+    "spacing": 14,
+    "radius": 7,
+    "elevations": 6,
+    "bordersAndFocus": 11,
+    "opacity": 6,
+    "breakpoints": 6,
+    "zIndex": 10,
+    "layout": 28,
+    "typography": 31,
+    "total": 212
+  },
+  "expectedTotal": 212
+}

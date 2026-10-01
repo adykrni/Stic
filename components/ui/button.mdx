@@ -1,0 +1,92 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks"
+import * as ButtonStories from "./button.stories"
+
+<Meta of={ButtonStories} />
+
+## Guidance
+
+Button starts an action. `variant` is only an emphasis ranking: default, secondary, outline, ghost, and link step the action down, and destructive marks a dangerous action. It does not carry status. Success, warning, and informational status belong on a future Badge or Alert.
+
+<Canvas of={ButtonStories.Default} />
+<Canvas of={ButtonStories.Destructive} />
+<Canvas of={ButtonStories.Outline} />
+<Canvas of={ButtonStories.Secondary} />
+<Canvas of={ButtonStories.Ghost} />
+<Canvas of={ButtonStories.Link} />
+
+## When to use / When not to use
+
+Use Button for an action on the current page: save, delete, open a dialog, submit a form. Use `asChild` when that action is navigation and the control must be an `<a>`.
+
+Do not use Button to show status, counts, or categories. Do not use the link variant as a text link by itself: without `asChild` it still renders a `<button>`. Do not use size `icon` as a status glyph.
+
+## Do / Don't
+
+**Do**
+
+- Compose with `asChild` onto one element, such as an `<a>`. Radix Slot merges the button classes onto that child. The child must be a single element.
+- Turn the action off with the `disabled` prop. The component sets the native `disabled` attribute, so the control leaves the tab order and does not fire a click.
+- Use `loading` while the action is in progress. The label stays in the layout with `visibility: hidden`, so the width holds, and a centered spinner replaces it. Pointer events are turned off and the click handler returns early. The resting background does not change.
+- Name an icon-only button with `aria-label`. Size `icon` only sets `size-10`. It does not add a name.
+
+<Canvas of={ButtonStories.AsChild} />
+
+**Don't**
+
+- Don't encode status in `variant`. Destructive is the strongest action emphasis, not an error badge.
+- Don't pass `asChild` together with `loading`. While `loading` is true the component ignores Slot and renders a `<button>`, because the spinner wrapper is not a single child Slot can merge onto.
+- Don't fake disabled with a class. Only the default variant changes its fill when disabled (`neutral-200`). Destructive, outline, secondary, ghost, and link keep their resting colors. There is no disabled text color on any variant.
+- Don't treat `loading` as disabled. It does not set `disabled`. The button stays focusable, `aria-busy` is set, the label is hidden from assistive tech, and the spinner is `aria-hidden`.
+
+<Canvas of={ButtonStories.States} />
+
+## Accessibility in practice
+
+Focus uses `focus-visible:border-ring` and removes the outline. The ring token is the semantic `ring` color, which resolves to `info-600`. This is a 1px border color, not a separate box-shadow ring. The shared base border is transparent so default, secondary, ghost, and link do not grow on focus. Outline already uses the `border` token at rest, and that border switches to `ring` on focus.
+
+Keyboard support is the native button behavior. Enter and Space activate it. `type` defaults to `button`, so it does not submit a form unless you pass `type="submit"`. A disabled button is not in the tab order. A loading button is still in the tab order; Enter and Space fire click, and the handler cancels that click. There is no extra key handler.
+
+Icon-only buttons need an `aria-label` from the caller. The component does not add one, and it does not hide decorative icons on your behalf. The spinner is `aria-hidden`. The visible label is not given a name of its own when loading, because `visibility: hidden` removes it from the accessibility tree.
+
+## Content guidelines
+
+- Label the action as a verb plus its object: "Save changes", "Delete project".
+- Keep the label to a few words. The component sets `whitespace-nowrap`, so a long label widens the button instead of wrapping.
+- For size `icon`, put that same verb-plus-object phrase in `aria-label`. Do not use the size name, a single symbol, or "button" as the name.
+
+## Token trail
+
+Semantic names resolve through the light theme. Hover, active, and the default disabled fill are primitive classes on the component, not semantic tokens.
+
+- **default.** Background `primary` → `primary-900`. Text `primary-foreground` → `secondary-50`. Hover `primary-800`. Active `primary-700`. Disabled background `neutral-200`.
+- **destructive.** Background `destructive` → `danger-600`. Text `destructive-foreground` → `danger-50`. Hover `danger-700`. Active `danger-800`. No disabled fill.
+- **outline.** Background `transparent`. Hover `neutral-100`. Border `border` → `neutral-200`. Text `foreground` → `neutral-950`.
+- **secondary.** Background `secondary` → `secondary-100`. Hover `secondary-200`. Text `secondary-foreground` → `primary-900`.
+- **ghost.** Background `transparent`. Hover `accent` → `neutral-100`. Text `foreground` → `neutral-950`.
+- **link.** Text `primary` → `primary-900`. Hover text `primary-700`. No fill.
+- **Focus, every variant.** Border `ring` → `info-600`.
+- **Loading.** Same background as that variant's rest state. No loading color token.
+
+## Figma parity
+
+Last synced with Figma: 1 October 2026.
+
+## Props
+
+The table is generated from `ButtonProps`. Docgen lists `variant`, `size`, `asChild`, `loading`, and `children`. `variant` and `size` include `null` because that is what `VariantProps` allows; both default to `default` in `buttonVariants`, which this table does not show. `disabled`, `type`, `className`, and the other native button attributes are part of the type through `ButtonHTMLAttributes`, and docgen does not list those inherited React props. `disabled` is still the real attribute, covered above.
+
+<ArgTypes of={ButtonStories} />
+
+## Accessibility results
+
+Ran the Storybook a11y addon’s axe check (same setup as the addon: `document.body`, Storybook’s `.sb-wrapper` excluded, `region` rule disabled) against all eight stories on 1 October 2026. Confirm these in the Accessibility panel.
+
+No violations on Default, Destructive, Outline, Secondary, Ghost, Link, or AsChild. Those variant stories passed `button-name` and `color-contrast`. AsChild is an anchor, so it passed `link-name` and `color-contrast` instead of `button-name`.
+
+States has one critical violation: `button-name` on the loading button ("Buttons must have discernible text"). The label is `visibility: hidden` and the spinner is `aria-hidden`, so the accessible name is empty. `aria-busy` does not supply a name.
+
+`color-contrast` passed for the Default, Hover, and Active labels in States. The addon did not report contrast for the disabled button (axe skips disabled elements) or for the loading label (it is hidden, and that node failed `button-name` instead). Disabled default text stays `primary-foreground` on `neutral-200`; that pair was not part of the pass.
+
+## Status
+
+stable

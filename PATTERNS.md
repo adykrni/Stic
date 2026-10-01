@@ -1,6 +1,23 @@
 # Component patterns
 
-Follow this when adding a component. Button is the reference implementation: `components/ui/button.tsx`, `components/ui/button.stories.tsx`, and `components/ui/button.mdx`. Copy the structure. Do not invent a second way to name files, variants, tokens, stories, or docs.
+Follow this when adding a component. Button is the reference implementation for file structure, `cva`, stories, and docs: `components/ui/button.tsx`, `components/ui/button.stories.tsx`, and `components/ui/button.mdx`. Copy that structure. Do not invent a second way to name files, variants, tokens, stories, or docs. Do not copy Button's padding, radius, type, or icon size onto another component. Those values come from the measurement below.
+
+## Measure in Figma before writing code
+
+Do this before writing `{name}.tsx`, the stories, or the docs. Stop if the measurement is missing or if a value does not match a primitive. Do not start from Button's dimensions, and do not start from a general convention.
+
+1. Read the component in Figma via Console MCP. Use the component being built, not a similar one.
+2. Extract the exact values for every documented variant and every documented state:
+   - padding, horizontal and vertical
+   - gap between internal elements
+   - corner radius
+   - border width
+   - icon size
+   - font size, line height, and weight for any text
+   - width, height, and any other sizing that changes by variant or state
+3. Report those measured values before building. Map each one to the closest existing primitive in `orintis-primitive-tokens.md`. Write the mapping as the measured value and the token name, for example `16px padding → spacing-16`.
+4. If a measured value does not match an existing primitive exactly, flag it. Do not round it to a nearby token. Do not build until that gap is resolved.
+5. Only after those values are confirmed, build the component with them. Classes come from that confirmed mapping.
 
 ## File structure
 
@@ -27,7 +44,7 @@ Define one `cva` call named `{camelName}Variants`.
 - The first variant key is `default`. That is the resting, primary emphasis.
 - Further variant keys are an emphasis ranking only. Button’s ranking is `default`, `destructive`, `outline`, `secondary`, `ghost`, `link`. A new component uses only the ranks it actually has, with these names when the rank means the same thing. Do not add `success`, `warning`, or `info`. Status belongs on Badge or Alert.
 - Size keys are `default`, `sm`, `lg`, and `icon`, in that order. Omit a size the component does not have. Do not add `xs`, `xl`, or other names.
-- Shared classes (layout, typography, transparent border, focus, disabled pointer behavior) go in the `cva` base string. Variant classes only change color, border, and emphasis. Size classes only change dimensions and padding.
+- Shared classes (layout, typography, transparent border, focus, disabled pointer behavior) go in the `cva` base string. Variant classes only change color, border, and emphasis. Size classes only change dimensions and padding. The numbers in those classes are the confirmed Figma mapping, not Button's sizes.
 - Props come from `VariantProps<typeof {camelName}Variants>` intersected with the underlying element’s attributes, plus `asChild` and `loading` when the component has those behaviors.
 
 ```tsx
@@ -137,7 +154,7 @@ Then these sections, in this order, with these headings:
 4. **Accessibility in practice** — Focus (the `ring` token via `focus-visible:border-ring`), keyboard behavior the element actually has, and the icon-only `aria-label` requirement. If loading stays in the tab order, say that.
 5. **Content guidelines** — Exactly three short rules. For an action, the label is a verb plus its object.
 6. **Token trail** — One bullet per variant, in variant-key order, plus a shared focus bullet and a loading bullet when loading exists. Form: `` `primary` → `primary-900` ``. Include hover, active, and disabled only where the classes exist.
-7. **Figma parity** — The single line `Last synced with Figma: [date]`.
+7. **Figma parity** — The single line `Last synced with Figma: [date]`. The date is the day the measurement above was confirmed. The classes in the component are that mapping.
 8. **Props** — One short paragraph, then `<ArgTypes of={ComponentStories} />`. Describe what docgen actually lists. `variant` and `size` include `null` because `VariantProps` does. Their defaults live in `defaultVariants` and do not appear in the table. Inherited DOM attributes such as `disabled` are part of the props type and are usually absent from the table; point at the Do / Don't section for `disabled`.
 9. **Accessibility results** — Run the Storybook a11y addon against every story and write what it reported. Use the addon’s setup: `document.body`, exclude `.sb-wrapper`, `region` disabled. Name each story that passed and each violation (`rule`, impact, which element). Do not write that the run was clean unless the addon said so. Note any state the addon did not measure (axe skips disabled elements; hidden loading text is not a contrast check). Date the run.
 10. **Status** — The heading, then a single word: `stable` or `beta`.
@@ -146,8 +163,9 @@ Then these sections, in this order, with these headings:
 
 ## Adding the next component
 
-1. Write `{name}.tsx` with `cva`, the token classes, the states above, and `asChild` only if composition applies.
-2. Write `{name}.stories.tsx` with one story per variant, `States`, and `AsChild` when composition applies.
-3. Run the a11y addon on those stories.
-4. Write `{name}.mdx` with the ten sections, canvases pointed at those stories, and the real a11y results.
-5. Set Status to `beta` until the token paths and API are settled, then `stable`.
+1. Measure the component in Figma and report the primitive mapping. Stop if any measured value does not match an existing primitive exactly.
+2. Write `{name}.tsx` with `cva`, the confirmed measurements, the token classes, the states above, and `asChild` only if composition applies.
+3. Write `{name}.stories.tsx` with one story per variant, `States`, and `AsChild` when composition applies.
+4. Run the a11y addon on those stories.
+5. Write `{name}.mdx` with the ten sections, canvases pointed at those stories, and the real a11y results.
+6. Set Status to `beta` until the token paths and API are settled, then `stable`.

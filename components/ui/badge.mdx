@@ -22,13 +22,13 @@ Do not use Badge for an action. That is Button. Do not use it for a count that t
 
 **Do**
 
-- Keep the label to one or two words. The component is a `span` with `whitespace` left to the caller, `text-xs`, and `leading-none`.
+- Keep the label to one or two words. The component is a `span` with `whitespace` left to the caller, `text-xs`, `font-semibold`, and `leading-4`.
 - Pick `variant` for emphasis only. Outline is the quietest: transparent fill, `foreground` text, `border` stroke.
 - Leave it static. There is no `disabled` prop, no `loading`, and no `asChild`.
 
 **Don't**
 
-- Don't add hover, active, or disabled colors. This component has a default state only.
+- Don't add active or disabled colors. Default is the only variant with a hover layer (`white-alpha-20`). Secondary, destructive, and outline have no hover in Figma.
 - Don't put a focus ring on it. Badge is not keyboard-operable, so it does not use `focus-visible:border-ring`.
 - Don't use the destructive variant as an error banner. Destructive is a stronger label, not an alert.
 
@@ -50,9 +50,10 @@ Resting colors only. No hover, active, disabled, or focus classes exist.
 
 - **default.** Background `primary` → `primary-900`. Text `primary-foreground` → `secondary-50`.
 - **secondary.** Background `secondary` → `secondary-100`. Text `secondary-foreground` → `primary-900`.
-- **destructive.** Background `destructive` → `danger-600`. Text `destructive-foreground` → `danger-50`.
-- **outline.** Background `transparent`. Text `foreground` → `neutral-950`. Border `border` → `neutral-200`.
-- **Shape.** Radius `radius-4` (`rounded-sm`). Type `font-size-12`. Padding `spacing-8` by `spacing-2`.
+- **default hover.** `white-alpha-20` painted over the resting fill. Text stays `primary-foreground`.
+- **destructive.** Background `destructive` → `danger-600`. Text `white` (`#FFFFFF`). Figma does not use `danger-50` here.
+- **outline.** Background `background` → `secondary-50`. Text `foreground` → `neutral-950`. Border `border` → `neutral-200`.
+- **Shape.** Radius `radius-8` (`rounded-lg`). Type Geist SemiBold `font-size-12` / `line-height-16`. Padding `spacing-8` by `spacing-2`. Gap `spacing-4`.
 
 ## Figma parity
 

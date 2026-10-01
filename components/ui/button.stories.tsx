@@ -71,10 +71,10 @@ export const States: Story = {
   render: (args) => (
     <div className="flex flex-wrap items-center gap-4">
       <Button {...args}>Default</Button>
-      <Button {...args} className="bg-primary-800">
+      <Button {...args} className="overlay-white-10">
         Hover
       </Button>
-      <Button {...args} className="bg-primary-700">
+      <Button {...args} className="opacity-60">
         Active
       </Button>
       <Button {...args} disabled>

@@ -10,14 +10,14 @@ function cn(...inputs: ClassValue[]) {
 }
 
 const badgeVariants = cva(
-  "inline-flex items-center rounded-sm border border-transparent px-2 py-0.5 text-xs font-medium leading-none",
+  "inline-flex items-center gap-1 rounded-lg border border-transparent px-2 py-0.5 font-geist text-xs font-semibold leading-4",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground",
+        default: "bg-primary text-primary-foreground hover:overlay-white-20",
         secondary: "bg-secondary text-secondary-foreground",
-        destructive: "bg-destructive text-destructive-foreground",
-        outline: "bg-transparent text-foreground border-border",
+        destructive: "bg-destructive text-white",
+        outline: "border-border bg-background text-foreground",
       },
     },
     defaultVariants: {

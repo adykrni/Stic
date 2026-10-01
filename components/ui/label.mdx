@@ -1,0 +1,73 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks"
+import * as LabelStories from "./label.stories"
+
+<Meta of={LabelStories} />
+
+## Guidance
+
+Label names a form control. `variant` is not a status ranking: `default` is the resting label, `required` adds an indicator, and `disabled` dims the label so it can sit with a disabled control. The states are default and disabled.
+
+<Canvas of={LabelStories.Default} />
+<Canvas of={LabelStories.Required} />
+<Canvas of={LabelStories.Disabled} />
+
+## When to use / When not to use
+
+Use Label on an input, select, or textarea, with `htmlFor` pointed at that control's id.
+
+Do not use Label as a Badge, a heading, or a Button. Do not use the required variant to mean "error". An error message is separate.
+
+## Do / Don't
+
+**Do**
+
+- Set `htmlFor` to the control id. The label element does not take focus. Activating it moves focus to that control.
+- Use `variant="required"` to show the indicator. The asterisk is `aria-hidden`. Put `required` on the control, not on the label.
+- Dim with the `disabled` prop or `variant="disabled"`. Both set `opacity-40` and `aria-disabled`. A `<label>` has no native `disabled` attribute, so this prop is the disabled state. It does not disable the control for you.
+
+**Don't**
+
+- Don't add hover, active, loading, or a focus ring. Focus belongs on the control, so this component does not use `focus-visible:border-ring`.
+- Don't use Slot. The label is not a stand-in for another element.
+- Don't rely on the asterisk alone for required. It is hidden from assistive tech. The control has to be required.
+
+<Canvas of={LabelStories.States} />
+
+## Accessibility in practice
+
+The root is a `<label>`. Click and its access key are native label behavior: they focus the labeled control. The label itself is not in the tab order and has no focus ring. `disabled` sets `aria-disabled="true"` and dims the whole label, including a required indicator when that variant is also disabled via the prop. The required asterisk is decorative. There is no icon-only size.
+
+## Content guidelines
+
+- Name the field as a noun phrase: "Email address", "Project name".
+- Do not start with a verb. "Enter your email" is placeholder copy, not the label.
+- Keep it short enough to sit on one line. The component sets `leading-none` and does not wrap for you.
+
+## Token trail
+
+- **default.** Text `foreground` → `neutral-950`. Type `font-size-14`, weight `font-weight-500`.
+- **required.** Same text as default. Indicator `destructive` → `danger-600`.
+- **disabled.** Same text as default, with primitive `opacity-40` (0.4) on the whole label. No separate disabled color.
+- No background, border, hover, active, or focus token.
+
+## Figma parity
+
+Last synced with Figma: 1 October 2026.
+
+## Props
+
+The table is generated from `LabelProps`. Docgen lists `variant`, `disabled`, and `children`. `variant` includes `null` because that is what `VariantProps` allows. The default variant is `default` in `labelVariants`, which this table does not show. `disabled` defaults to unset in the signature. `htmlFor` and other inherited label attributes are part of the type and are not listed. The disabled state is the `disabled` prop described above.
+
+<ArgTypes of={LabelStories} />
+
+## Accessibility results
+
+Ran the Storybook a11y addon’s axe check (same setup as the addon: `document.body`, Storybook’s `.sb-wrapper` excluded, `region` rule disabled) against Default, Required, Disabled, and States on 1 October 2026. Confirm these in the Accessibility panel.
+
+No violations on any of the four stories. Default and Required passed `color-contrast`. On Required, axe measured the label element. The asterisk is `aria-hidden`, so its `destructive` color was not a separate contrast node.
+
+Disabled did not fail, and `color-contrast` was inapplicable. States passed `color-contrast` for the resting "Default" label only. The dimmed "Disabled" label was not in that pass. Axe skips `aria-disabled` text, so the `opacity-40` treatment was not measured.
+
+## Status
+
+beta

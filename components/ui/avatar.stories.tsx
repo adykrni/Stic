@@ -3,7 +3,7 @@ import { Avatar, type AvatarProps } from "./avatar"
 
 type AvatarSize = NonNullable<AvatarProps["size"]>
 
-const sizes: AvatarSize[] = ["sm", "md", "lg"]
+const sizes: AvatarSize[] = ["xxs", "xs", "sm", "md", "lg"]
 
 const portrait =
   "data:image/svg+xml," +
@@ -26,6 +26,14 @@ const meta = {
 
 export default meta
 type Story = StoryObj<typeof meta>
+
+export const Xxs: Story = {
+  args: { size: "xxs" },
+}
+
+export const Xs: Story = {
+  args: { size: "xs" },
+}
 
 export const Sm: Story = {
   args: { size: "sm" },

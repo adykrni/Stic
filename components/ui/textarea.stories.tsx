@@ -44,7 +44,7 @@ export const States: Story = {
   render: (args) => (
     <div className="grid w-64 gap-3">
       <Textarea {...args} aria-label="Default" placeholder="Default" />
-      <Textarea {...args} aria-label="Focus" placeholder="Focus" className="border-ring" />
+      <Textarea {...args} aria-label="Focus" placeholder="Focus" className="border-ring shadow-focus" />
       <Textarea {...args} aria-label="Disabled" placeholder="Disabled" disabled />
       <Textarea {...args} variant="error" aria-label="Error" placeholder="Error" />
     </div>

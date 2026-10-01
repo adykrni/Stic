@@ -10,12 +10,13 @@ function cn(...inputs: ClassValue[]) {
 }
 
 const textareaVariants = cva(
-  "flex min-h-24 w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground focus-visible:border-ring focus-visible:outline-none disabled:pointer-events-none disabled:bg-neutral-200",
+  "flex min-h-76 w-full rounded-lg border border-border bg-background px-3 py-2 font-geist text-sm text-foreground shadow-button placeholder:text-neutral-500 focus-visible:border-ring focus-visible:shadow-focus focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
         default: "",
-        error: "border-destructive",
+        error:
+          "border-destructive focus-visible:border-destructive focus-visible:shadow-focus-destructive",
       },
     },
     defaultVariants: {

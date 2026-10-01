@@ -11,28 +11,36 @@ function cn(...inputs: ClassValue[]) {
 }
 
 const buttonVariants = cva(
-  "relative inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-lg border border-transparent text-sm font-medium transition-colors focus-visible:border-ring focus-visible:outline-none disabled:pointer-events-none",
+  "relative inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-lg border border-transparent font-geist text-sm font-medium leading-5 transition-colors focus-visible:outline-none active:opacity-60 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
         default:
-          "bg-primary text-primary-foreground hover:bg-primary-800 active:bg-primary-700 disabled:bg-neutral-200",
+          "bg-primary text-primary-foreground shadow-button hover:overlay-white-10 focus-visible:shadow-focus",
         destructive:
-          "bg-destructive text-destructive-foreground hover:bg-danger-700 active:bg-danger-800",
+          "bg-destructive text-destructive-foreground shadow-button focus-visible:shadow-focus-destructive",
         outline:
-          "bg-transparent text-foreground border-border hover:bg-neutral-100",
+          "border-border bg-background text-foreground shadow-button hover:bg-neutral-100 hover:text-neutral-900 focus-visible:border-ring focus-visible:shadow-focus",
         secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary-200",
-        ghost: "bg-transparent text-foreground hover:bg-accent",
-        link: "border-transparent bg-transparent text-primary hover:text-primary-700",
+          "bg-secondary text-secondary-foreground shadow-button hover:overlay-white-20 focus-visible:shadow-focus",
+        ghost:
+          "bg-transparent text-foreground hover:bg-neutral-100 hover:text-neutral-900 focus-visible:shadow-focus",
+        link: "bg-transparent text-primary hover:underline focus-visible:shadow-focus",
       },
       size: {
-        default: "h-10 px-4",
-        sm: "h-8 px-3",
-        lg: "h-12 px-6",
-        icon: "size-10",
+        default: "h-9 px-4 py-2",
+        sm: "h-8 px-3 py-2 text-xs leading-4",
+        lg: "h-10 px-8 py-2",
+        icon: "size-9 p-0",
       },
     },
+    compoundVariants: [
+      {
+        variant: "link",
+        size: "sm",
+        class: "hover:text-sm hover:leading-5",
+      },
+    ],
     defaultVariants: {
       variant: "default",
       size: "default",
@@ -84,7 +92,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {...(asChild && !loading ? {} : { type: type ?? "button" })}
         className={cn(
           buttonVariants({ variant, size }),
-          loading && "pointer-events-none",
+          loading && "pointer-events-none opacity-50",
           className,
         )}
         disabled={isDisabled || undefined}

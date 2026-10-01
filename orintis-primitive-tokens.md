@@ -2,7 +2,7 @@
 
 **Layer:** Primitives (layer 1 of 3: primitives → semantic → component)  
 **Scope:** Light mode; desktop and mobile. Dark mode is out of scope for now.  
-**Total:** 212 tokens
+**Total:** 215 tokens
 
 Primitives are raw values with no meaning attached. Components never reference them directly. They are consumed by the semantic layer (e.g. `surface-default` → `--ori-colour-secondary-100`).
 
@@ -207,7 +207,9 @@ Raw box-shadow values. **Number = blur radius of the outermost layer in px.** Ea
 | `--ori-spacing-0` | 0px | 0 |
 | `--ori-spacing-2` | 2px | 0.125rem |
 | `--ori-spacing-4` | 4px | 0.25rem |
+| `--ori-spacing-6` | 6px | 0.375rem |
 | `--ori-spacing-8` | 8px | 0.5rem |
+| `--ori-spacing-10` | 10px | 0.625rem |
 | `--ori-spacing-12` | 12px | 0.75rem |
 | `--ori-spacing-16` | 16px | 1rem |
 | `--ori-spacing-20` | 20px | 1.25rem |
@@ -389,6 +391,7 @@ Fonts are Google Fonts. Atomic primitives only; composite text styles (heading-l
 | Token | Value |
 |---|---|
 | `--ori-font-family-sans` | `"Noto Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif` |
+| `--ori-font-family-geist` | `"Geist", "Noto Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif` |
 | `--ori-font-family-serif` | `"Noto Serif", Georgia, "Times New Roman", serif` |
 
 Google Fonts has **Noto Sans** and **Noto Serif** (there is no family called "Noto Sans Serif"), so the serif token assumes Noto Serif. Both are variable fonts; load weights 400–700 only.

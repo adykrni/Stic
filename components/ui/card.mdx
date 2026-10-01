@@ -1,0 +1,73 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks"
+import * as CardStories from "./card.stories"
+
+<Meta of={CardStories} />
+
+## Guidance
+
+Card groups a title, a description, and arbitrary content in one surface. `variant` is an emphasis ranking, and this component has only `default`. It does not carry status. Success, warning, and informational status belong on Badge or Alert.
+
+<Canvas of={CardStories.Default} />
+
+## When to use / When not to use
+
+Use Card to group related content: a title, a short description, a body, and an optional footer.
+
+Do not use Card as a button, a link, or a dialog. It has no interactive states of its own. Put actions in the footer with Button. Do not use it to show status.
+
+## Do / Don't
+
+**Do**
+
+- Compose `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, and `CardFooter` as slots. The root does not invent a content model beyond those regions.
+- Leave the surface on `background`, the border on `border`, and the description on `neutral-500`. Those are the measured fills.
+- Let the card grow with its content. The Figma example is 420px wide because of the sample copy, not because the component has a fixed width.
+
+**Don't**
+
+- Don't add hover, active, disabled, or loading. Figma draws one resting surface. There is no States story.
+- Don't pass `asChild`. Card is not a single interactive control.
+- Don't put a focus ring on the card. It is not focusable. PATTERNS.md specifies `focus-visible:border-ring` for interactive components; this one is not interactive, so that rule does not apply.
+- Don't restyle the purple Figma slot chrome. That frame is a placeholder, not part of the component.
+
+## Accessibility in practice
+
+The root and each slot are `div` elements. They are not focusable, so the card has no keyboard behavior and does not use `focus-visible:border-ring` or `shadow-focus`. There is no icon-only case and no `aria-label` requirement. If the title should name a landmark, the caller adds the heading or `aria-labelledby`. The component does not guess a heading level.
+
+## Content guidelines
+
+- Put the name of the group in `CardTitle`. Keep it to one line. The title is 16px semibold with a 16px line height, so it does not wrap comfortably as a paragraph.
+- Put supporting context in `CardDescription`. One sentence.
+- Put the body in `CardContent` and actions in `CardFooter`. Do not place a second title in the footer.
+
+## Token trail
+
+Figma `base/card` and `base/background` both resolve to secondary-50. The component uses the existing semantic `background` rather than a second hex. Description color is the existing primitive `neutral-500` (Figma `base/muted-foreground`). No hover, active, disabled, or focus class exists.
+
+- **default.** Fill `background` → secondary-50 (`#f7f8fb`). Border `border` → `neutral-200`. Text `foreground` → `neutral-950`. Shadow is Tailwind `shadow-sm`, which matches Figma `shadow/sm` (`0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)`). No new shadow token.
+- **size default.** Block padding and the gap between header, content, and footer are `spacing-24` (`py-6`, `gap-6`).
+- **Radius.** Figma `radius/xl` is 14px. The primitive scale jumps from `radius-12` to `radius-16`, and Tailwind `rounded-xl` is 12px. This PR adds `--radius-14: 0.875rem` (`rounded-14`) so the corner is not rounded to a nearby step.
+- **Header.** Horizontal padding `spacing-24` (`px-6`). Title and description stack with `spacing-6` (`gap-1.5`). The header frame in Figma also has an 8px item gap (`spacing-8`) for a horizontal sibling; the default component has no sibling, so that gap is not applied.
+- **Title.** Geist SemiBold `font-size-16` / line-height 100% (`text-base font-semibold leading-none`). Color `foreground`.
+- **Description.** Geist Regular `font-size-14` / `line-height-20` (`text-sm leading-5`). Color `neutral-500`.
+- **Content and footer.** Horizontal padding `spacing-24` (`px-6`). No extra vertical padding. The measured content slot's purple fill is a placeholder and is not a token.
+
+## Figma parity
+
+Last synced with Figma: 1 October 2026.
+
+## Props
+
+The table is generated from `CardProps`. Docgen lists `variant` and `size`. Both include `null` because that is what `VariantProps` allows. Both default to `default` in `cardVariants`, which this table does not show. There is one variant and one size. Inherited div attributes are part of the type and are not listed. `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, and `CardFooter` accept div attributes and have no variants of their own.
+
+<ArgTypes of={CardStories} />
+
+## Accessibility results
+
+Ran axe against the Default story on 1 October 2026 (`document.body`, excluding `.sb-wrapper`, `#storybook-docs`, and `#storybook-highlights-root`, `region` rule disabled).
+
+Default has one serious violation: `color-contrast` on `CardDescription` ("This is a card description."). The measured description color is `neutral-500` (`#85868b`) on `background` (`#f7f8fb`). The primitive notes put that pair at 3.42:1, under the 4.5:1 bar for 14px regular text. The title was not flagged. There is no disabled or loading state to measure. The color is the Figma value and was not lightened to pass.
+
+## Status
+
+beta

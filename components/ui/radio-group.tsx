@@ -12,7 +12,7 @@ function cn(...inputs: ClassValue[]) {
 }
 
 const radioGroupItemVariants = cva(
-  "inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-border bg-transparent text-primary-foreground focus-visible:border-ring focus-visible:outline-none disabled:pointer-events-none disabled:opacity-40 data-[state=checked]:border-primary data-[state=checked]:bg-primary",
+  "inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-border bg-background shadow-button focus-visible:border-ring focus-visible:shadow-focus focus-visible:outline-none disabled:pointer-events-none disabled:opacity-40",
 )
 
 const RadioGroup = React.forwardRef<
@@ -53,7 +53,7 @@ const RadioGroupItem = React.forwardRef<
       className={cn(radioGroupItemVariants(), className)}
     >
       <RadioGroupPrimitive.Indicator className="flex items-center justify-center">
-        <span className="size-2 rounded-full bg-primary-foreground" />
+        <span className="size-2 rounded-full bg-primary" />
       </RadioGroupPrimitive.Indicator>
     </RadioGroupPrimitive.Item>
   )
@@ -61,7 +61,7 @@ const RadioGroupItem = React.forwardRef<
   if (label == null) return control
 
   return (
-    <div className="inline-flex items-center gap-2">
+    <div className="inline-flex items-center gap-3 pt-px">
       {control}
       <Label htmlFor={controlId} disabled={disabled}>
         {label}

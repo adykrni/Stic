@@ -27,7 +27,7 @@ export const States: Story = {
       <RadioGroupItem value="unselected" label="Unselected" />
       <RadioGroupItem value="selected" label="Selected" />
       <RadioGroupItem value="disabled" label="Disabled" disabled />
-      <RadioGroupItem value="focus" label="Focus" className="border-ring" />
+      <RadioGroupItem value="focus" label="Focus" className="border-ring shadow-focus" />
     </RadioGroup>
   ),
 }

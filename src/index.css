@@ -1,13 +1,14 @@
-@import url("https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap");
-@import "tailwindcss";
-
 @theme {
+
   --color-primary: #2c2d41;
   --color-primary-foreground: #f7f8fb;
   --color-primary-700: #505174;
   --color-primary-800: #3c3d58;
   --color-neutral-100: #f1f1f5;
   --color-neutral-200: #e4e4e9;
+  --color-neutral-500: #85868b;
+  --color-neutral-900: #202024;
+  --color-success-600: #017f38;
   --color-destructive: #cb131c;
   --color-destructive-foreground: #fff6f5;
   --color-danger-700: #a3000e;
@@ -20,11 +21,37 @@
   --color-accent: #f1f1f5;
   --color-ring: #006bd0;
   --color-background: #f7f8fb;
+  --color-white: #ffffff;
   --color-ash: #a3a3a3;
+  --color-scarlet: #dc2626;
+  --color-white-alpha-10: rgb(255 255 255 / 0.1);
+  --color-white-alpha-20: rgb(255 255 255 / 0.2);
 
   --font-geist: "Geist", "Noto Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --radius-10: 0.625rem;
-  --spacing-3px: 0.1875rem;
-  --shadow-tabs: 0px 1px 2px -1px rgb(0 0 0 / 0.1), 0px 1px 3px 0px rgb(0 0 0 / 0.1);
+
+  --shadow-button: 0px 1px 2px 0px rgb(0 0 0 / 0.05);
   --shadow-focus: 0px 0px 0px 3px rgb(163 163 163 / 0.5);
+  --shadow-focus-destructive: 0px 0px 0px 3px rgb(220 38 38 / 0.2);
+  --shadow-toast: 0px 4px 12px -1px rgb(0 0 0 / 0.1);
+  --shadow-toast-focus: 0px 4px 12px 0px rgb(0 0 0 / 0.1), 0px 0px 0px 2px rgb(0 0 0 / 0.2);
+
+  --spacing-15: 0.9375rem;
+  --radius-14: 0.875rem;
+
+  --spacing-76: 4.75rem;
+  --radius-10: 0.625rem;;
+  --shadow-tabs: 0px 1px 2px -1px rgb(0 0 0 / 0.1), 0px 1px 3px 0px rgb(0 0 0 / 0.1);;
+  --spacing-3px: 0.1875rem;;
+}
+
+@utility overlay-white-10 {
+  background-image: linear-gradient(var(--color-white-alpha-10), var(--color-white-alpha-10));
+}
+
+@utility overlay-white-20 {
+  background-image: linear-gradient(var(--color-white-alpha-20), var(--color-white-alpha-20));
+}
+
+@utility z-toast {
+  z-index: 600;
 }

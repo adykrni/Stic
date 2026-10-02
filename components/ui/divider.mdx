@@ -21,7 +21,7 @@ Do not use Divider as a border on a card, input, or button. Those components own
 **Do**
 
 - Use `horizontal` for a full-width rule (`h-px w-full`).
-- Use `vertical` inside a flex or grid row that has height. The rule is `w-px`, stretches with `h-full`, and keeps `min-h-4` so it does not collapse to nothing.
+- Use `vertical` inside a flex or grid row that has height. The rule is `w-px`, stretches with `h-full`, and keeps `min-h-5` so it does not collapse to nothing.
 - Leave the color alone. Both orientations use `bg-border`.
 
 **Don't**
@@ -43,7 +43,7 @@ The root is `role="separator"` with `aria-orientation` set from `variant` (`hori
 ## Token trail
 
 - **horizontal.** Fill `border` → `neutral-200`. Thickness `border-width-1` (`h-px`). Width is the parent.
-- **vertical.** Fill `border` → `neutral-200`. Thickness `border-width-1` (`w-px`). Minimum block size `spacing-16` (`min-h-4`).
+- **vertical.** Fill `border` → `neutral-200`. Thickness `border-width-1` (`w-px`). Minimum block size `spacing-20` (`min-h-5`).
 - No text, hover, active, disabled, or focus token.
 
 ## Figma parity

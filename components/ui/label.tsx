@@ -10,7 +10,7 @@ function cn(...inputs: ClassValue[]) {
 }
 
 const labelVariants = cva(
-  "inline-flex items-center gap-1 text-sm font-medium leading-none text-foreground",
+  "inline-flex items-center gap-1 font-geist text-sm font-medium leading-none text-foreground",
   {
     variants: {
       variant: {

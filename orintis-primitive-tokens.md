@@ -2,7 +2,7 @@
 
 **Layer:** Primitives (layer 1 of 3: primitives → semantic → component)  
 **Scope:** Light mode; desktop and mobile. Dark mode is out of scope for now.  
-**Total:** 234 tokens
+**Total:** 236 tokens
 
 Primitives are raw values with no meaning attached. Components never reference them directly. They are consumed by the semantic layer (e.g. `surface-default` → `--ori-colour-secondary-100`).
 
@@ -491,6 +491,12 @@ Suggested size → line-height pairings for the semantic layer: 12→16, 14→20
 | `--ori-letter-spacing-wider` | 0.04em | All-caps labels and overlines |
 
 ---
+
+
+## Merge: branch-only primitives
+
+| `--ori-radius-6` | 6px | 0.375rem | Select menu item. Tailwind `rounded-md` is this value. |
+| `--ori-shadow-menu` | `0px 2px 4px -2px rgba(0, 0, 0, 0.1), 0px 4px 6px -1px rgba(0, 0, 0, 0.1)` | Select menu. Not `--ori-shadow-8`. |
 
 
 ## Merge: branch-only primitives

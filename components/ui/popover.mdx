@@ -1,0 +1,83 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks"
+import * as PopoverStories from "./popover.stories"
+
+<Meta of={PopoverStories} />
+
+## Guidance
+
+Popover surfaces contextual content next to a trigger on click. `variant` is an emphasis ranking, and this component has only `default`. It does not carry status. Success, warning, and informational status belong on Badge or Alert.
+
+<Canvas of={PopoverStories.Default} />
+
+## When to use / When not to use
+
+Use Popover for compact forms, filters, or short explanations that should stay near the control that opened them. Pair `PopoverTrigger` with Button or another focusable control.
+
+Do not use Popover for navigation menus (Dropdown Menu or Menubar), hover previews (Hover Card), modal tasks (Dialog), or persistent layout (Card).
+
+## Do / Don't
+
+**Do**
+
+- Control open state with `open` and `onOpenChange` when the caller must sync with other UI. Radix handles dismiss on outside click and Escape by default.
+- Pass `side`, `align`, and `sideOffset` on `PopoverContent` when the default placement collides with the viewport. The default `sideOffset` is 4px (`spacing-4`).
+- Use `PopoverAnchor` when the content should align to an element other than the trigger.
+- Compose `PopoverClose` with `asChild` onto a Button when the panel needs an explicit dismiss control.
+
+<Canvas of={PopoverStories.AsChild} />
+
+**Don't**
+
+- Don't trap focus inside the popover. It is not a dialog. Screen readers still treat it as non-modal floating content.
+- Don't use Popover for hover-only content. Use Hover Card instead.
+- Don't remove the border or shadow to make the panel look like inline copy. The measured surface is a bordered card with elevation.
+- Don't fake a disabled trigger with `pointer-events-none` alone. Disable the actual trigger control.
+
+<Canvas of={PopoverStories.States} />
+
+## Accessibility in practice
+
+The trigger is a native button when composed with Button and `asChild`, or the element you merge onto. It receives focus with the same `shadow-focus` treatment as other controls when focused. Escape closes the open popover and returns focus to the trigger. Tab moves through focusable elements inside the content without trapping.
+
+Radix sets `data-state` on the content for open and closed. There is no separate `aria-expanded` requirement on the content itself; the trigger exposes expanded state.
+
+Icon-only triggers need `aria-label` on the trigger element. The popover content does not add a title automatically.
+
+## Content guidelines
+
+- Keep body copy short. The default width is 320px (`w-80`), matching Figma.
+- Start with a short heading when the panel has multiple fields.
+- Put the primary action inside the panel, not on the trigger label.
+
+## Token trail
+
+Measured on Figma `Popover` (`195:1621`) in ShadCN UI Kit on 2 October 2026.
+
+- **default.** Width 320px (`w-80`). Padding `spacing-16` on all sides (`p-4`). Internal stack gap `spacing-16` (`gap-4`) when you compose multiple blocks. Radius `radius-8` (`rounded-lg`). Fill `background` → secondary-50 (`#f7f8fb`). Border `border` → `neutral-200`, 1px. Text `foreground`, body `text-sm` / `line-height-20`. Shadow `--shadow-popover`: Figma lists drop shadows at offset `(0, 2)` blur 4 and `(0, 4)` blur 6; shadow colour was not exported in the bridge read, so the token uses `rgb(0 0 0 / 0.1)` for both layers (**flag**: confirm alpha in Figma Dev Mode).
+- **Open state.** Same surface tokens as default. Visibility is handled by Radix Portal positioning, not a separate colour variant.
+- **Focus.** Trigger focus uses Button `shadow-focus` when the trigger is a Button. Content uses `outline-none`; it is not tab-stopped as a single control.
+
+## Figma parity
+
+Last synced with Figma: 2 October 2026.
+
+## Props
+
+The table is generated from `PopoverContent` props intersected with `popoverVariants`. Docgen lists `variant` and `size`. Both include `null` because that is what `VariantProps` allows; both default to `default` in `popoverVariants`. Radix props such as `side`, `align`, `sideOffset`, and `collisionPadding` come from `@radix-ui/react-popover` and may not all appear in the table. `Popover`, `PopoverTrigger`, `PopoverAnchor`, `PopoverClose`, and `PopoverArrow` re-export the matching Radix parts.
+
+<ArgTypes of={PopoverStories} />
+
+## Accessibility results
+
+Ran axe against every story on 2 October 2026 (`document.body`, excluding `.sb-wrapper`, `#storybook-docs`, and `#storybook-highlights-root`, `region` rule disabled).
+
+- **Default.** Serious `aria-dialog-name` on the open `PopoverContent` (`role="dialog"` from Radix with no accessible name). Serious `color-contrast` on the description paragraph (`neutral-500` on `background`).
+- **States.** Same `aria-dialog-name` on the open panel. `color-contrast` on the four `text-xs text-neutral-500` state labels.
+- **AsChild.** No violations.
+- **WithAnchorAndArrow.** Serious `aria-dialog-name` on the open panel.
+
+Closed popovers and the disabled trigger row were not flagged. Loading is not implemented.
+
+## Status
+
+beta

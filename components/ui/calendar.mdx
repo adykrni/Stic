@@ -1,0 +1,70 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks"
+import * as CalendarStories from "./calendar.stories"
+
+<Meta of={CalendarStories} />
+
+## Guidance
+
+Calendar renders a month grid for picking dates. **react-day-picker** handles month navigation, outside days, and selection state. Default mode is **single-date** selection only.
+
+<Canvas of={CalendarStories.Default} />
+
+## When to use / When not to use
+
+Use Calendar inside a popover, dialog, or inline form when users need a visual date choice. Use Date Picker for the Input trigger + Popover pattern.
+
+Do not use Calendar for time-of-day picking. Do not reimplement grid math or locale calendars by hand.
+
+## Do / Don't
+
+**Do**
+
+- Pass `mode="single"`, `selected`, and `onSelect` for the default single-date flow.
+- Use `disabled` matchers from react-day-picker for blocked days.
+- Keep day styling on `calendarDayButtonVariants` / `classNames` overrides.
+
+**Don't**
+
+- Don't add range selection in this component without a Figma range spec and separate API review (range uses different day variants and selection logic in Figma).
+- Don't import react-day-picker default CSS if it fights Orintis tokens; use the provided `classNames`.
+
+<Canvas of={CalendarStories.States} />
+
+## Accessibility in practice
+
+Navigation buttons are real **Button** ghost icon controls. Day cells are `<button type="button">` from react-day-picker. Arrow keys move between days; Enter selects. Focus uses `focus-visible:border-ring` and `shadow-focus` on day buttons.
+
+## Content guidelines
+
+- Month caption uses the active locale (default browser formatting).
+- Weekday headers are two-letter abbreviations from react-day-picker (`Su`, `Mo`, …).
+
+## Token trail
+
+- **Panel.** Padding 12px (`p-3`). Radius `radius-10`. Border `border`. Background `background`. Shadow `shadow-popover`.
+- **Weekday header.** `size-8`, Geist Medium 12/16, `neutral-500`.
+- **Day default.** `size-8`, radius 8 (`rounded-lg`), text `foreground` 14/20.
+- **Day hover.** Background `accent` → `neutral-100`. Text `neutral-900`.
+- **Day selected.** Background `primary` → `primary-900`. Text `primary-foreground`.
+- **Day today.** Background `accent`, text `neutral-900` (Figma Current variant).
+- **Outside month.** Text `neutral-500`, `opacity-50`.
+- **Disabled.** Text `neutral-500`, `opacity-50`, no pointer events.
+- **Nav.** Ghost **Button** `icon` at `size-8` (Figma arrow 32×32).
+
+## Figma parity
+
+Last synced with Figma: 2 October 2026. Sources: `Calendar / Basic` (17179:197284), `Calendar / Day Button` (234:27), `Calendar / Day Header` (222:5174).
+
+## Props
+
+`Calendar` forwards react-day-picker props plus `variant`, `size`, and optional `dayButtonClassName`. Default `mode` is `"single"`.
+
+<ArgTypes of={CalendarStories} />
+
+## Accessibility results
+
+Run the Storybook a11y addon against Default and States before marking stable. Date the run here when complete.
+
+## Status
+
+beta

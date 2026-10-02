@@ -1,6 +1,7 @@
 @theme {
 
 
+
   --color-primary: #2c2d41;
   --color-primary-foreground: #f7f8fb;
   --color-primary-700: #505174;
@@ -42,6 +43,9 @@
 
   --spacing-76: 4.75rem;
   --shadow-menu: 0px 2px 4px -2px rgb(0 0 0 / 0.1), 0px 4px 6px -1px rgb(0 0 0 / 0.1);;;
+  --color-scrim: rgb(44 45 65 / 0.6);;;;
+  --radius-10: 0.625rem;;;;
+  --shadow-dialog: 0px 4px 6px -4px rgb(0 0 0 / 0.1), 0px 10px 15px -3px rgb(0 0 0 / 0.1);;;;
 }
 
 @utility overlay-white-10 {
@@ -62,6 +66,14 @@
 
 @utility z-select {
   z-index: 200;
+}
+
+@utility z-overlay {
+  z-index: 400;
+}
+
+@utility z-dialog {
+  z-index: 500;
 }
 
 @utility z-tooltip {

@@ -1,0 +1,69 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks"
+import * as DrawerStories from "./drawer.stories"
+
+<Meta of={DrawerStories} />
+
+## Guidance
+
+Drawer is a **bottom sheet** built on **vaul**, with drag-to-dismiss and a visible handle. Use it for mobile-first supplemental flows. `variant` is only the default layout rank today.
+
+<Canvas of={DrawerStories.Default} />
+
+## When to use / When not to use
+
+Use Drawer when users expect to pull a panel down to dismiss (bottom sheet). Use **Sheet** for edge panels without drag physics, or **Dialog** for centered modals.
+
+**Sheet `bottom` vs Drawer:** Both anchor to the bottom visually, but **Sheet** uses Radix Dialog (slide + Escape, no drag). **Drawer** adds vaul’s drag handle, snap points, and swipe-to-close. For this design system, prefer **Drawer** when drag dismiss is required; prefer **Sheet bottom** when you only need a simple slide-over without gesture handling.
+
+## Do / Don't
+
+**Do**
+
+- Include `DrawerHandle` (rendered inside `DrawerContent`) for affordance.
+- Use **Button** via `DrawerCloseButton` or `DrawerClose asChild`.
+- Set `shouldScaleBackground` on `Drawer` when the scaled backdrop effect is desired (vaul default).
+
+<Canvas of={DrawerStories.AsChild} />
+
+**Don't**
+
+- Don't reimplement drag gestures on Sheet.
+- Don't duplicate Sheet markup inside Drawer.
+
+<Canvas of={DrawerStories.States} />
+
+## Accessibility in practice
+
+vaul manages focus while open and supports keyboard dismiss patterns documented in vaul. Provide `DrawerTitle` and `DrawerDescription` for the dialog semantics vaul exposes. Footer actions use real **Button** components.
+
+## Content guidelines
+
+- Title states the task in a few words.
+- Description mentions drag or dismiss when helpful.
+- Primary footer action uses a verb (“Done”, “Save”).
+
+## Token trail
+
+- **Overlay.** `bg-scrim`, `z-overlay` (aligned with Dialog/Sheet).
+- **Panel.** `bg-background`, `border-border`, `shadow-dialog`, top radius `radius-10`, `max-h-[80vh]`.
+- **Handle.** `bg-neutral-200`, height 6px (`h-1.5`), width `w-24` (~96px; Figma ~100px — see flags).
+- **Header / footer padding.** `p-6`, gap `gap-1.5` / `gap-2`.
+- **Title / description.** Same as Dialog (`foreground`, `neutral-500`).
+
+## Figma parity
+
+Last synced with Figma: 2 October 2026. Sources: `Drawer` (244:2831), `Drawer Wrapper` / content frames on Drawer page.
+
+## Props
+
+`Drawer` forwards vaul root props. `DrawerContent` accepts `variant` and `size` (default ranks). Export includes `DrawerHandle`, `DrawerCloseButton`.
+
+<ArgTypes of={DrawerStories} />
+
+## Accessibility results
+
+Run the Storybook a11y addon against Default, States, and AsChild before marking stable. Date the run here when complete.
+
+## Status
+
+beta

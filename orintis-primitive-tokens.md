@@ -2,7 +2,7 @@
 
 **Layer:** Primitives (layer 1 of 3: primitives → semantic → component)  
 **Scope:** Light mode; desktop and mobile. Dark mode is out of scope for now.  
-**Total:** 236 tokens
+**Total:** 237 tokens
 
 Primitives are raw values with no meaning attached. Components never reference them directly. They are consumed by the semantic layer (e.g. `surface-default` → `--ori-colour-secondary-100`).
 
@@ -503,3 +503,8 @@ Suggested size → line-height pairings for the semantic layer: 12→16, 14→20
 
 | `--ori-radius-10` | 10px | 0.625rem | Dialog surface. Not radius-8 or radius-12. |
 | `--ori-shadow-dialog` | `0px 4px 6px -4px rgba(0, 0, 0, 0.1), 0px 10px 15px -3px rgba(0, 0, 0, 0.1)` | Dialog surface. Not `--ori-shadow-32`. |
+
+
+## Merge: branch-only primitives
+
+| `--ori-shadow-tabs` | `0px 1px 2px -1px rgba(0, 0, 0, 0.1), 0px 1px 3px 0px rgba(0, 0, 0, 0.1)` | Selected Tabs trigger. Not `--ori-shadow-2`. |

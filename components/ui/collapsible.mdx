@@ -1,0 +1,70 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks"
+import * as CollapsibleStories from "./collapsible.stories"
+
+<Meta of={CollapsibleStories} />
+
+## Guidance
+
+Collapsible reveals and hides a block of content from a single trigger. `variant` is an emphasis ranking with only `default`. The chevron uses the same open rotation contract planned for Accordion: `transition-transform duration-200` and `group-data-[state=open]:rotate-180` on a 16px icon (`size-4`, stroke 1.33px).
+
+<Canvas of={CollapsibleStories.Default} />
+
+## When to use / When not to use
+
+Use Collapsible for optional detail sections, repository lists, or filter groups controlled by one heading row.
+
+Do not use Collapsible for exclusive sections (Accordion), navigation menus, or modal content.
+
+## Do / Don't
+
+**Do**
+
+- Pass `disabled` on `Collapsible` to disable the trigger. The trigger sets the native `disabled` attribute when composed as a button.
+- Keep the chevron `aria-hidden`. The trigger text names the control.
+- Match Accordion chevron rotation when Accordion lands: do not introduce a second rotation pattern.
+
+<Canvas of={CollapsibleStories.AsChild} />
+
+**Don't**
+
+- Don't use Collapsible for multi-panel exclusive expand. That belongs on Accordion.
+- Don't rotate the chevron with a bespoke class outside `group-data-[state=open]:rotate-180`.
+- Don't fake disabled with opacity alone.
+
+<Canvas of={CollapsibleStories.States} />
+
+## Accessibility in practice
+
+The trigger is a `button` by default. Space and Enter toggle the panel. Focus uses `shadow-focus` on the trigger row. Content is shown or hidden with Radix `data-state`; it remains in the DOM.
+
+## Content guidelines
+
+- Write the trigger as a summary of the hidden block.
+- Keep nested rows to one line where possible.
+- Do not nest another collapsible trigger inside content without a clear heading.
+
+## Token trail
+
+Measured on Figma Collapsible instance `18597:96521` on 2 October 2026.
+
+- **Trigger row.** Horizontal padding `spacing-16` (`px-4`). Vertical padding `spacing-8` (`py-2`). Gap `spacing-8` (`gap-2`). Radius `radius-8` (`rounded-lg`). Hover fill `neutral-100`.
+- **Content rows.** Padding `spacing-8` by `spacing-16` (`py-2 px-4`). Stack gap `spacing-8` (`gap-2` / `pt-2` on the content wrapper).
+- **Chevron.** `spacing-16` box (`size-4`). Stroke `1.33px` (primitive `--ori-border-width-1-33`). Rotation 180° when open (Accordion-aligned pattern; **Accordion is not on `origin/main` yet**, so this PR establishes the shared rotation for a future Accordion PR).
+
+## Figma parity
+
+Last synced with Figma: 2 October 2026.
+
+## Props
+
+`CollapsibleTrigger` accepts `showChevron` (default `true`) and `variant` / `size` from `collapsibleTriggerVariants`. Radix `Collapsible` props (`open`, `defaultOpen`, `disabled`, `onOpenChange`) pass through the root.
+
+<ArgTypes of={CollapsibleStories} />
+
+## Accessibility results
+
+Ran axe on 2 October 2026 (standard Storybook iframe exclusions, `region` disabled). Default and States: no violations. AsChild: no violations.
+
+## Status
+
+beta

@@ -1,0 +1,65 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks"
+import * as DatePickerStories from "./date-picker.stories"
+
+<Meta of={DatePickerStories} />
+
+## Guidance
+
+Date Picker combines **Popover**, the real **Input**, and **Calendar** for single-date selection. The trigger shows the formatted date or a placeholder; the panel opens on click.
+
+<Canvas of={DatePickerStories.Default} />
+
+## When to use / When not to use
+
+Use Date Picker when a compact form field should open a calendar. Use Calendar alone when the grid is always visible.
+
+Do not duplicate Popover or Calendar markup. Do not parse typed dates in the Input (read-only trigger).
+
+## Do / Don't
+
+**Do**
+
+- Control selection with `value` / `onValueChange` or `defaultValue`.
+- Rely on Calendar `mode="single"` (default). Closing the popover after select is built in.
+- Pass `disabled` to block the trigger button and Input presentation.
+
+**Don't**
+
+- Don't enable range selection here without extending Calendar and Figma range variants first.
+- Don't replace the Input with a custom-styled div.
+
+<Canvas of={DatePickerStories.States} />
+
+## Accessibility in practice
+
+The focusable control is a `<button type="button">` wrapping a read-only **Input** for visuals. Set `aria-expanded` when open. Calendar keyboard support applies inside the popover. Escape closes via Radix Popover.
+
+## Content guidelines
+
+- Placeholder: “Pick a date” or name the field (“Start date”).
+- Display uses `toLocaleDateString` with `dateStyle: "medium"` by default.
+
+## Token trail
+
+- **Trigger.** Same as **Input** default: `h-9`, `border-border`, `bg-background`, `shadow-button`, placeholder `neutral-500`, text `foreground`.
+- **Trigger open / focus.** `border-ring`, `shadow-focus` on the nested Input.
+- **Trigger disabled.** `opacity-50`, `pointer-events-none` on the button (Input disabled styling aligned).
+- **Panel.** Popover `p-0`; Calendar panel tokens apply inside.
+
+## Figma parity
+
+Last synced with Figma: 2 October 2026. Sources: `Date Picker` `State=Default, Type=With Input` (18403:6198), `_DatePickerTrigger` (240×36), Calendar panel from `Calendar / Basic`.
+
+## Props
+
+`DatePicker` accepts optional controlled `value`, `defaultValue`, `onValueChange`, `placeholder`, `disabled`, and `locale` / `dateStyle` for formatting.
+
+<ArgTypes of={DatePickerStories} />
+
+## Accessibility results
+
+Run the Storybook a11y addon against Default and States before marking stable. Date the run here when complete.
+
+## Status
+
+beta

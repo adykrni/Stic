@@ -1,0 +1,20 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks"
+import * as ScrollAreaStories from "./scroll-area.stories"
+
+<Meta of={ScrollAreaStories} />
+
+## Guidance
+
+Custom scrollbars via Radix Scroll Area. Thumb uses `border` token; track width 10px (`w-2.5`).
+
+<Canvas of={ScrollAreaStories.Default} />
+
+## Figma parity
+
+Last synced with Figma: 2 October 2026 (scrollbar width 10px — uses Tailwind `w-2.5`, not `spacing-3`).
+
+## Status
+
+beta
+
+<ArgTypes of={ScrollAreaStories} />

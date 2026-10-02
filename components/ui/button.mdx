@@ -26,8 +26,8 @@ Do not use Button to show status, counts, or categories. Do not use the link var
 
 - Compose with `asChild` onto one element, such as an `<a>`. Radix Slot merges the button classes onto that child. The child must be a single element.
 - Turn the action off with the `disabled` prop. The component sets the native `disabled` attribute, so the control leaves the tab order and does not fire a click.
-- Use `loading` while the action is in progress. The label stays in the layout with `visibility: hidden`, so the width holds, and a centered spinner replaces it. Pointer events are turned off and the click handler returns early. The resting background does not change.
-- Name an icon-only button with `aria-label`. Size `icon` only sets `size-10`. It does not add a name.
+- Use `loading` while the action is in progress. The label stays in the layout with `visibility: hidden`, so the width holds, and a centered spinner replaces it. Pointer events are turned off and the click handler returns early. The resting background does not change. The control uses `opacity-50`.
+- Name an icon-only button with `aria-label`. Size `icon` sets a 36px box (`size-9`). It does not add a name.
 
 <Canvas of={ButtonStories.AsChild} />
 
@@ -35,14 +35,14 @@ Do not use Button to show status, counts, or categories. Do not use the link var
 
 - Don't encode status in `variant`. Destructive is the strongest action emphasis, not an error badge.
 - Don't pass `asChild` together with `loading`. While `loading` is true the component ignores Slot and renders a `<button>`, because the spinner wrapper is not a single child Slot can merge onto.
-- Don't fake disabled with a class. Only the default variant changes its fill when disabled (`neutral-200`). Destructive, outline, secondary, ghost, and link keep their resting colors. There is no disabled text color on any variant.
+- Don't fake disabled with a class. Disabled sets the native attribute and `opacity-50` on every variant. The fill does not change.
 - Don't treat `loading` as disabled. It does not set `disabled`. The button stays focusable, `aria-busy` is set, the label is hidden from assistive tech, and the spinner is `aria-hidden`.
 
 <Canvas of={ButtonStories.States} />
 
 ## Accessibility in practice
 
-Focus uses `focus-visible:border-ring` and removes the outline. The ring token is the semantic `ring` color, which resolves to `info-600`. This is a 1px border color, not a separate box-shadow ring. The shared base border is transparent so default, secondary, ghost, and link do not grow on focus. Outline already uses the `border` token at rest, and that border switches to `ring` on focus.
+Focus removes the outline and paints `shadow-focus`: a 3px spread of ash (`#A3A3A3`) at 50% opacity. Destructive uses `shadow-focus-destructive` instead, scarlet (`#DC2626`) at 20% opacity. Outline also switches its border to `ring` (`info-600`). The shared base border is transparent, so default, secondary, ghost, and link do not grow on focus.
 
 Keyboard support is the native button behavior. Enter and Space activate it. `type` defaults to `button`, so it does not submit a form unless you pass `type="submit"`. A disabled button is not in the tab order. A loading button is still in the tab order; Enter and Space fire click, and the handler cancels that click. There is no extra key handler.
 
@@ -58,14 +58,16 @@ Icon-only buttons need an `aria-label` from the caller. The component does not a
 
 Semantic names resolve through the light theme. Hover, active, and the default disabled fill are primitive classes on the component, not semantic tokens.
 
-- **default.** Background `primary` → `primary-900`. Text `primary-foreground` → `secondary-50`. Hover `primary-800`. Active `primary-700`. Disabled background `neutral-200`.
-- **destructive.** Background `destructive` → `danger-600`. Text `destructive-foreground` → `danger-50`. Hover `danger-700`. Active `danger-800`. No disabled fill.
-- **outline.** Background `transparent`. Hover `neutral-100`. Border `border` → `neutral-200`. Text `foreground` → `neutral-950`.
-- **secondary.** Background `secondary` → `secondary-100`. Hover `secondary-200`. Text `secondary-foreground` → `primary-900`.
-- **ghost.** Background `transparent`. Hover `accent` → `neutral-100`. Text `foreground` → `neutral-950`.
-- **link.** Text `primary` → `primary-900`. Hover text `primary-700`. No fill.
-- **Focus, every variant.** Border `ring` → `info-600`.
-- **Loading.** Same background as that variant's rest state. No loading color token.
+- **default.** Height `spacing-36` (`h-9`). Padding `spacing-8` by `spacing-16`. Gap `spacing-8`. Radius `radius-8`. Type Geist Medium `font-size-14` / `line-height-20`. Background `primary` → `primary-900`. Text `primary-foreground` → `secondary-50`. Rest shadow `shadow-black-2`. Hover paints `white-alpha-10` over the fill. Pressed `opacity-60`. Disabled `opacity-50`.
+- **destructive.** Same size and type. Background `destructive` → `danger-600`. Text `destructive-foreground` → `danger-50`. Hover does not change the fill. Focus uses `shadow-focus-scarlet`.
+- **outline.** Background `background` → `secondary-50`. Border `border` → `neutral-200`. Text `foreground` → `neutral-950`. Hover fill `neutral-100`, text `neutral-900`. Focus border `ring` → `info-600` plus `shadow-focus-ash`.
+- **secondary.** Background `secondary` → `secondary-100`. Text `secondary-foreground` → `primary-900`. Hover paints `white-alpha-20` over the fill.
+- **ghost.** Fill is transparent. Text `foreground`. Hover fill `neutral-100`, text `neutral-900`. No rest shadow.
+- **link.** Text `primary` → `primary-900`. Hover underlines. Small link hover steps type to `font-size-14` / `line-height-20`. No rest shadow.
+- **sm.** Height `spacing-32`. Horizontal padding `spacing-12`. Type `font-size-12` / `line-height-16`.
+- **lg.** Height `spacing-40`. Horizontal padding `spacing-32`. Type stays 14/20.
+- **icon.** Fixed `spacing-36` box. The glyph is `spacing-16`. Figma also stores 16px horizontal padding on that fixed box; applying both would crush the icon, so the component centers the glyph in the 36px box.
+- **Loading.** Same fill as rest, at `opacity-50`.
 
 ## Figma parity
 
@@ -85,7 +87,7 @@ No violations on Default, Destructive, Outline, Secondary, Ghost, Link, or AsChi
 
 States has one critical violation: `button-name` on the loading button ("Buttons must have discernible text"). The label is `visibility: hidden` and the spinner is `aria-hidden`, so the accessible name is empty. `aria-busy` does not supply a name.
 
-`color-contrast` passed for the Default, Hover, and Active labels in States. The addon did not report contrast for the disabled button (axe skips disabled elements) or for the loading label (it is hidden, and that node failed `button-name` instead). Disabled default text stays `primary-foreground` on `neutral-200`; that pair was not part of the pass.
+`color-contrast` on the earlier Default, Hover, and Active labels was measured when hover was `primary-800` and active was `primary-700`. Those classes are no longer the states. Hover is now a 10% white layer over `primary-900`, and active is `opacity-60`. Re-check both in the Accessibility panel. The addon did not report contrast for the disabled button (axe skips disabled elements) or for the loading label (it is hidden, and that node failed `button-name` instead). Disabled keeps the resting fill at `opacity-50`.
 
 ## Status
 

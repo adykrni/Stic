@@ -1,0 +1,79 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks"
+import * as PaginationStories from "./pagination.stories"
+
+<Meta of={PaginationStories} />
+
+## Guidance
+
+Pagination moves between pages. `variant` is an emphasis ranking, and this row has only `default`. Previous, next, and page numbers are the real Button. The current page uses Button `outline`. The other controls use Button `ghost`. It does not carry status. Success, warning, and informational status belong on Badge or Alert.
+
+<Canvas of={PaginationStories.Default} />
+
+## When to use / When not to use
+
+Use Pagination for a numbered set of pages.
+
+Do not use it as a breadcrumb, tabs, or a carousel dot. Do not draw a second button. If the control looks wrong, change Button, not this file.
+
+## Do / Don't
+
+**Do**
+
+- Render previous, next, and page numbers with `Button`. Page numbers use size `icon` because that box is 36px, which is the measured page link. The current page passes `isActive`, which selects `outline`.
+- Turn a control off with `disabled` on the Button. That is the native disabled state and `opacity-50`.
+- Compose a page link with `asChild` onto one `<a>` when the page is navigation.
+
+<Canvas of={PaginationStories.AsChild} />
+
+**Don't**
+
+- Don't shrink Button to match Figma's previous padding. Figma's Previous is 8px block padding, 10px start, 16px end, and a 4px gap. Button `default` is `px-4 py-2` and `gap-2`. This component keeps Button.
+- Don't restyle the page number. Size `icon` is `p-0` in a 36px box. Figma's page link is that box.
+- Don't make the ellipsis a Button. It is not a page. It is a 36px presentational slot.
+- Don't add a pagination color. Hover, focus, and the current page are Button's ghost and outline.
+
+<Canvas of={PaginationStories.States} />
+
+## Accessibility in practice
+
+The root is a `nav` named "Pagination". Each control is a button, so it uses Button's focus: `shadow-focus` (3px ash at 50% opacity). Ghost does not add a `ring` border. Outline, used for the current page, also sets the border to `ring`. That matches Figma's active-focus frame. PATTERNS.md specifies focus as `focus-visible:border-ring` only. Button follows Figma's ash shadow, and this row uses that Button.
+
+Enter and Space activate the button. A disabled control is not in the tab order. The current page sets `aria-current="page"`. The chevrons are `aria-hidden`. The ellipsis is `role="img"` named "More pages".
+
+Button also applies `active:opacity-60` on press. Figma's pagination set has no pressed frame. The opacity comes from Button and is not removed here.
+
+## Content guidelines
+
+- Label previous and next as "Previous" and "Next".
+- Use the page number as the page control's name. Size `icon` does not add a name of its own. The numeral is the name.
+- Do not put "page" on every number. The nav name already says Pagination.
+
+## Token trail
+
+No new theme key. Colors are Button's.
+
+- **Row.** Horizontal, gap `spacing-4` (`gap-1`). No fill, padding, or radius. The sample row is 345×36.
+- **Previous and next.** Button `ghost`, size `default`. Rest is transparent, text `foreground`, height `spacing-36`, radius `radius-8`. Hover fill `neutral-100`, text `neutral-900`. Focus `shadow-focus`. Disabled `opacity-50`. Figma's padding and 4px inner gap are not applied. See Do / Don't.
+- **Page number.** Button `ghost`, size `icon` (36px). Same hover and focus as ghost.
+- **Current page.** Button `outline`: fill `background`, border `border`, shadow `shadow-button`. Hover fill `neutral-100`, text `neutral-900`, border stays. Focus border `ring` plus `shadow-focus`. This matches Figma's Active, Active Hover, and Active Focus.
+- **Ellipsis.** 36px box. Not a Button. Figma gives it 10px padding and no text node.
+
+## Figma parity
+
+Last synced with Figma: 1 October 2026.
+
+## Props
+
+The table is generated from `PaginationProps`. Docgen lists `variant` and `size`. Both include `null` because that is what `VariantProps` allows. Both default to `default` in `paginationVariants`, which this table does not show. `PaginationLink` adds `isActive`. `disabled` and `asChild` belong to Button and are usually absent from this table.
+
+<ArgTypes of={PaginationStories} />
+
+## Accessibility results
+
+Ran axe against Default, States, and AsChild on 1 October 2026 (`document.body`, excluding `.sb-wrapper`, `#storybook-docs`, and `#storybook-highlights-root`, `region` rule disabled).
+
+No violations on any of the three stories. Previous, next, and page numbers passed `button-name`. AsChild is an anchor and passed `link-name`. `color-contrast` passed for ghost text on the canvas and for the outline current page. Axe skips disabled elements, so the disabled previous control was not a contrast check. Hover, Active, and Focus in States apply those classes through `className`. Active uses `opacity-60`, which is Button's press treatment.
+
+## Status
+
+beta

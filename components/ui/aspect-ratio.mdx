@@ -1,0 +1,66 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks"
+import * as AspectRatioStories from "./aspect-ratio.stories"
+
+<Meta of={AspectRatioStories} />
+
+## Guidance
+
+Aspect Ratio holds content at a fixed width-to-height ratio. `variant` is an emphasis ranking, and this component has only `default`. The ratio is a number (`width / height`), not a variant. It does not carry status. Success, warning, and informational status belong on Badge or Alert.
+
+<Canvas of={AspectRatioStories.Default} />
+
+## When to use / When not to use
+
+Use Aspect Ratio for media and frames that must keep a proportion: a 16:9 video, a square avatar crop, a 4:3 thumbnail.
+
+Do not use it to style the content. The frame has no fill, border, or radius. Put color on the child. Do not use it as a card.
+
+## Do / Don't
+
+**Do**
+
+- Pass `ratio` as width divided by height. `1` is square. `16 / 9` is widescreen. The default is `1`, which is Figma's first ratio.
+- Let the frame fill its parent. Figma's samples are 240px wide because that is the artboard, not a fixed component width.
+- Put one child in the frame. The child should fill the frame (`h-full w-full`).
+
+**Don't**
+
+- Don't add hover, active, disabled, focus, or loading. The frame is layout only.
+- Don't pass `asChild`. It is not an interactive control.
+- Don't encode the Figma ratio names as `variant` keys. Ratio is not emphasis.
+
+## Accessibility in practice
+
+The root is a `div`. It is not focusable, so it has no keyboard behavior and does not use `focus-visible:border-ring`. PATTERNS.md specifies that ring for interactive controls. This one is not interactive. Name the content, not the frame: an image needs `alt`, and decorative media needs `alt=""`.
+
+## Content guidelines
+
+- Describe the media in the child's accessible name.
+- Do not put a ratio label in the product UI. The story labels exist so the frames are visible.
+- Crop or fit the child inside the frame. The frame does not letterbox on its own.
+
+## Token trail
+
+No color, radius, or shadow. No new theme key.
+
+- **default.** The frame is `w-full` and Radix sets the height from `ratio`. Figma samples are 240px wide with no fill and radius 0. Measured ratios, as height at that width: 1:1 (240), 5:4 (192), 4:5 (300), 4:3 (180), 3:4 (320), 3:2 (160), 2:3 (360), 16:10 (150), 10:16 (384), 1.618:1 (148), 1:1.618 (388), 16:9 (135), 9:16 (427), 2:1 (120), 1:2 (480), 21:9 (103), 9:21 (560). The story's neutral fill is the child, not the component.
+
+## Figma parity
+
+Last synced with Figma: 1 October 2026.
+
+## Props
+
+The table is generated from `AspectRatioProps`. Docgen lists `variant` and `size`. Both include `null` because that is what `VariantProps` allows. Both default to `default` in `aspectRatioVariants`, which this table does not show. `ratio` comes from the Radix root. This component defaults it to `1` when the caller omits it. That default does not show in the table.
+
+<ArgTypes of={AspectRatioStories} />
+
+## Accessibility results
+
+Ran axe against Default on 1 October 2026 (`document.body`, excluding `.sb-wrapper`, `#storybook-docs`, and `#storybook-highlights-root`, `region` rule disabled).
+
+No violations. The story shows 1:1, 16:9, and 4:3. Each frame's label is `foreground` on `neutral-100`. `color-contrast` passed. There is no disabled or focus state to measure.
+
+## Status
+
+beta

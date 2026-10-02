@@ -1,0 +1,73 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks"
+import * as SheetStories from "./sheet.stories"
+
+<Meta of={SheetStories} />
+
+## Guidance
+
+Sheet is a **Dialog** variant that slides in from an edge instead of centering. It uses the same `@radix-ui/react-dialog` primitives as Dialog (focus trap, Escape to close, portal). The `variant` / `side` axis is **right** (default), **left**, **top**, or **bottom** — not an emphasis ranking.
+
+<Canvas of={SheetStories.Right} />
+<Canvas of={SheetStories.Left} />
+<Canvas of={SheetStories.Top} />
+<Canvas of={SheetStories.Bottom} />
+
+## When to use / When not to use
+
+Use Sheet for secondary workflows that need more space than a dialog but should not navigate away. Use Dialog for centered confirmations. Use **Drawer** (vaul) when you need drag-to-dismiss on a bottom surface.
+
+Do not reimplement focus trap or overlay logic. Do not use Sheet and Drawer interchangeably without reading the interaction differences in the Drawer docs.
+
+## Do / Don't
+
+**Do**
+
+- Compose with `SheetTrigger`, `SheetContent`, `SheetHeader`, `SheetTitle`, `SheetDescription`, and `SheetFooter`.
+- Pass `side` or `variant` on `SheetContent` for edge placement.
+- Use the built-in close control (ghost **Button** `icon`) or `SheetClose asChild` on actions.
+
+<Canvas of={SheetStories.AsChild} />
+
+**Don't**
+
+- Don't restyle the close icon outside **Button** variants.
+- Don't expect drag gestures; that belongs on Drawer.
+
+<Canvas of={SheetStories.States} />
+
+## Accessibility in practice
+
+Behavior matches **Dialog**: Radix traps focus inside the sheet while open, restores focus on close, and closes on Escape. The dismiss control is a **Button** with `aria-label="Close"`. `SheetTitle` and `SheetDescription` wire to the dialog accessibility tree.
+
+## Content guidelines
+
+- Title names the task (“Edit profile”, “Filter results”).
+- Description is one sentence of context.
+- Primary footer action uses a verb (“Save changes”).
+
+## Token trail
+
+- **Overlay.** `bg-scrim` on `SheetOverlay` (same as Dialog).
+- **Panel.** `bg-background`, `border-border`, `shadow-dialog`, padding `spacing-24` (`p-6`), gap `spacing-16` (`gap-4`).
+- **Right / left.** Full height, `sm:max-w-sm` (384px inner content width per Figma `_SheetContent`), edge border.
+- **Top / bottom.** Full width; bottom caps at `max-h-[80vh]`.
+- **Close.** **Button** ghost `icon`, `size-4` glyph, positioned `top-4 right-4`.
+- **Title / description.** Same tokens as Dialog (`foreground`, `neutral-500`).
+
+## Figma parity
+
+Last synced with Figma: 2 October 2026. Sources: `Sheet` (220:4633), `_SheetContent` (padding 24, gap 16, width 384), `Sheet / Close Icon` (5037:3220).
+
+## Props
+
+`SheetContent` accepts `side` (alias for cva `variant`: `right` | `left` | `top` | `bottom`) and `size`. Other parts mirror Dialog exports.
+
+<ArgTypes of={SheetStories} />
+
+## Accessibility results
+
+Run the Storybook a11y addon against all side stories and States before marking stable. Date the run here when complete.
+
+## Status
+
+beta

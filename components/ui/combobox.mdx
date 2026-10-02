@@ -1,0 +1,67 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks"
+import * as ComboboxStories from "./combobox.stories"
+
+<Meta of={ComboboxStories} />
+
+## Guidance
+
+Combobox is a Popover wrapping Command: an outline **Button** trigger shows the current selection; the panel provides search, grouped results, and keyboard selection. It does not reimplement cmdk or Popover behavior.
+
+<Canvas of={ComboboxStories.Default} />
+
+## When to use / When not to use
+
+Use Combobox when users pick one value from a moderate list and need typeahead. Use Select when search is unnecessary. Use Command alone inside a command palette or dialog.
+
+Do not duplicate Command list markup outside `./command`. Do not build a custom popover surface.
+
+## Do / Don't
+
+**Do**
+
+- Pass `options` as `{ value, label }` pairs. The trigger uses **Button** `outline`; the menu reuses **Command** primitives.
+- Let Radix Popover handle open state and Escape to dismiss. Arrow keys and Enter behave via cmdk inside the panel.
+- Show the check icon on the active `CommandItem` (Figma Combobox menu item selected).
+
+**Don't**
+
+- Don't restyle menu rows outside `CommandItem`.
+- Don't use a raw `<div>` trigger; keep **Button** or **Input** patterns from the design system.
+
+<Canvas of={ComboboxStories.States} />
+
+## Accessibility in practice
+
+Trigger is a `role="combobox"` button with `aria-expanded`. Disabled uses the native `disabled` attribute on Button. Listbox semantics come from cmdk (`role="listbox"` / `option`). Focus moves into the search input when the panel opens; Escape closes the Popover.
+
+## Content guidelines
+
+- Trigger placeholder: "Select …" with the object named.
+- Search placeholder: "Search …".
+- Empty copy matches Command: "No results found."
+
+## Token trail
+
+- **Trigger default.** Button **outline**: `background`, `border`, `foreground`, `shadow-button`, height `h-9`, horizontal padding `px-4` (Figma trigger 36px height, 16px padding, radius 8 — maps to outline Button).
+- **Trigger hover.** `hover:bg-neutral-100`, `hover:text-neutral-900` (Figma hover fill Variable 1:447 → `accent` / `neutral-100`).
+- **Trigger open / focus.** `data-[state=open]:border-ring`, `data-[state=open]:shadow-focus`.
+- **Trigger disabled.** `disabled:opacity-50`, `disabled:pointer-events-none`.
+- **Panel.** Popover content width matches trigger; `p-0` so Command panel supplies padding. Command tokens apply inside.
+
+## Figma parity
+
+Last synced with Figma: 2 October 2026. Sources: `Combobox` (430:4114), `Combobox / Search` (17379:199237), `Combobox / Menu Item` (17379:199232), `Command` panel (204:1144).
+
+## Props
+
+`Combobox` accepts `options`, controlled or uncontrolled `value`, `onValueChange`, placeholders, `emptyMessage`, and `disabled`. `variant` and `size` are reserved default ranks on the root wrapper.
+
+<ArgTypes of={ComboboxStories} />
+
+## Accessibility results
+
+Run the Storybook a11y addon against Default and States before marking stable. Date the run here when complete.
+
+## Status
+
+beta

@@ -1,0 +1,68 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks"
+import * as SidebarStories from "./sidebar.stories"
+
+<Meta of={SidebarStories} />
+
+## Guidance
+
+Sidebar is a **vertical navigation rail** composed from **Button**, **Tooltip**, and **Divider** (`SidebarSeparator`). It does not reimplement button or tooltip styles. Toggle with `SidebarTrigger` (ghost **Button** `icon`). `variant` on the rail is `default` only; expanded vs collapsed is runtime state.
+
+<Canvas of={SidebarStories.Default} />
+
+## When to use / When not to use
+
+Use Sidebar for app shell navigation along the left edge. Use **Navigation Menu** for horizontal top nav with dropdown panels. Do not merge their logic.
+
+Do not use Sidebar for one-off menus; use Dropdown Menu or Navigation Menu.
+
+## Do / Don't
+
+**Do**
+
+- Wrap layouts in `SidebarProvider`, then `Sidebar` + `SidebarInset`.
+- Use `SidebarMenuButton` with `isActive` for the current page and `tooltip` when collapsed (labels hide; tooltip shows on hover).
+- Use `SidebarSeparator` (Divider) between groups.
+
+<Canvas of={SidebarStories.AsChild} />
+
+**Don't**
+
+- Don't restyle nav items outside **Button** ghost variants.
+- Don't build nested tree nav unless Figma adds a pattern (not in this release).
+
+<Canvas of={SidebarStories.States} />
+
+## Accessibility in practice
+
+`SidebarTrigger` exposes `aria-label="Toggle sidebar"`. Collapsed items rely on **Tooltip** for visible names; keep concise labels in `tooltip`. Active items set `data-active` on the **Button**.
+
+## Content guidelines
+
+- Group labels are short section titles (“Platform”, “Account”).
+- Nav labels are one or two words (“Dashboard”, “Settings”).
+- Tooltips repeat the nav label when collapsed.
+
+## Token trail
+
+- **Rail.** `bg-background`, `border-r border-border`. Expanded width **279px** (`--sidebar-width: 17.4375rem`). Collapsed **48px** (`--sidebar-width-icon: 3rem`; Figma toggle **32px** — icon rail slightly wider for `size-8` buttons).
+- **Nav item (Figma Sidebar Item).** Height **40px** (`h-10`). Default text `neutral-500`. Hover/current text `primary` (Variable 1:461). Active fill uses **Button** ghost + `bg-accent text-primary`.
+- **Group label.** 12/16 `neutral-500`.
+- **Separator.** **Divider** horizontal `bg-border`.
+
+## Figma parity
+
+Last synced with Figma: 2 October 2026. Sources: `Blocks / Sidebar Item` (508:101435), `Blocks / Sidebar` desktop 279px (510:102724), collapsed control 32px (Sidebar page). **Note:** repo uses **Divider** instead of a separate Separator component.
+
+## Props
+
+`SidebarProvider` controls `open` / `onOpenChange`. `SidebarMenuButton` adds `isActive`, `tooltip`, and `asChild`. See `useSidebar()` for imperative toggle.
+
+<ArgTypes of={SidebarStories} />
+
+## Accessibility results
+
+Run the Storybook a11y addon against Default, States, and AsChild before marking stable. Date the run here when complete.
+
+## Status
+
+beta

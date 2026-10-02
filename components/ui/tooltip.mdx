@@ -1,0 +1,73 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks"
+import * as TooltipStories from "./tooltip.stories"
+
+<Meta of={TooltipStories} />
+
+## Guidance
+
+Tooltip is a one-line hint. `variant` is not a status. There is one emphasis, `default`. Success, warning, and error belong on Badge or Alert, not on a hint.
+
+<Canvas of={TooltipStories.Default} />
+
+## When to use / When not to use
+
+Use Tooltip to name a control that has no visible label, or to add a few words the person can miss.
+
+Do not use Tooltip for a sentence of instruction. That belongs on the page. Do not use it for a choice. That is Dialog. Do not use it for a notice that arrives on its own. That is Toast.
+
+## Do / Don't
+
+**Do**
+
+- Keep the content to one line. The measured copy is "This is a tooltip".
+- Pass `delayDuration` on `TooltipProvider` when the hint should wait. Figma does not specify a delay, so there is no delay token. Omit it and Radix waits 700ms.
+- Let Radix show the hint on hover and on focus, and let `Portal` mount it outside the trigger.
+
+**Don't**
+
+- Don't put a heading, an action, or a paragraph in the content. This is not a rich slot.
+- Don't add `loading`. A hint does not start an action.
+- Don't invent a second colour. Every side in Figma uses the same fill.
+
+<Canvas of={TooltipStories.States} />
+
+## Accessibility in practice
+
+The hint is hidden until the trigger is hovered or focused. Radix sets `aria-describedby` on the trigger while the hint is open. This component does not write that attribute.
+
+Keyboard behavior is Radix Tooltip. Focus opens the hint. Escape closes it. Blur closes it. There is no disabled trigger in the Figma set. The stories use a named Button, so the trigger is not icon-only. The arrow is decorative.
+
+## Content guidelines
+
+- One line, a few words: "This is a tooltip".
+- Do not repeat the button label.
+- Do not end the hint with a period unless it is a full sentence, and it should not be a full sentence.
+
+## Token trail
+
+- **content.** Padding `spacing-6` by `spacing-12`. Radius `radius-8`. Fill `primary` → `primary-900`. Text Geist Regular `font-size-12` / `line-height-16`, `primary-foreground` → `secondary-50`. The four sides share this chrome. Layer `z-index-700`.
+- **arrow.** 10px by 10px (`spacing-10`). Fill `primary`. The Figma arrow node also records a 2px corner radius. Radix `Arrow` is a triangle and does not take that radius, so the 2px corner is not drawn.
+- **delay.** Not a token. `delayDuration` is passed through to Radix.
+
+## Figma parity
+
+Last synced with Figma: 1 October 2026.
+
+## Props
+
+`TooltipContent` is the documented component. Docgen lists `variant`, `size`, and `children`. Both axes include `null` because `VariantProps` allows it. The only keys are `default`, set in `tooltipVariants`. `children` is the one line of text. `TooltipProvider` takes `delayDuration`. `Tooltip`, `TooltipTrigger`, Portal, and Arrow are the other parts.
+
+<ArgTypes of={TooltipStories} />
+
+## Accessibility results
+
+Axe ran in the Storybook iframe on 1 October 2026, against `document.body`, with `.sb-wrapper`, `#storybook-docs`, and `#storybook-highlights-root` excluded, and the `region` rule turned off.
+
+| Story | Result |
+|---|---|
+| Default | No violations. The hint is hidden. |
+| States | No violations. The open hint is `primary-foreground` on `primary`. |
+
+## Status
+
+beta

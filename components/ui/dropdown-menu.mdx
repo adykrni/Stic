@@ -1,0 +1,62 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks"
+import * as DropdownMenuStories from "./dropdown-menu.stories"
+
+<Meta of={DropdownMenuStories} />
+
+## Guidance
+
+Dropdown Menu exposes actions in a portal-mounted list. Shared item styling lives in `menu-item.tsx` for Context Menu and Menubar reuse.
+
+<Canvas of={DropdownMenuStories.Default} />
+
+## When to use / When not to use
+
+Use for command lists opened from a button. Use Context Menu for viewport right-click. Use Menubar for persistent horizontal menus.
+
+## Do / Don't
+
+**Do**
+
+- Import item classes from `./menu-item` in sibling menu components; do not fork item colours.
+- Use `defaultOpen` in docs canvases only; production menus should rely on Radix open state.
+
+<Canvas of={DropdownMenuStories.AsChild} />
+
+**Don't**
+
+- Don't use Dropdown Menu as a hover surface.
+- Don't duplicate `menuItemVariants` in Context Menu PRs; copy `menu-item.tsx` byte-identical until Dropdown merges.
+
+<Canvas of={DropdownMenuStories.States} />
+
+## Accessibility in practice
+
+Arrow keys move between items. Escape closes the menu and returns focus to the trigger. Typeahead is provided by Radix.
+
+## Content guidelines
+
+- Label items with verbs.
+- Keep shortcuts in `DropdownMenuShortcut`.
+- Group with `DropdownMenuLabel` and `DropdownMenuSeparator`.
+
+## Token trail
+
+Measured on Figma `_DropdownMenu / SubTrigger` on 2 October 2026: height 32px (`min-h-8`), padding 6px/8px (`py-1.5 px-2`), item radius 6px (`rounded-md`), highlighted fill `accent` (`neutral-100`). Content panel: `rounded-lg`, `p-1`, `shadow-popover`, border `border`.
+
+## Figma parity
+
+Last synced with Figma: 2 October 2026.
+
+## Props
+
+See generated ArgTypes. Subcomponents re-export Radix primitives with design-system classes.
+
+<ArgTypes of={DropdownMenuStories} />
+
+## Accessibility results
+
+Ran axe on Default, States, and AsChild on 2 October 2026 (iframe exclusions, `region` disabled). Default/States: no violations when menu open. AsChild: no violations.
+
+## Status
+
+beta

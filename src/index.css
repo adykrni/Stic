@@ -1,5 +1,6 @@
 @theme {
 
+
   --color-primary: #2c2d41;
   --color-primary-foreground: #f7f8fb;
   --color-primary-700: #505174;
@@ -40,6 +41,7 @@
   --radius-14: 0.875rem;
 
   --spacing-76: 4.75rem;
+  --shadow-menu: 0px 2px 4px -2px rgb(0 0 0 / 0.1), 0px 4px 6px -1px rgb(0 0 0 / 0.1);;;
 }
 
 @utility overlay-white-10 {
@@ -56,6 +58,10 @@
 
 @utility z-popover {
   z-index: 550;
+}
+
+@utility z-select {
+  z-index: 200;
 }
 
 @utility z-tooltip {

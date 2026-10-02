@@ -1,0 +1,68 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks"
+import * as NavigationMenuStories from "./navigation-menu.stories"
+
+<Meta of={NavigationMenuStories} />
+
+## Guidance
+
+Navigation Menu is **horizontal top-level navigation** with dropdown panels. It wraps Radix `@radix-ui/react-navigation-menu` (Root, List, Item, Trigger, Content, Link, Indicator, Viewport). Keyboard navigation, focus, and panel positioning come from Radix — do not replace them with custom logic.
+
+<Canvas of={NavigationMenuStories.Default} />
+
+## When to use / When not to use
+
+Use for site or app header nav with flyout panels. Use **Sidebar** for a vertical collapsible rail. Use **Dropdown Menu** for action lists from a button, not primary site navigation.
+
+## Do / Don't
+
+**Do**
+
+- Always render `NavigationMenuViewport` (and `NavigationMenuIndicator` when you want the caret) as siblings of `NavigationMenuList` inside `NavigationMenu`.
+- Set `active` on `NavigationMenuLinkItem` for the current page.
+- Use `defaultValue` on the root to open a panel in docs only; production should rely on user interaction.
+
+<Canvas of={NavigationMenuStories.AsChild} />
+
+**Don't**
+
+- Don't share state or components with Sidebar — patterns differ.
+- Don't build custom popover positioning for panel content.
+
+<Canvas of={NavigationMenuStories.States} />
+
+## Accessibility in practice
+
+Radix provides roving tabindex, arrow keys between triggers, Escape to close, and typeahead within the menu. Triggers expose `aria-expanded` and `data-state`. Links use the navigation menu link role from Radix.
+
+Focus uses the shared `shadow-focus` and `border-ring` pattern on triggers and links.
+
+## Content guidelines
+
+- Top-level labels are short nouns (“Products”, “Pricing”).
+- Panel links are scannable rows; avoid paragraphs inside `NavigationMenuContent`.
+
+## Token trail
+
+- **Trigger / link (Figma NavigationMenu / Button).** Height **36px** (`h-9`). Radius **8** (`rounded-lg`). Padding horizontal **16** (`px-4`). Type 14/20 Medium.
+- **Default text.** `foreground` (Variable 1:455).
+- **Hover / focus / open text.** `neutral-900` (Variable 1:448).
+- **Hover / open / active surface.** `accent` (`neutral-100`) via `hover:bg-accent`, `data-[state=open]:bg-accent`, `data-[active]:bg-accent`. Resting fill `background` on triggers.
+- **Panel.** `rounded-lg`, `border-border`, `bg-background`, `shadow-popover`, `p-4`.
+
+## Figma parity
+
+Last synced with Figma: 2 October 2026. Sources: `NavigationMenu / Button` (210:2018), `NavigationMenu` (210:2036).
+
+## Props
+
+`NavigationMenuLinkItem` accepts Radix `NavigationMenu.Link` props plus `active` for the current page. `navigationMenuTriggerStyle` and `navigationMenuLinkStyle` are exported for composition only — prefer the wrapped components.
+
+<ArgTypes of={NavigationMenuStories} />
+
+## Accessibility results
+
+Run the Storybook a11y addon against Default, States, and AsChild before marking stable. Date the run here when complete.
+
+## Status
+
+beta

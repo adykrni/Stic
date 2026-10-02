@@ -2,6 +2,7 @@
 
 
 
+
   --color-primary: #2c2d41;
   --color-primary-foreground: #f7f8fb;
   --color-primary-700: #505174;
@@ -76,4 +77,8 @@
 
 @utility z-dialog {
   z-index: 500;
+}
+
+@utility z-tooltip {
+  z-index: 700;
 }

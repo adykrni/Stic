@@ -1,0 +1,71 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks"
+import * as TableStories from "./table.stories"
+
+<Meta of={TableStories} />
+
+## Guidance
+
+Table is the presentational layer for tabular data: semantic `<table>`, `<thead>`, `<tbody>`, `<tr>`, `<th>`, and `<td>` with Orintis spacing and color tokens. It does not sort, filter, or paginate. Use Data Table for that behavior.
+
+<Canvas of={TableStories.Default} />
+
+## When to use / When not to use
+
+Use Table when you already have rows and columns and only need layout, borders, header styling, and row hover. Use it inside cards, settings panels, and simple reports.
+
+Do not use Table when you need client-side sorting, filtering, or pagination. Do not replace Data Grid or spreadsheet tools. Do not embed interactive controls inside cells without a higher-level pattern (Data Table handles sortable headers).
+
+## Do / Don't
+
+**Do**
+
+- Compose with `TableHeader`, `TableBody`, `TableRow`, `TableHead`, and `TableCell`. Keep header cells in `<thead>` so row hover styles skip the header row.
+- Set `size` on `TableCell` to match Figma density: `default` (52px), `sm` (72px), or `lg` (96px).
+- Use `TableCaption` when the table needs an accessible name beyond visible headers.
+
+**Don't**
+
+- Don't add sorting or pagination to this component. That belongs on Data Table.
+- Don't restyle borders or typography with one-off classes unless you are documenting a state in Storybook.
+- Don't use a `<div>` grid instead of table semantics for data that is tabular.
+
+<Canvas of={TableStories.States} />
+
+## Accessibility in practice
+
+Use `<th scope="col">` for column headers (the component sets `scope="col"` on `TableHead`). Pair visible headers with `TableCaption` when the table purpose is not obvious from headings alone. Row hover is visual only; it does not change focus or selection.
+
+Keyboard support is native table navigation where the browser provides it. This component does not add roving tabindex or row selection.
+
+## Content guidelines
+
+- Header labels are short nouns: "Name", "Status", "Role".
+- Cell text uses sentence case for phrases and title case for proper nouns only.
+- Right-align numeric columns with `className="text-right"` on `TableHead` and `TableCell`.
+
+## Token trail
+
+Semantic names resolve through the light theme. Row hover uses the primitive neutral fill.
+
+- **Header default.** Height `spacing-40` (`h-10`). Horizontal padding `spacing-8` (`px-2`). Bottom border `border` → `neutral-200`. Text `neutral-500`. Type Geist Medium 14/20.
+- **Row default.** Body text `foreground` → `neutral-950`. Type Geist Regular 14/20. Bottom border `border`.
+- **Row hover.** Background `neutral-100`. Header rows in `<thead>` do not take row hover.
+- **Cell size default.** Row height 52px (`h-13`). **sm** 72px (`h-18`). **lg** 96px (`h-24`).
+
+## Figma parity
+
+Last synced with Figma: 2 October 2026. Sources: `Table / Head` (190:898), `Table / Cell` (190:901), default size variant.
+
+## Props
+
+The table is a set of forward-ref parts. `Table` accepts `variant` and `size` (single `default` rank today). `TableCell` accepts `size`. `TableRow`, `TableHead`, and `TableCell` accept `variant` for future emphasis ranks. Docgen lists props on the exported components.
+
+<ArgTypes of={TableStories} />
+
+## Accessibility results
+
+Run the Storybook a11y addon against Default and States before marking stable. Date the run here when complete.
+
+## Status
+
+beta

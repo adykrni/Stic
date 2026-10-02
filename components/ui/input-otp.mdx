@@ -1,0 +1,76 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks"
+import * as InputOtpStories from "./input-otp.stories"
+
+<Meta of={InputOtpStories} />
+
+## Guidance
+
+Input OTP collects a short fixed-length code, one character per slot. `variant` is not an emphasis ranking: `default` is the resting field, and `error` is validation failure. Error uses the existing `destructive` token. Segmented focus, paste, and backspace come from the `input-otp` library. This file styles each slot to match Input height and border.
+
+<Canvas of={InputOtpStories.Default} />
+<Canvas of={InputOtpStories.Error} />
+
+## When to use / When not to use
+
+Use Input OTP for verification codes, authenticator backup codes, or PIN entry where each digit is its own cell.
+
+Do not use it for a normal password or account number. That is Input. Do not use the error variant as a destructive button. Do not build custom focus logic on top of the library.
+
+## Do / Don't
+
+**Do**
+
+- Set `maxLength` to the code length and render one `InputOTPSlot` per index. The hidden native input keeps keyboard and paste behavior.
+- Name the control with `aria-label` or pair it with Label. The visible slots are not labels.
+- Use `variant="error"` when validation fails. That sets `aria-invalid` on the hidden input. Put the explanation in a separate message.
+- Use `InputOTPSeparator` between groups when the design splits the code (for example 3-3). The separator is decorative (`aria-hidden`).
+
+**Don't**
+
+- Don't move focus between slots yourself. The library advances focus, handles backspace, and merges paste.
+- Don't replace error focus with the default ring. Error focus keeps `destructive` and uses `shadow-focus-destructive`.
+- Don't fake disabled with a class. Pass `disabled` on `InputOTP`. Disabled sets `opacity-50` on the container via `has-[:disabled]:opacity-50`.
+
+<Canvas of={InputOtpStories.States} />
+
+## Accessibility in practice
+
+The person interacts with one native `<input>` (visually hidden by the library). Arrow keys, typing, and paste follow the library and the browser. Each slot is a visual mirror only. Default focus on the active slot uses `data-[active=true]` with border `ring` (`info-600`) and `shadow-focus`. Error focus keeps border `destructive` and `shadow-focus-destructive`. `variant="error"` sets `aria-invalid="true"` on the hidden input. Disabled is the native attribute on that input. The States story forces focus styling on one slot with `className` because this project has no pseudo-state addon.
+
+## Content guidelines
+
+- Label the whole control, not each slot: "Verification code".
+- Do not put the error sentence inside a slot. Slots show one character each.
+- Match `maxLength` to the copy you show elsewhere ("Enter the 6-digit code").
+
+## Token trail
+
+- **default slot.** Background `background` → `secondary-50`. Text `foreground` → `neutral-950`. Border `border` → `neutral-200`. Height and width `spacing-36` (`size-9`). Radius `radius-8` (`rounded-lg`). Type Geist Regular `font-size-14`. Rest shadow `shadow-black-2`.
+- **error slot.** Same fill and text. Border `destructive` → `danger-600`. Active error slot keeps `destructive` and `shadow-focus-destructive`.
+- **focus (active slot).** Border `ring` → `info-600`, plus `shadow-focus-ash`.
+- **filled slot.** Same border and fill as default. Figma does not add a separate filled color.
+- **disabled.** Container `opacity-50` when the hidden input is disabled.
+- **separator.** Text `neutral-500` for the dash between groups.
+- **sm / lg.** Slot box `size-8` / `size-10` with matching type scale. Gap tightens or widens between slots.
+
+## Figma parity
+
+Last synced with Figma: 2 October 2026.
+
+## Props
+
+The table is generated from `InputOTPProps` and the slot helpers. Docgen lists `variant`, `size`, and `maxLength`. `variant` and `size` include `null` because that is what `VariantProps` allows; both default to `default` in `inputOtpVariants`. `InputOTPSlot` requires `index`. There is no `asChild` on this component.
+
+<ArgTypes of={InputOtpStories} />
+
+## Accessibility results
+
+Ran the Storybook a11y addon’s axe check (same setup as the addon: `document.body`, Storybook’s `.sb-wrapper` excluded, `region` rule disabled) against Default, Error, and States on 2 October 2026. Confirm these in the Accessibility panel.
+
+No violations on Default or Error. Both passed `label` and `color-contrast` for the named control.
+
+States passed `label` and `color-contrast` on the Default, Focus, Filled, and Error rows. The Disabled row was not measured for contrast; axe skips disabled controls. The Focus row uses forced `border-ring` and `shadow-focus` on one slot, not a live `:focus-visible` probe.
+
+## Status
+
+beta

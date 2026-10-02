@@ -1,0 +1,73 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks"
+import * as TextareaStories from "./textarea.stories"
+
+<Meta of={TextareaStories} />
+
+## Guidance
+
+Textarea is several lines of text. `variant` is not an emphasis ranking: `default` is the resting field, and `error` is the validation failure. Error uses the existing `destructive` token, which resolves to `danger-600`. It does not add an error color. The states are default, focus, disabled, and error. It is a styled `<textarea>`, the same approach as Input.
+
+<Canvas of={TextareaStories.Default} />
+<Canvas of={TextareaStories.Error} />
+
+## When to use / When not to use
+
+Use Textarea for a value that needs more than one line: a brief, a comment, a message.
+
+Do not use Textarea for a single line. That is Input. Do not use it for a choice. That is Checkbox or Radio Group. Do not use the error variant as an alert.
+
+## Do / Don't
+
+**Do**
+
+- Use `variant="error"` when validation fails. That sets `aria-invalid`. Keep the explanation outside this component.
+- Turn the field off with the `disabled` prop. It is the native disabled attribute. Disabled keeps the resting fill and sets `opacity-50`.
+- Pair it with Label through `id` and `htmlFor`, or pass `aria-label` when there is no visible label. Label is not restyled in this file.
+- Let the field grow from `min-h-76` (76px). The native resize behavior is unchanged.
+
+**Don't**
+
+- Don't copy Input's `type` prop onto a textarea. A textarea has no type.
+- Don't replace the error border with the focus border. Default focus uses `ring` plus the ash shadow. Error focus keeps the `destructive` border and uses the scarlet shadow.
+- Don't fake disabled with a class. There is no `asChild` and no `loading`.
+
+<Canvas of={TextareaStories.States} />
+
+## Accessibility in practice
+
+The root is a native `<textarea>`. The browser handles typing, selection, and scrolling. This component adds no key handlers. Default focus uses the semantic `ring` token (`info-600`) as `focus-visible:border-ring`, plus a 3px ash shadow at 50% opacity, and the outline is removed. Error focus keeps the destructive border and uses the scarlet shadow at 20% opacity. The base border is already 1px. The Focus row in States forces `border-ring` and `shadow-focus` through `className` because this project has no pseudo-state addon. `variant="error"` sets `aria-invalid="true"`. Disabled is the native attribute, so the field leaves the tab order. The stories name the field with `aria-label`. A visible page should use Label. The placeholder is not the name. There is no icon-only control.
+
+## Content guidelines
+
+- Name the field as a noun phrase on the label: "Project brief".
+- Use the placeholder as a hint, not as the name.
+- Do not put the error sentence in the placeholder. The error variant only changes the border.
+
+## Token trail
+
+- **default.** Background `background` → `secondary-50`. Text `foreground` → `neutral-950`. Border `border` → `neutral-200`.
+- **error.** Same background and text. Border `destructive` → `danger-600`.
+- **disabled.** Resting fill at `opacity-50`. Text stays `foreground`.
+- **focus.** Border `ring` → `info-600`, plus `shadow-focus-ash`. Error focus keeps border `destructive` and uses `shadow-focus-scarlet`.
+- **placeholder.** `neutral-500` (`#85868B`). Filled text stays `foreground`.
+- **Shape.** Minimum height `spacing-76` (`min-h-76`). Padding `spacing-12` by `spacing-8`. Radius `radius-8` (`rounded-lg`). Type Geist Regular `font-size-14` / `line-height-20`. Rest shadow `shadow-black-2`.
+
+## Figma parity
+
+Last synced with Figma: 1 October 2026.
+
+## Props
+
+The table is generated from `TextareaProps`. Docgen lists `variant` and the textarea attributes it can resolve. `variant` includes `null` because that is what `VariantProps` allows. The default is `default` in `textareaVariants`, which this table does not show. There is no `size` axis and no `type` prop. `disabled` is the native prop described above and may be absent from the table because it is inherited.
+
+<ArgTypes of={TextareaStories} />
+
+## Accessibility results
+
+Ran the Storybook a11y addon’s axe check (same setup as the addon: `document.body`, Storybook’s `.sb-wrapper` excluded, `region` rule disabled) against Default, Error, and States on 1 October 2026. Confirm these in the Accessibility panel.
+
+No violations on any of the three stories. Each passed `label` and `color-contrast`. In States, `color-contrast` measured the Default, Focus, and Error fields. It did not measure the Disabled field. Axe skips disabled controls. The Focus field uses `border-ring` and `shadow-focus` in `className`. It is not a real `:focus-visible` probe.
+
+## Status
+
+beta

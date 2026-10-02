@@ -1,0 +1,80 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks"
+import * as ToggleStories from "./toggle.stories"
+
+<Meta of={ToggleStories} />
+
+## Guidance
+
+Toggle switches one option on or off, and it can sit in a group later. `variant` is an emphasis ranking: `default`, then `outline`. It does not carry status. Success, warning, and informational status belong on Badge or Alert.
+
+<Canvas of={ToggleStories.Default} />
+<Canvas of={ToggleStories.Outline} />
+
+## When to use / When not to use
+
+Use Toggle for a pressed state that stays on, such as bold in a toolbar.
+
+Do not use Toggle as a Button that fires once and does not stay pressed. Do not use it to pick one value from a long list. Use Radio or Select for that. Do not use it to show status.
+
+## Do / Don't
+
+**Do**
+
+- Compose with `asChild` onto one element, such as an `<a>`. Radix merges the toggle classes onto that child. The child must be a single element.
+- Turn it off with the `disabled` prop. The component sets the disabled state on the Radix root, and the frame is `opacity-50`.
+- Treat pressed as `pressed` / `data-state=on`. Figma names that state Pressed. It is not a CSS `:active` press.
+
+<Canvas of={ToggleStories.AsChild} />
+
+**Don't**
+
+- Don't encode status in `variant`. Outline is the bordered emphasis, not an error state.
+- Don't use `:active` for the pressed fill. The on state is `data-[state=on]`.
+- Don't change the type size per size. sm, default, and lg stay at 14/20. Only the box and horizontal padding change.
+- Don't add a loading state. A toggle does not start an action that stays in progress.
+
+<Canvas of={ToggleStories.States} />
+
+## Accessibility in practice
+
+Focus removes the outline and paints `shadow-focus`: a 3px spread of ash (`#A3A3A3`) at 50% opacity. PATTERNS.md specifies focus as `focus-visible:border-ring` only. Figma's default variant has no border on focus, only the ash shadow, so default follows Figma. Outline also switches its 1px border from `border` to `ring`.
+
+The control is a toggle button. Space toggles it. A disabled toggle is not in the tab order. There is no loading state. If the toggle is icon-only, the caller passes `aria-label`. The component does not add one.
+
+## Content guidelines
+
+- Name the option: "Bold", "Italic", "Align left".
+- Keep the label to one or two words. The control is `whitespace` friendly at a fixed height.
+- For an icon-only toggle, put that same name in `aria-label`. The icon slot is 16px. The component does not draw an icon of its own.
+
+## Token trail
+
+No new theme key. Hover and pressed colors are the measured fills. Hover is scoped to `data-state=off` so a pressed toggle does not pick up the off-hover text color. Figma does not draw a pressed-and-hovered combo.
+
+- **default.** Fill transparent. Text `foreground` → `neutral-950`. Hover fill `neutral-100`, text `neutral-500`. Pressed fill `neutral-100`, text stays `foreground`. Disabled is the resting fill at `opacity-50`. Focus is `shadow-focus` only.
+- **outline.** Fill `background` → secondary-50. Border `border` → `neutral-200`. Rest shadow `shadow-button` (`0 1px 2px rgb(0 0 0 / 0.05)`). Text `foreground`. Hover fill `neutral-100`, text `neutral-900`. Pressed fill `neutral-100`, text `foreground`. Focus border `ring` → `info-600` plus `shadow-focus`. Disabled fill is transparent (Figma clears the background) at `opacity-50`, and the border stays.
+- **default size.** Height `spacing-36` (`h-9`). Horizontal padding `spacing-8` (`px-2`). Gap `spacing-8`.
+- **sm.** Height `spacing-32` (`h-8`). Horizontal padding `spacing-6` (`px-1.5`).
+- **lg.** Height `spacing-40` (`h-10`). Horizontal padding `spacing-10` (`px-2.5`).
+- **Type and radius.** Geist Medium `font-size-14` / `line-height-20` on every size. Radius `radius-8` (`rounded-lg`). Figma records 10px vertical padding on every size. That padding plus a 20px line does not fit the 32, 36, and 40px frames, so the component uses those frame heights and centers the content instead of adding `py-2.5`.
+- **Icon.** The measured glyph is 16px (`size-4`). Pass it as a child.
+
+## Figma parity
+
+Last synced with Figma: 1 October 2026.
+
+## Props
+
+The table is generated from `ToggleProps`. Docgen lists `variant` and `size`. Both include `null` because that is what `VariantProps` allows. Both default to `default` in `toggleVariants`, which this table does not show. `pressed`, `disabled`, `onPressedChange`, and `asChild` are part of the Radix root props and are usually absent from the table. `disabled` is the real attribute, covered above.
+
+<ArgTypes of={ToggleStories} />
+
+## Accessibility results
+
+Ran axe against Default, Outline, States, and AsChild on 1 October 2026 (`document.body`, excluding `.sb-wrapper`, `#storybook-docs`, and `#storybook-highlights-root`, `region` rule disabled).
+
+No violations on any of the four stories. Default, Outline, and States passed with the visible text as the name. AsChild is an anchor, so it passed `link-name`. Axe skips disabled elements, so the disabled toggle was not a contrast check. Hover and Focus in States are the default variant with those classes applied through `className`, because this project has no pseudo-state addon. Pressed uses the `pressed` prop.
+
+## Status
+
+beta

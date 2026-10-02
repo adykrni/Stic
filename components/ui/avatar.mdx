@@ -1,0 +1,76 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks"
+import * as AvatarStories from "./avatar.stories"
+
+<Meta of={AvatarStories} />
+
+## Guidance
+
+Avatar shows a person or entity as a circle. It has no color `variant` and no emphasis ranking. `size` is `sm`, `md`, or `lg`. The default state is a loaded image. The fallback state is initials when `src` is missing or the image fails to load.
+
+<Canvas of={AvatarStories.Sm} />
+<Canvas of={AvatarStories.Md} />
+<Canvas of={AvatarStories.Lg} />
+
+## When to use / When not to use
+
+Use Avatar beside a name in a list, comment, or account menu.
+
+Do not use Avatar as a status badge, a button, or a logo lockup. It does not navigate. There is no `asChild`. Do not use it to show success, warning, or info.
+
+## Do / Don't
+
+**Do**
+
+- Pass `src` and `alt` together. `alt` is the accessible name of the image, usually the person's name.
+- Pass `fallback` as one or two initials. The component shows that string when there is no `src`, and again after the image `onError`.
+- Use `size` only. `md` is the default (`size-10`, spacing-40). `xxs` is 20px and `xs` is 24px.
+
+**Don't**
+
+- Don't encode status in the circle color. The fallback fill is always `secondary`.
+- Don't omit `alt` when `src` is set. An empty `alt` marks the photo as decorative and drops the name.
+- Don't add hover, active, disabled, or a focus ring. Avatar is not an interactive control, and it does not use Slot.
+
+<Canvas of={AvatarStories.States} />
+
+## Accessibility in practice
+
+The loaded image carries `alt`. The fallback initials are text inside the circle, so they are read as written. There is no keyboard handler and no `focus-visible:border-ring`, because the root is a `span`, not a control. There is no icon-only size and no `aria-label` prop. If the avatar later becomes a link, that link needs its own name. This component does not provide one.
+
+## Content guidelines
+
+- `alt` is the name: "Amina Kade", not "avatar" or "profile picture".
+- `fallback` is one or two initials from that same name: "AK".
+- Do not put a status word or an emoji in the fallback.
+
+## Token trail
+
+Color does not change by size or state. The image covers the fill while it is loaded.
+
+- **Fallback, every size.** Background `accent` → `neutral-100`. Text `foreground` → `neutral-950`. Weight `font-weight-400`. Family Geist.
+- **xxs.** `size-5` (`spacing-20`). Type `font-size-12` / `line-height-16`.
+- **xs.** `size-6` (`spacing-24`). Type `font-size-14` / `line-height-20`.
+- **sm.** `size-8` (`spacing-32`). Type `font-size-14` / `line-height-20`.
+- **md.** `size-10` (`spacing-40`). Type `font-size-14` / `line-height-20`.
+- **lg.** `size-12` (`spacing-48`). Type `font-size-14` / `line-height-20`.
+- **Shape.** `radius-full`. No border, hover, active, disabled, or focus token.
+
+## Figma parity
+
+Last synced with Figma: 1 October 2026.
+
+## Props
+
+The table is generated from `AvatarProps`. Docgen lists `size`, `src`, `alt`, and `fallback`. `size` includes `null` because that is what `VariantProps` allows. The default is `md` in `avatarVariants`, which this table does not show. There is no `variant` axis. Inherited span attributes are part of the type and are not listed.
+
+<ArgTypes of={AvatarStories} />
+
+## Accessibility results
+
+Ran the Storybook a11y addon’s axe check (same setup as the addon: `document.body`, Storybook’s `.sb-wrapper` excluded, `region` rule disabled) against Sm, Md, Lg, and States on 1 October 2026. Confirm these in the Accessibility panel.
+
+No violations on any of the four stories. Sm, Md, and Lg passed `image-alt`. They contain only the loaded image, so `color-contrast` did not apply. States passed `image-alt` on the loaded images and `color-contrast` on the three fallback initials. Hover, active, disabled, and focus were not measured because those states are not implemented.
+
+## Status
+
+beta

@@ -1,0 +1,75 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks"
+import * as ToggleGroupStories from "./toggle-group.stories"
+
+<Meta of={ToggleGroupStories} />
+
+## Guidance
+
+Toggle Group lines up toggles and keeps one value, or several. `variant` is the same emphasis ranking as Toggle: `default`, then `outline`. The items are Toggle. This file does not restyle them. `type` is selection, not emphasis: `single` or `multiple`. Status belongs on Badge or Alert.
+
+<Canvas of={ToggleGroupStories.Default} />
+<Canvas of={ToggleGroupStories.Outline} />
+
+## When to use / When not to use
+
+Use Toggle Group for a short set of pressed options, such as text styles. Use `single` when one option stays on. Use `multiple` when several can stay on.
+
+Do not use it as tabs that swap a panel, or as a radio list with long labels. Do not build a second toggle. Put `ToggleGroupItem` in the group and let it use `toggleVariants`.
+
+## Do / Don't
+
+**Do**
+
+- Import the styles from `./toggle`. `ToggleGroupItem` calls `toggleVariants`. It does not declare its own color, radius, or type.
+- Set `type` to `single` or `multiple`. Single stores one string. Multiple stores an array. Each item needs a `value`.
+- Name the group with `aria-label` when there is no visible group label. Name icon-only items the same way.
+
+**Don't**
+
+- Don't copy toggle classes into this file. A visual change belongs on Toggle.
+- Don't pass `asChild` on the group. The root is the Radix group.
+- Don't invent a joined segmented border. Figma's group is separate toggles with a 4px gap and no shared chrome.
+- Don't add loading. The group does not start an action that stays in progress.
+
+<Canvas of={ToggleGroupStories.States} />
+
+## Accessibility in practice
+
+Each item is a toggle button, so focus, pressed, and disabled behave as they do on Toggle. Default focus is `shadow-focus` (3px ash at 50% opacity) with no border. Outline also sets the border to `ring`. PATTERNS.md specifies focus as `focus-visible:border-ring` only. Toggle follows Figma, and this group reuses that.
+
+Arrow keys move between items. Radix uses roving tabindex. Space toggles the focused item. In `single` mode, choosing one item turns the others off. A disabled item is not in the tab order. This branch includes `toggle.tsx` because Toggle is not on main yet. The styling is that file, not a copy.
+
+## Content guidelines
+
+- Name each option with one or two words: "Bold", "Italic".
+- Name the group after the job: "Text style".
+- For an icon-only item, put that name in `aria-label`. The measured icon-only item is 32×36, which is the default Toggle box around a 16px glyph.
+
+## Token trail
+
+The group adds no color. Item tokens are Toggle's tokens. No new theme key.
+
+- **default.** Items use Toggle `default`. The row is horizontal with `spacing-4` (`gap-1`). No padding, fill, border, or radius on the group. Figma's sample row is 104×36.
+- **outline.** Same gap. Items use Toggle `outline`, including `shadow-button`, the `border` stroke, and focus `ring` plus `shadow-focus`.
+- **Sizes.** `default`, `sm`, and `lg` are passed through to Toggle. Heights stay 36, 32, and 40.
+- **Selection.** `type` does not change color. Figma shows one row of default toggles. Single and multiple are the Radix behavior, not extra frames.
+
+## Figma parity
+
+Last synced with Figma: 1 October 2026.
+
+## Props
+
+The table is generated from the group props. Docgen lists `variant`, `size`, and `type`. `variant` and `size` include `null` because that is what `VariantProps` allows. Both default to `default` in `toggleGroupVariants`, which this table does not show. `type` has no default: pass `single` or `multiple`. `value`, `defaultValue`, `onValueChange`, and `disabled` come from the Radix root and are usually absent from the table.
+
+<ArgTypes of={ToggleGroupStories} />
+
+## Accessibility results
+
+Ran axe against Default, Outline, and States on 1 October 2026 (`document.body`, excluding `.sb-wrapper`, `#storybook-docs`, and `#storybook-highlights-root`, `region` rule disabled).
+
+No violations on any of the three stories. Each group has `aria-label="Text style"` or a state name, and each item has visible text. Axe skips disabled elements, so the disabled item was not a contrast check. Hover and Focus in States apply those classes through `className`. Pressed uses `defaultValue` on a single group. The multiple group in Default and Outline was included in the same run and was not flagged.
+
+## Status
+
+beta

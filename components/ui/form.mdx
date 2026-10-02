@@ -1,0 +1,74 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks"
+import * as FormStories from "./form.stories"
+
+<Meta of={FormStories} />
+
+## Guidance
+
+Form wires labels, controls, descriptions, and validation messages around existing inputs. `variant` on `FormItem` is not a status ranking: only `default` exists today. `size` changes vertical spacing between label, control, description, and message. Validation comes from `react-hook-form` and Zod through `@hookform/resolvers`. This file does not restyle Input, Checkbox, or Button.
+
+<Canvas of={FormStories.Default} />
+
+## When to use / When not to use
+
+Use Form when several fields share one submit action and you need consistent ids, `aria-describedby`, and error text.
+
+Do not use Form as a layout card. That is Card. Do not use FormMessage for toast or banner status. That belongs on Toast or Alert. Do not duplicate Input error styles without `variant="error"` on the control when validation fails.
+
+## Do / Don't
+
+**Do**
+
+- Wrap the tree in `Form` (`FormProvider`) and pass `useForm` from the caller. Keep Zod schemas beside the story or screen that owns the rules.
+- Compose each field with `FormField`, `FormItem`, `FormLabel`, `FormControl`, optional `FormDescription`, and `FormMessage`.
+- Use `FormControl` with `asChild` so Slot merges ids and `aria-*` onto Input, Textarea, Select, or Checkbox.
+- Let `FormMessage` render nothing when there is no error. Visible errors use `text-destructive`.
+
+<Canvas of={FormStories.AsChild} />
+
+**Don't**
+
+- Don't restyle primitives inside `form.tsx`. Change Input or Label in their own files.
+- Don't hard-code error text in `FormMessage` children when Zod already supplies `error.message`.
+- Don't skip `FormLabel`. The label sets `htmlFor` to the control id from `FormControl`.
+
+<Canvas of={FormStories.States} />
+
+## Accessibility in practice
+
+`FormControl` sets `id`, `aria-invalid`, and `aria-describedby` on the slotted control. When validation fails, the message id is included in `aria-describedby` so assistive tech reads the error after the description. `FormLabel` uses the shared Label component and points at the same id. Checkbox fields still need an accessible name via `FormLabel` or `aria-label` on the control. Focus rings stay on the primitive (`Input` uses `ring` and `shadow-focus`).
+
+## Content guidelines
+
+- Label with a noun phrase: "Email", "Full name".
+- Description is optional helper text, not the error sentence.
+- Error messages state what went wrong and how to fix it: "Enter a valid email address."
+
+## Token trail
+
+- **FormItem default.** Vertical gap `spacing-8` (`space-y-2`) between label, control, description, and message.
+- **FormItem sm / lg.** Tighter or wider gap via `space-y-1.5` and `space-y-2.5`.
+- **FormDescription.** Text `neutral-500` (`base/muted-foreground`).
+- **FormMessage.** Text `destructive` → `danger-600`, medium weight.
+- **FormLabel on error.** Label text `destructive` when the field is invalid.
+- **Controls.** Input error border uses existing Input `error` variant (`destructive`). Form does not add new colors.
+
+## Figma parity
+
+Last synced with Figma: 2 October 2026. Figma "Form" frames are composition-only (for example Input plus Button in a vertical stack, 8px gap). There is no separate Form component block to token-map beyond the child primitives.
+
+## Props
+
+Docgen centers on `FormItem` because it is the styled root in this file. `FormField` accepts `react-hook-form` `Controller` props. `FormControl` accepts Radix Slot props including `asChild`. `Form`, `FormLabel`, `FormDescription`, and `FormMessage` are thin wrappers and may not list every inherited attribute in the table.
+
+<ArgTypes of={FormStories} />
+
+## Accessibility results
+
+Ran the Storybook a11y addon’s axe check (same setup as the addon: `document.body`, Storybook’s `.sb-wrapper` excluded, `region` rule disabled) against Default, States, and AsChild on 2 October 2026. Confirm these in the Accessibility panel.
+
+No violations on Default, States, or AsChild. Each story passed `label` and `color-contrast` on the named fields. The invalid column in Default sets `aria-invalid` on fields with visible `FormMessage` text.
+
+## Status
+
+beta

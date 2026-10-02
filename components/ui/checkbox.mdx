@@ -1,0 +1,75 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks"
+import * as CheckboxStories from "./checkbox.stories"
+
+<Meta of={CheckboxStories} />
+
+## Guidance
+
+Checkbox is one yes-or-no choice. It has no emphasis `variant`. The states are unchecked, checked, indeterminate, disabled, and focus. Checked state comes from Radix Checkbox (`Root` and `Indicator`). This file does not implement its own toggle. An optional `label` renders the existing Label component and points it at the control with `htmlFor`.
+
+<Canvas of={CheckboxStories.Default} />
+
+## When to use / When not to use
+
+Use Checkbox for an independent choice: accept terms, include an add-on, select a row.
+
+Do not use Checkbox for a single choice among mutually exclusive options. That is Radio Group. Do not use it to submit a form. That is Button. Do not use the checked fill as success, warning, or info.
+
+## Do / Don't
+
+**Do**
+
+- Leave selection to Radix. Pass `checked` and `onCheckedChange` when the value is controlled, or leave it uncontrolled. `checked="indeterminate"` is Radix's mixed state.
+- Turn it off with the `disabled` prop. Radix sets the native `disabled` attribute on the button. The same prop is forwarded to Label, which dims with `opacity-40`.
+- Pass `label` when the choice has a visible name. Label is not restyled here. The control `id` and the label `htmlFor` are the same.
+- Keep the focus ring. `focus-visible:border-ring` replaces the border color, and `shadow-focus` adds a 3px ash spread at 50% opacity. The base border is already 1px, so the box does not grow.
+
+**Don't**
+
+- Don't listen for Space or click to flip the value yourself. Radix already does that.
+- Don't wrap this control in a second `<label>`. The association is the sibling Label.
+- Don't add `asChild` or `loading`. This is not a button stand-in.
+- Don't invent a checked color. Checked and indeterminate use `primary`.
+
+<Canvas of={CheckboxStories.States} />
+
+## Accessibility in practice
+
+Radix renders a `button` with `role="checkbox"`. Space toggles it. It is not a radio, so arrow keys do not move between checkboxes. Focus uses the semantic `ring` token (`info-600`) as `focus-visible:border-ring`, plus a 3px ash shadow at 50% opacity, and the outline is removed. This project has no pseudo-state addon, so the Focus row in States forces `border-ring` and `shadow-focus` in `className` to show that treatment. Disabled sets the native disabled attribute, so the control leaves the tab order. The visible label is the accessible name. There is no icon-only `aria-label`. The check and minus icons are `aria-hidden`.
+
+## Content guidelines
+
+- Name the choice: "Accept terms", "Include archived".
+- Do not start with a verb-plus-object action. "Delete project" is a Button.
+- Do not put the state in the label. "Checked" and "On" are not names.
+
+## Token trail
+
+There is one visual treatment. State classes live on the Radix root.
+
+- **unchecked.** Background `background` → `secondary-50`. Border `border` → `neutral-200`. Rest shadow `shadow-black-2`.
+- **checked.** Background `primary` → `primary-900`. Border `primary` → `primary-900`. Indicator `primary-foreground` → `secondary-50`. The check is `spacing-14` with a 1.33px stroke.
+- **indeterminate.** Same fill, border, and indicator as checked. The icon is a minus, selected with Radix `data-state="indeterminate"`. Figma has no indeterminate variant.
+- **disabled.** `opacity-50` on the box. No separate disabled fill.
+- **focus.** Border `ring` → `info-600`, plus `shadow-focus-ash`.
+- **Shape.** `spacing-16` (`size-4`). Radius `radius-4` (`rounded-sm`). Gap to the label `spacing-8`.
+
+## Figma parity
+
+Last synced with Figma: 1 October 2026.
+
+## Props
+
+The table is generated from `CheckboxProps`. `label` is the only prop added here. `checked`, `disabled`, and `onCheckedChange` come from Radix. There is no `variant` or `size` axis. Inherited button attributes are part of the type and are usually absent from the table.
+
+<ArgTypes of={CheckboxStories} />
+
+## Accessibility results
+
+Ran the Storybook a11y addon’s axe check (same setup as the addon: `document.body`, Storybook’s `.sb-wrapper` excluded, `region` rule disabled) against Default and States on 1 October 2026. Confirm these in the Accessibility panel.
+
+No violations on either story. Both passed `button-name`, `color-contrast`, and `nested-interactive`. `color-contrast` in States measured the Unchecked, Checked, Indeterminate, and Focus labels. It did not measure the Disabled label. That label is `aria-disabled`, and axe skips it. The checkbox fill is not text, so the box colors were not a contrast node. The Focus row is a resting control with `border-ring` and `shadow-focus` applied in `className`. It is not a real `:focus-visible` probe.
+
+## Status
+
+beta

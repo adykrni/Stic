@@ -12,7 +12,7 @@ function cn(...inputs: ClassValue[]) {
 const skeletonVariants = cva("animate-pulse bg-accent", {
   variants: {
     variant: {
-      text: "h-4 w-full rounded-sm",
+      text: "h-4 w-full rounded-lg",
       circular: "size-10 rounded-full",
       rectangular: "h-24 w-full rounded-lg",
     },

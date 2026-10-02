@@ -1,0 +1,66 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks"
+import * as ProgressStories from "./progress.stories"
+
+<Meta of={ProgressStories} />
+
+## Guidance
+
+Progress shows how far a determinate task has gone. `variant` is an emphasis ranking, and this component has only `default`. The amount is the `value` prop, from 0 to 100. It does not carry status. Success, warning, and informational status belong on Badge or Alert.
+
+<Canvas of={ProgressStories.Default} />
+
+## When to use / When not to use
+
+Use Progress when a task has a known end: an upload, a step count, a quota.
+
+Do not use it for an unknown wait. This component is determinate only. Do not use it as a meter for a status such as battery health. Do not use it as a slider.
+
+## Do / Don't
+
+**Do**
+
+- Pass `value` as a number from 0 to 100. Radix exposes that as `aria-valuenow`.
+- Name the bar with `aria-label` or `aria-labelledby`. The bar has no visible text.
+- Leave the track and the indicator on the measured fills.
+
+**Don't**
+
+- Don't add hover, active, disabled, focus, or loading. Figma only varies the percent.
+- Don't pass `asChild`. The root is the Radix progress bar.
+- Don't draw a label inside the bar. The measured component is an 8px pill with no text.
+
+## Accessibility in practice
+
+The root is a `progressbar`. It is not focusable, so it has no keyboard behavior and does not use `focus-visible:border-ring`. PATTERNS.md specifies that ring for interactive controls. This one is not interactive. Give it an accessible name from the caller. The white track overlay and the indicator are `aria-hidden` or presentational. The name comes from `aria-label`.
+
+## Content guidelines
+
+- Name the task, not the widget: "Upload progress", not "Progress bar".
+- Put that name in `aria-label`. Do not put it inside the 8px track.
+- If you show a percent in text, put it outside the bar and point `aria-labelledby` at it.
+
+## Token trail
+
+No new theme key. The track is two stacked Figma fills, not one primitive.
+
+- **default.** Height `spacing-8` (`h-2`). Radius full. Indicator `primary` → `primary-900` (`#2c2d41`). The root also paints `primary`, then a top fill of `white` at 80% opacity (`bg-white/80`). The indicator sits above that overlay and translates by the remaining percent. The unfilled part is that stack, not a separate track token. No hover, active, disabled, or focus class.
+
+## Figma parity
+
+Last synced with Figma: 1 October 2026.
+
+## Props
+
+The table is generated from `ProgressProps`. Docgen lists `variant` and `size`. Both include `null` because that is what `VariantProps` allows. Both default to `default` in `progressVariants`, which this table does not show. `value` and `aria-label` come from the Radix root and are usually absent from the table. Pass both.
+
+<ArgTypes of={ProgressStories} />
+
+## Accessibility results
+
+Ran axe against Default on 1 October 2026 (`document.body`, excluding `.sb-wrapper`, `#storybook-docs`, and `#storybook-highlights-root`, `region` rule disabled).
+
+No violations. The story renders 0, 25, 50, 75, and 100, each with an `aria-label`. `color-contrast` did not apply because the bar has no text. There is no disabled or loading state to measure.
+
+## Status
+
+beta

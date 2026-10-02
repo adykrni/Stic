@@ -1,0 +1,85 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks"
+import * as ToastStories from "./toast.stories"
+
+<Meta of={ToastStories} />
+
+## Guidance
+
+Toast reports an outcome after an action. `variant` names that outcome: `default`, `destructive`, or `success`. The surface stays the measured popover colour. The variant changes the border.
+
+<Canvas of={ToastStories.Default} />
+
+## When to use / When not to use
+
+Use Toast when the person can keep working and the news can dismiss itself.
+
+Do not use Toast for a decision. That is Dialog. Do not use it for a hint on a control. That is Tooltip. Do not use it for a status that stays on the page. That is Badge.
+
+## Do / Don't
+
+**Do**
+
+- Pass `duration` on `ToastProvider` for auto-dismiss. Figma has no timing, so there is no duration token. Omit it and Radix dismisses after 5000ms.
+- Dismiss by hand with the shared `Button`, `variant="ghost"` and `size="icon"`, through Radix `Close`. The button name is "Dismiss".
+- Put an optional action on the shared `Button` through `ToastAction`.
+
+**Don't**
+
+- Don't paint the surface green or red. Figma's success and error icons are `#101013` (`foreground`). The success ramp is used only as the success border, `success-600`.
+- Don't add the loading stroke `#6F6F6F`. It is not `neutral-500` (`#85868B`) and not `neutral-600` (`#68686E`), and this component has no loading toast.
+- Don't add `loading`. Toast does not stay in progress.
+
+<Canvas of={ToastStories.Destructive} />
+
+<Canvas of={ToastStories.Success} />
+
+## Accessibility in practice
+
+Focus uses the measured toast focus shadow: a 4px black blur at 10% opacity, plus a 2px black spread at 20% opacity. The border drops out. This is not `border-ring`. The outline is removed.
+
+Keyboard behavior is Radix Toast. The toast can be focused. The Dismiss button and the action button are in the tab order. Escape is not a custom handler. A disabled dismiss button is not in the tab order. The close glyph is `aria-hidden`. The button's name is "Dismiss".
+
+## Content guidelines
+
+- Title is a short noun phrase: "Title Text".
+- Description is one sentence: "This is a toast description."
+- The action is one word: "Undo".
+
+## Token trail
+
+- **surface.** The Figma frame is 336px wide. There is no spacing primitive at 336, so `max-w-[336px]` keeps the measured frame. Padding `spacing-16`. Gap `spacing-8`. Radius `radius-8`. Fill `background` → `secondary-50` (`base/popover`). Rest border `border` → `neutral-200`. Rest shadow `shadow-toast`. Layer `z-index-600`.
+- **focus.** `shadow-toast-focus`. The border is removed. Not the ash focus shadow and not `ring`.
+- **destructive.** Same surface. Border `destructive` → `danger-600`.
+- **success.** Same surface. Border `success-600` (`#017F38`), an existing primitive. The fill is not `success-50`.
+- **title.** Geist Medium `font-size-14` / `line-height-20`, `foreground` → `neutral-950`.
+- **description.** Geist Regular `font-size-14` / `line-height-20`, `neutral-500`.
+- **close.** The shared ghost icon Button. Its hit area on this branch is 40px. The toast content row is one 20px line.
+- **action.** Figma's Undo chip is 24px tall, radius 4, type 12/16. The story uses the shared Button `size="sm"` (32px, type 14) rather than a one-off control.
+- **viewport.** `spacing-16` from the bottom and the end. Figma does not specify a screen corner, so this placement is the viewport padding only.
+- **duration.** Not a token.
+
+## Figma parity
+
+Last synced with Figma: 1 October 2026.
+
+## Props
+
+`Toast` is the documented component. Docgen lists `variant`, `size`, and `children`. `size` includes `null` because `VariantProps` allows it. The only size is `default`. Variants are `default`, `destructive`, and `success`. `duration` belongs to `ToastProvider`. `ToastViewport`, `ToastTitle`, `ToastDescription`, `ToastAction`, and `ToastClose` are the other parts.
+
+<ArgTypes of={ToastStories} />
+
+## Accessibility results
+
+Axe ran in the Storybook iframe on 1 October 2026, against `document.body`, with `.sb-wrapper`, `#storybook-docs`, and `#storybook-highlights-root` excluded, and the `region` rule turned off.
+
+| Story | Result |
+|---|---|
+| Default | `color-contrast` on the description, `neutral-500` (`#85868B`) on `background` (`#F7F8FB`). That pair is the Figma description colour. |
+| Destructive | The same description contrast. The border is `destructive`. The fill is unchanged. |
+| Success | The same description contrast. The border is `success-600`. The fill is unchanged. |
+
+Axe skips disabled controls. These stories have none.
+
+## Status
+
+beta

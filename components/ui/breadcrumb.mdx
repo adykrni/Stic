@@ -1,0 +1,79 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks"
+import * as BreadcrumbStories from "./breadcrumb.stories"
+
+<Meta of={BreadcrumbStories} />
+
+## Guidance
+
+Breadcrumb shows the path to the current page. `variant` is an emphasis ranking, and this component has only `default`. `size` is the gap: `default` is Figma's md, `sm` is the tighter row. It does not carry status. Success, warning, and informational status belong on Badge or Alert.
+
+<Canvas of={BreadcrumbStories.Default} />
+
+## When to use / When not to use
+
+Use Breadcrumb when the page sits in a hierarchy and the user may step back up.
+
+Do not use it as primary navigation, tabs, or a pagination row. Figma also has a dropdown item. This component is a static list. A menu belongs on Dropdown Menu, not here.
+
+## Do / Don't
+
+**Do**
+
+- Compose with `asChild` onto one element, such as a router `<a>`. Slot merges the link classes onto that child.
+- Mark the current page with `BreadcrumbPage`. It sets `aria-current="page"` and is not a link.
+- Keep the separator presentational. It is `aria-hidden`.
+
+<Canvas of={BreadcrumbStories.AsChild} />
+
+**Don't**
+
+- Don't make the current page a link. Figma draws a focus stroke on "Link Current", but a static current page is not in the tab order, so that stroke is not applied.
+- Don't add an underline. Hover only changes the link from `neutral-500` to `foreground`.
+- Don't build the dropdown variant here. It is a menu.
+- Don't add loading. A breadcrumb does not start an action that stays in progress.
+
+<Canvas of={BreadcrumbStories.States} />
+
+## Accessibility in practice
+
+The root is a `nav` named "Breadcrumb". The caller can replace that name. The list is an `ol`. Links are in the tab order. Enter follows the link. Focus removes the outline and paints a 1px `ash` border with a 2px radius (`rounded-xs`). PATTERNS.md specifies `focus-visible:border-ring` and no box shadow. Figma's focus stroke is ash, not `ring`, and it is not the 3px ash shadow, so this component follows Figma. A transparent border is always on so focus does not shift the line.
+
+The separator chevron is `aria-hidden`. The ellipsis is `role="img"` named "More". There is no disabled state in the Figma link set.
+
+## Content guidelines
+
+- Name each step as the page it opens: "Components", not "Click here".
+- The last item is the current page. Do not link it.
+- Keep steps short. The type is 14px regular and does not wrap inside the item.
+
+## Token trail
+
+- **default size.** Gap `spacing-10` (`gap-2.5`). This is Figma's md row.
+- **sm.** Gap `spacing-6` (`gap-1.5`).
+- **Link.** Geist Regular `font-size-14` / `line-height-20`. Rest `neutral-500` (`#85868b`). Hover `foreground` (`#101013`). No underline.
+- **Current page.** Same type. Color `foreground`. Not focusable.
+- **Focus.** Border `ash` (`#a3a3a3`), 1px, radius `radius-xs` (2px, Tailwind `rounded-xs`). Not `ring`. Not `shadow-focus`.
+- **Separator.** The chevron box is 15px. No spacing primitive is 15px (`size-4` is 16px), so this PR adds `--spacing-15: 0.9375rem` (`size-15`). Stroke `neutral-500`, width 1.33, matching the measured vector. Do not round it to 16px.
+- **Ellipsis.** 36px box (`size-9`). The glyph is presentational. Figma's ellipsis has no text node.
+
+## Figma parity
+
+Last synced with Figma: 1 October 2026.
+
+## Props
+
+`BreadcrumbList` carries `variant` and `size`. Docgen on the nav root does not list those, because they live on the list. Both include `null` on the list type because that is what `VariantProps` allows. Both default to `default` in `breadcrumbVariants`. `BreadcrumbLink` accepts `asChild`. `href` is a native anchor attribute. The current page uses `aria-current`, which this table does not show.
+
+<ArgTypes of={BreadcrumbStories} />
+
+## Accessibility results
+
+Ran axe against Default, States, and AsChild on 1 October 2026 (`document.body`, excluding `.sb-wrapper`, `#storybook-docs`, and `#storybook-highlights-root`, `region` rule disabled).
+
+Default has one serious violation: `color-contrast` on the rest links ("Home", "Components"), four nodes because the story renders default and sm. States has the same violation on "Default" and "Focus" (the focus frame keeps `neutral-500` text). AsChild has it on "Home". The measured link color is `neutral-500` (`#85868b`). The primitive notes put that on secondary-50 at 3.42:1, under 4.5:1 for 14px regular text. Hover and the current page use `foreground` and were not flagged. The color was not darkened to pass.
+
+The first run also reported `landmark-unique` because two trails shared `aria-label="Breadcrumb"`. The story now names the small trail "Breadcrumb small". That violation is gone. Axe did not flag the separator. There is no disabled state to measure.
+
+## Status
+
+beta

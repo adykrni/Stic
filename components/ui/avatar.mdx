@@ -23,7 +23,7 @@ Do not use Avatar as a status badge, a button, or a logo lockup. It does not nav
 
 - Pass `src` and `alt` together. `alt` is the accessible name of the image, usually the person's name.
 - Pass `fallback` as one or two initials. The component shows that string when there is no `src`, and again after the image `onError`.
-- Use `size` only. `md` is the default (`size-10`, spacing-40).
+- Use `size` only. `md` is the default (`size-10`, spacing-40). `xxs` is 20px and `xs` is 24px.
 
 **Don't**
 
@@ -47,10 +47,12 @@ The loaded image carries `alt`. The fallback initials are text inside the circle
 
 Color does not change by size or state. The image covers the fill while it is loaded.
 
-- **Fallback, every size.** Background `secondary` → `secondary-100`. Text `secondary-foreground` → `primary-900`.
-- **sm.** `size-8` (`spacing-32`). Type `font-size-12`.
-- **md.** `size-10` (`spacing-40`). Type `font-size-14`.
-- **lg.** `size-12` (`spacing-48`). Type `font-size-16`.
+- **Fallback, every size.** Background `accent` → `neutral-100`. Text `foreground` → `neutral-950`. Weight `font-weight-400`. Family Geist.
+- **xxs.** `size-5` (`spacing-20`). Type `font-size-12` / `line-height-16`.
+- **xs.** `size-6` (`spacing-24`). Type `font-size-14` / `line-height-20`.
+- **sm.** `size-8` (`spacing-32`). Type `font-size-14` / `line-height-20`.
+- **md.** `size-10` (`spacing-40`). Type `font-size-14` / `line-height-20`.
+- **lg.** `size-12` (`spacing-48`). Type `font-size-14` / `line-height-20`.
 - **Shape.** `radius-full`. No border, hover, active, disabled, or focus token.
 
 ## Figma parity

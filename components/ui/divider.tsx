@@ -13,7 +13,7 @@ const dividerVariants = cva("shrink-0 bg-border", {
   variants: {
     variant: {
       horizontal: "h-px w-full",
-      vertical: "h-full min-h-4 w-px",
+      vertical: "h-full min-h-5 w-px",
     },
   },
   defaultVariants: {

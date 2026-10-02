@@ -1,0 +1,72 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks"
+import * as CommandStories from "./command.stories"
+
+<Meta of={CommandStories} />
+
+## Guidance
+
+Command is a filterable list with keyboard navigation, built on **cmdk**. Use it inside dialogs, popovers, or standalone palettes. `variant` is only a layout rank today (`default`).
+
+<Canvas of={CommandStories.Default} />
+
+## When to use / When not to use
+
+Use Command when users pick one action or value from a searchable list with arrow-key navigation. Use Combobox when the same list sits in a Popover behind a trigger showing the current value.
+
+Do not rebuild fuzzy search or keyboard routing by hand. Do not use Command as a generic scrollable list without filter semantics.
+
+## Do / Don't
+
+**Do**
+
+- Compose with `CommandInput`, `CommandList`, `CommandEmpty`, `CommandGroup`, and `CommandItem`. Group headings use the shared menu label styles.
+- Rely on cmdk for filtering, highlighting, and Enter to select. Escape closes when Command is inside a Radix Popover or Dialog.
+- Mark disabled rows with the `disabled` prop on `CommandItem`.
+
+**Don't**
+
+- Don't duplicate `menu-item` colors on Command items; `CommandItem` uses `data-[selected=true]:bg-accent` for keyboard highlight.
+- Don't omit `CommandEmpty` when filtering can return zero rows.
+
+<Canvas of={CommandStories.States} />
+
+## Accessibility in practice
+
+The filter field is a native text input inside cmdk. Items are `role="option"` with `aria-selected` driven by cmdk. Disabled items use `data-[disabled=true]` and `opacity-50`. Arrow keys move highlight; Enter activates the highlighted item.
+
+Focus on the input uses the shared transparent border plus `focus-visible:border-ring` when nested inputs inherit focus styles from a parent field. Command root is not a single tab stop; tab into the input first.
+
+## Content guidelines
+
+- Placeholder: short instruction ("Type a command or search…").
+- Group headings: one or two words ("Suggestions", "Settings").
+- Empty state: "No results found." (matches Figma Command empty variant).
+
+## Token trail
+
+- **Panel.** Background `background` → `#f7f8fb`. Border `border` → `neutral-200`. Radius `radius-10` (10px). Shadow `shadow-popover`.
+- **Input row.** Height 48px (`h-12`). Padding `spacing-12` horizontal (`px-3`). Bottom border `border`. Placeholder `neutral-500`. Search icon `size-4` at 50% opacity (Figma opacity token on icon).
+- **Group.** Padding `spacing-8` × `spacing-4` (`px-2 py-1`). Heading Geist Medium 12/16, `neutral-500`.
+- **Item default.** Min height 44px (`min-h-11`). Padding `px-2 py-3`. Gap `spacing-8`. Radius `radius-6` (`rounded-md`). Text `foreground` 14/20.
+- **Item highlighted / selected (keyboard).** Background `accent` → `neutral-100` (Figma hover fill Variable 1:447).
+- **Item disabled.** `opacity-50`, pointer events off.
+- **Shortcut.** 12/16, `neutral-500`.
+- **Empty.** Vertical padding 24px (`py-6`), centered 14/20 `foreground`.
+
+## Figma parity
+
+Last synced with Figma: 2 October 2026. Sources: `Command` (204:1144), `Command / Input` (260:4113), `_CommandItem` (345:8578), `Command / Input/Command/Menu Heading` (345:8658), empty variant (204:1142).
+
+## Props
+
+Export `Command` plus primitives (`CommandInput`, `CommandList`, `CommandEmpty`, `CommandGroup`, `CommandItem`, `CommandSeparator`, `CommandShortcut`). `Command` and `CommandItem` accept `variant` and `size` from cva (default ranks only today).
+
+<ArgTypes of={CommandStories} />
+
+## Accessibility results
+
+Run the Storybook a11y addon against Default and States before marking stable. Date the run here when complete.
+
+## Status
+
+beta

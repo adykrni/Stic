@@ -1,0 +1,77 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks"
+import * as HoverCardStories from "./hover-card.stories"
+
+<Meta of={HoverCardStories} />
+
+## Guidance
+
+Hover Card shows rich preview content when the pointer rests on a trigger. `variant` is an emphasis ranking, and this component has only `default`. It does not carry status.
+
+<Canvas of={HoverCardStories.Default} />
+
+## When to use / When not to use
+
+Use Hover Card for profile previews, link unfurling, or supplemental detail that should appear on hover with a short delay.
+
+Do not use Hover Card for click-driven panels (Popover), menus (Dropdown Menu), or content that must stay open without hover (Popover or Dialog).
+
+## Do / Don't
+
+**Do**
+
+- Tune `openDelay` and `closeDelay` on `HoverCard` when the default 700ms / 300ms feels sluggish or twitchy.
+- Keep the preview concise. The default width is 320px (`w-80`).
+- Use `HoverCardTrigger` with `asChild` on links when the trigger is inline text.
+
+<Canvas of={HoverCardStories.AsChild} />
+
+**Don't**
+
+- Don't put essential actions only inside the hover card. Keyboard users may never open it.
+- Don't use Hover Card for form fields that require focus inside the panel.
+- Don't remove the border or shadow; the measured surface matches Popover elevation.
+
+<Canvas of={HoverCardStories.States} />
+
+## Accessibility in practice
+
+The trigger must be focusable. Radix opens the card on focus as well as hover. Escape dismisses the open card. The content is not modal and does not trap focus.
+
+Provide meaningful link text on the trigger. The card body does not automatically become the accessible name of the trigger.
+
+## Content guidelines
+
+- Lead with a title line, then one sentence of supporting text.
+- Mirror the trigger label in the title when previewing an entity handle.
+- Avoid paragraphs longer than two lines inside the 320px width.
+
+## Token trail
+
+Measured on Figma `Hover Card / Card` (`216:3126`) on 2 October 2026. Values match Popover (`195:1621`).
+
+- **default.** Width 320px (`w-80`). Padding `spacing-16` (`p-4`). Stack gap `spacing-16` (`gap-4`). Radius `radius-8` (`rounded-lg`). Fill `background` → `#f7f8fb`. Border `border` → `#e4e4e9`, 1px. Shadow `--shadow-popover` (Figma drop shadows at `(0,2)` blur 4 and `(0,4)` blur 6; alpha flagged same as Popover).
+
+## Figma parity
+
+Last synced with Figma: 2 October 2026.
+
+## Props
+
+`HoverCard` wraps Radix Root and defaults `openDelay` to 700 and `closeDelay` to 300. `HoverCardContent` adds `variant` and `size` from `hoverCardVariants`. Radix positioning props (`side`, `align`, `sideOffset`) pass through to the content.
+
+<ArgTypes of={HoverCardStories} />
+
+## Accessibility results
+
+Ran axe on 2 October 2026 (`document.body`, excluding `.sb-wrapper`, `#storybook-docs`, `#storybook-highlights-root`, `region` disabled).
+
+- **Default.** Serious `color-contrast` on description text (`neutral-500` on `background`).
+- **States.** `color-contrast` on three `text-xs text-neutral-500` labels.
+- **AsChild.** No violations.
+- **WithDelays.** No violations.
+
+Hover-open behaviour was not exercised by axe; Open stories use the controlled `open` prop.
+
+## Status
+
+beta

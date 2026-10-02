@@ -1,0 +1,70 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks"
+import * as DataTableStories from "./data-table.stories"
+
+<Meta of={DataTableStories} />
+
+## Guidance
+
+Data Table adds sorting, text filtering, and pagination on top of the presentational Table component. TanStack Table owns the row model; Orintis Table, Input, Button, and Pagination supply the UI.
+
+<Canvas of={DataTableStories.Default} />
+
+## When to use / When not to use
+
+Use Data Table when users need to scan, sort, and page through a moderate dataset on the client. Use the filter field when a single text column is enough to narrow results.
+
+Do not use Data Table for server-driven grids, inline editing, or column resizing. Do not duplicate Table markup—compose `Table`, `TableHead`, and `TableCell` from `./table`.
+
+## Do / Don't
+
+**Do**
+
+- Define columns with `ColumnDef` and `DataTableColumnHeader` for sortable labels. Sortable headers use Ghost Button at default size with a 16px direction icon, matching Figma `Data Table / TableHead` (Button variant).
+- Pass `filterColumnId` to wire the toolbar `Input` to one accessor column.
+- Set `pageSize` for the story or product default; pagination reuses `PaginationLink` and ghost Previous/Next buttons.
+
+**Don't**
+
+- Don't restyle table cells in Data Table—use Table `size` on cells if density changes.
+- Don't add TanStack features (row selection, grouping) without a Figma pattern and docs update.
+- Don't replace Pagination with raw buttons that skip the design-system variants.
+
+<Canvas of={DataTableStories.States} />
+
+## Accessibility in practice
+
+Sortable headers are `<button type="button">` via Button. Each header exposes an `aria-label` that reflects sort direction. The filter uses a visible placeholder and `aria-label`. Pagination keeps `nav` with `aria-label="Pagination"` from the Pagination component; active page uses `aria-current="page"` on PaginationLink.
+
+Keyboard: Tab reaches filter, sort buttons, and pagination controls. Table body rows are static text in the default story—no row selection.
+
+## Content guidelines
+
+- Column titles are short nouns ("Email", "Status").
+- Filter placeholder describes the column: "Filter by email…".
+- Empty state copy: "No results."
+
+## Token trail
+
+Data Table inherits Table row and header tokens. Toolbar and pagination reuse Input and Button/Pagination tokens.
+
+- **Sortable header.** Table head cell: `h-10`, `px-2`, border `border`, text `neutral-500` (TableHead). Inner control: Button **ghost**, **default** size (`h-9`, `px-4`), gap `spacing-8`, icon `size-4` (16px). Matches Figma `Data Table / TableHead`, Variant=Button.
+- **Filter.** Input default variant: `h-9`, border `border`, text `foreground`, placeholder `neutral-500`.
+- **Pagination.** Ghost Previous/Next; page numbers use Button **outline** when active, **ghost** otherwise (`PaginationLink`).
+
+## Figma parity
+
+Last synced with Figma: 2 October 2026. Sources: `Data Table` (327:695), `Data Table / TableHead` (267:2755, Button variant 267:2925), Table cell/head primitives (190:898, 190:901).
+
+## Props
+
+`DataTable` accepts `columns`, `data`, optional `filterColumnId`, `filterPlaceholder`, and `pageSize`. Export `DataTableColumnHeader` for column definitions. Subcomponents `DataTableToolbar` and `DataTablePagination` accept the TanStack `table` instance for custom layouts.
+
+<ArgTypes of={DataTableStories} />
+
+## Accessibility results
+
+Run the Storybook a11y addon against Default and States before marking stable. Date the run here when complete.
+
+## Status
+
+beta

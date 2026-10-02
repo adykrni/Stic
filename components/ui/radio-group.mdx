@@ -1,0 +1,74 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks"
+import * as RadioGroupStories from "./radio-group.stories"
+
+<Meta of={RadioGroupStories} />
+
+## Guidance
+
+Radio Group is one choice from a set. It has no emphasis `variant`. The item states are unselected, selected, disabled, and focus. Selection and arrow-key movement come from Radix Radio Group (`Root`, `Item`, `Indicator`). This file does not implement its own selection logic. Each item can take a `label`, which renders the existing Label component and points it at that item with `htmlFor`.
+
+<Canvas of={RadioGroupStories.Default} />
+
+## When to use / When not to use
+
+Use Radio Group when the person must pick exactly one option: a plan, a delivery method, a layout.
+
+Do not use it for independent on/off choices. That is Checkbox. Do not use it to submit the form. That is Button. Do not encode success, warning, or info in the selected fill.
+
+## Do / Don't
+
+**Do**
+
+- Put every option in one `RadioGroup`. Radix moves focus between items with the arrow keys.
+- Give the group a name (`aria-label` or a heading it is labelled by). Give each item a `value` and, when it is visible, a `label`.
+- Turn an item off with its `disabled` prop, or disable the whole group with `disabled` on `RadioGroup`. Radix sets the native disabled attribute. The item forwards `disabled` to Label.
+- Keep the focus ring on the item: `focus-visible:border-ring` plus the 3px ash shadow.
+
+**Don't**
+
+- Don't store the selected value by listening to click yourself. Pass `value` and `onValueChange`, or `defaultValue`.
+- Don't wrap an item in a second `<label>`. Label is the sibling named by `htmlFor`.
+- Don't add `asChild` or `loading`.
+- Don't give the group a color `variant`. Selected is always `primary`.
+
+<Canvas of={RadioGroupStories.States} />
+
+## Accessibility in practice
+
+Radix renders `role="radiogroup"` on the root and `role="radio"` on each item. Arrow keys move between items. Space selects the focused item. This component adds no key handlers. Focus uses the semantic `ring` token (`info-600`) as `focus-visible:border-ring`, plus a 3px ash shadow at 50% opacity, and the outline is removed. The Focus row in States forces `border-ring` and `shadow-focus` through `className` because this project has no pseudo-state addon. Disabled items leave the tab order. The item label is the accessible name. The selected dot is not text and is not named. The group still needs its own name.
+
+## Content guidelines
+
+- Name the group and each option: group "Delivery", options "Standard" and "Express".
+- Do not number the options in the label unless the number is the choice.
+- Do not put "selected" or "radio" in the option name.
+
+## Token trail
+
+Item states only. The group has no fill.
+
+- **unselected.** Background `background` → `secondary-50`. Border `border` → `neutral-200`. Rest shadow `shadow-black-2`.
+- **selected.** The circle stays `background` with border `border`. The dot is `spacing-8` and `primary` → `primary-900`.
+- **disabled.** Primitive `opacity-40` (0.4) on the item. Figma has no disabled radio variant, so this stays the previous value. The paired Label uses its own `opacity-40`.
+- **focus.** Border `ring` → `info-600`, plus `shadow-focus-ash`.
+- **Shape.** `spacing-16` (`size-4`). Radius `radius-full`. Gap to the label `spacing-12`. Label row padding-top `spacing-1`.
+
+## Figma parity
+
+Last synced with Figma: 1 October 2026.
+
+## Props
+
+`RadioGroup` is the documented component. Its table is generated from the Radix root props. `RadioGroupItem` adds `label` and takes `value`. There is no `variant` or `size` axis. Inherited element attributes are part of the types and are usually absent from the table. `disabled` on the group and on an item is the real Radix disabled prop, described above.
+
+<ArgTypes of={RadioGroupStories} />
+
+## Accessibility results
+
+Ran the Storybook a11y addon’s axe check (same setup as the addon: `document.body`, Storybook’s `.sb-wrapper` excluded, `region` rule disabled) against Default and States on 1 October 2026. Confirm these in the Accessibility panel.
+
+No violations on either story. Both passed `button-name`, `color-contrast`, `nested-interactive`, and `tabindex`. `color-contrast` in States measured the Unselected, Selected, and Focus labels. It did not measure the Disabled label, because that label is `aria-disabled` and axe skips it. The radio fill is not text, so the circle colors were not a contrast node. The Focus item uses `border-ring` and `shadow-focus` in `className`. It is not a real `:focus-visible` probe.
+
+## Status
+
+beta

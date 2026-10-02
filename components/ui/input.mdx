@@ -1,0 +1,73 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks"
+import * as InputStories from "./input.stories"
+
+<Meta of={InputStories} />
+
+## Guidance
+
+Input is one line of text. `variant` is not an emphasis ranking: `default` is the resting field, and `error` is the validation failure. Error uses the existing `destructive` token, which resolves to `danger-600`. It does not add an error color. The states are default, focus, disabled, and error. `type` selects the native input: `text`, `email`, `password`, or `number`. There is not a separate component per type.
+
+<Canvas of={InputStories.Default} />
+<Canvas of={InputStories.Error} />
+
+## When to use / When not to use
+
+Use Input for a single-line value: a name, an email, a password, a number.
+
+Do not use Input for several lines. That is Textarea. Do not use it for a choice. That is Checkbox or Radio Group. Do not use the error variant as a destructive button.
+
+## Do / Don't
+
+**Do**
+
+- Set `type` to `text`, `email`, `password`, or `number`. The prop is the native input type. The default is `text`.
+- Use `variant="error"` when validation fails. That sets `aria-invalid`. Put the explanation in a separate message. This component does not render one.
+- Turn the field off with the `disabled` prop. It is the native disabled attribute, so the field leaves the tab order. Disabled keeps the resting fill and sets `opacity-50`.
+- Pair the field with Label through `id` and `htmlFor`, or pass `aria-label` when there is no visible label. Label is not restyled in this file.
+
+**Don't**
+
+- Don't build `EmailInput` or `PasswordInput`. Change `type`.
+- Don't replace the error border with the focus border. Default focus uses `ring` plus the ash shadow. Error focus keeps the `destructive` border and uses the scarlet shadow.
+- Don't fake disabled with a class. There is no `asChild` and no `loading`.
+
+<Canvas of={InputStories.States} />
+
+## Accessibility in practice
+
+The root is a native `<input>`. The browser handles typing, selection, and the password and number keyboards. This component adds no key handlers. Default focus uses the semantic `ring` token (`info-600`) as `focus-visible:border-ring`, plus a 3px ash shadow at 50% opacity, and the outline is removed. Error focus keeps the destructive border and uses the scarlet shadow at 20% opacity. The base border is already 1px. The Focus row in States forces `border-ring` and `shadow-focus` through `className` because this project has no pseudo-state addon. `variant="error"` sets `aria-invalid="true"`. Disabled is the native attribute. The stories name each field with `aria-label`. A visible page should use Label instead of relying on the placeholder. There is no icon-only control.
+
+## Content guidelines
+
+- Name the field as a noun phrase on the label: "Email address".
+- Use the placeholder as a hint, not as the name. "name@studio.com" is a hint. "Email" is not.
+- Do not put the error sentence in the placeholder. The error variant only changes the border.
+
+## Token trail
+
+- **default.** Background `background` → `secondary-50`. Text `foreground` → `neutral-950`. Border `border` → `neutral-200`.
+- **error.** Same background and text. Border `destructive` → `danger-600`.
+- **disabled.** Resting fill at `opacity-50`. Text stays `foreground`.
+- **focus.** Border `ring` → `info-600`, plus `shadow-focus-ash`. Error focus keeps border `destructive` and uses `shadow-focus-scarlet`.
+- **placeholder.** `neutral-500` (`#85868B`). Filled text stays `foreground`.
+- **Shape.** Height `spacing-36` (`h-9`). Padding `spacing-4` by `spacing-12`. Radius `radius-8` (`rounded-lg`). Type Geist Regular `font-size-14` / `line-height-20`. Rest shadow `shadow-black-2`.
+
+## Figma parity
+
+Last synced with Figma: 1 October 2026.
+
+## Props
+
+The table is generated from `InputProps`. Docgen lists `variant` and the input attributes it can resolve. `variant` includes `null` because that is what `VariantProps` allows. The default is `default` in `inputVariants`, which this table does not show. `type` defaults to `text` in the function signature. There is no `size` axis (`size` from the DOM input is omitted so it is not confused with a style size). `disabled` is the native prop described above and may be absent from the table because it is inherited.
+
+<ArgTypes of={InputStories} />
+
+## Accessibility results
+
+Ran the Storybook a11y addon’s axe check (same setup as the addon: `document.body`, Storybook’s `.sb-wrapper` excluded, `region` rule disabled) against Default, Error, and States on 1 October 2026. Confirm these in the Accessibility panel.
+
+No violations on any of the three stories. Each passed `label` and `color-contrast`. Default and Error cover `type` values `text`, `email`, `password`, and `number`. In States, `color-contrast` measured the Default, Focus, and Error fields. It did not measure the Disabled field. Axe skips disabled controls. The Focus field uses `border-ring` and `shadow-focus` in `className`. It is not a real `:focus-visible` probe.
+
+## Status
+
+beta

@@ -10,13 +10,15 @@ function cn(...inputs: ClassValue[]) {
 }
 
 const avatarVariants = cva(
-  "relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-secondary text-secondary-foreground",
+  "relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-accent font-geist font-normal text-foreground",
   {
     variants: {
       size: {
-        sm: "size-8 text-xs",
-        md: "size-10 text-sm",
-        lg: "size-12 text-base",
+        xxs: "size-5 text-xs leading-4",
+        xs: "size-6 text-sm leading-5",
+        sm: "size-8 text-sm leading-5",
+        md: "size-10 text-sm leading-5",
+        lg: "size-12 text-sm leading-5",
       },
     },
     defaultVariants: {
@@ -58,7 +60,7 @@ const Avatar = React.forwardRef<HTMLSpanElement, AvatarProps>(
             onError={() => setFailed(true)}
           />
         ) : (
-          <span className="font-medium leading-none">{fallback}</span>
+          <span>{fallback}</span>
         )}
       </span>
     )

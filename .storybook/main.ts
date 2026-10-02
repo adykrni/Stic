@@ -1,4 +1,5 @@
 import type { StorybookConfig } from '@storybook/react-vite';
+import tailwindcss from '@tailwindcss/vite';
 
 const config: StorybookConfig = {
   "stories": [
@@ -21,6 +22,10 @@ const config: StorybookConfig = {
       shouldExtractLiteralValuesFromEnum: true,
       shouldRemoveUndefinedFromOptional: true,
     },
+  },
+  viteFinal: async (config) => {
+    config.plugins = [...(config.plugins ?? []), tailwindcss()];
+    return config;
   },
 };
 export default config;

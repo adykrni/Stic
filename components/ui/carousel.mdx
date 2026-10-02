@@ -1,0 +1,82 @@
+import { ArgTypes, Canvas, Meta } from "@storybook/addon-docs/blocks"
+import * as CarouselStories from "./carousel.stories"
+
+<Meta of={CarouselStories} />
+
+## Guidance
+
+Carousel moves through a set of slides in order. `variant` is only an emphasis ranking, and this component has `default`. Previous and next are the real Button in `outline` at size `icon`, tightened to the 32px Figma arrow. `size` sets how many slides peek in the viewport: `sm` is one full slide, `default` is two, and `lg` is three. It does not carry status. Success, warning, and informational status belong on Badge or Alert.
+
+<Canvas of={CarouselStories.Default} />
+
+## When to use / When not to use
+
+Use Carousel when several items share one viewport and the user moves one slide at a time: product shots, cards, or featured content.
+
+Do not use it as tabs, pagination, or a marquee. Do not add dot indicators unless Figma adds them. Figma documents slide position as text ("Slide 1 of 5"), not dots.
+
+## Do / Don't
+
+**Do**
+
+- Compose with `Carousel`, `CarouselContent`, `CarouselItem`, `CarouselSlide`, `CarouselPrevious`, and `CarouselNext`. Embla handles scroll snapping. Navigation buttons call `scrollPrev` and `scrollNext` and set `disabled` when Embla reports the first or last slide.
+- Keep previous and next on Button `outline` size `icon`. The component sets `size-8`, `rounded-full`, and `p-2.5` to match Figma's 32px arrow. Hover, focus, active, and disabled come from Button.
+- Name the arrows with the built-in `aria-label` values "Previous slide" and "Next slide". Add `CarouselDescription` when you need the Figma status line.
+- Reserve horizontal margin (`mx-12`) so the absolutely positioned arrows sit 48px outside the viewport, matching Figma.
+
+<Canvas of={CarouselStories.AsChild} />
+
+**Don't**
+
+- Don't draw custom chevrons or restyle the arrow fill. If the control looks wrong, change Button, not this file.
+- Don't add swipe handlers on top of Embla. Scroll and snap stay in `embla-carousel-react`.
+- Don't fake disabled navigation. `CarouselPrevious` and `CarouselNext` use the native `disabled` attribute from Embla's `canScrollPrev` and `canScrollNext`.
+- Don't invent pagination dots. The Figma Carousel page has arrow navigation and a text description only.
+
+<Canvas of={CarouselStories.States} />
+
+## Accessibility in practice
+
+The root is a `region` with `aria-roledescription="carousel"`. Each item is a `group` with `aria-roledescription="slide"`. Previous and next are buttons with explicit names. Focus uses Button's `shadow-focus` and outline's `border-ring` on focus. Enter and Space activate the button. A disabled arrow is not in the tab order.
+
+Keyboard users can tab to the arrows and activate them. Embla also allows arrow keys when focus is inside the carousel viewport in supporting browsers. There are no dot controls in this design.
+
+## Content guidelines
+
+- Label each slide with meaningful content inside `CarouselSlide`, not with the slide number alone.
+- Use `CarouselDescription` for a short status line such as "Slide 2 of 5".
+- Keep one primary message per slide. The viewport shows one to three slides depending on `size`.
+
+## Token trail
+
+Semantic names resolve through the light theme. Navigation colors are Button's outline tokens, not duplicated here.
+
+- **default.** Root uses Geist. Viewport gap between slide groups is `spacing-16` (`gap-4`). Item gutter is `spacing-4` (`pl-1` / `pr-1` on `CarouselItem`).
+- **Slide.** Background `background` → `secondary-50`. Border `border` → `neutral-200`. Radius `radius-14` (`rounded-14`). Rest shadow `shadow-sm` (Figma card shadow stack).
+- **Navigation.** Button `outline` at size `icon`, overridden to `size-8` (Figma `w-8` / `h-8`), `rounded-full`, `p-2.5`, `shadow-button`. Default fill `background`, border `border`, hover fill `neutral-100`, focus border `ring` → `info-600`, disabled `opacity-50`.
+- **Description.** Vertical padding `spacing-8` (`py-2`). Type `font-size-14` / `line-height-20`. Text `neutral-500` (Figma `base/muted-foreground`).
+- **sm.** Item basis `100%` — one full slide in the viewport.
+- **default (size).** Item basis `50%` — two slides visible at the md breakpoint frame.
+- **lg.** Item basis `33.333%` — three slides visible at the lg breakpoint frame.
+
+## Figma parity
+
+Last synced with Figma: 2 October 2026.
+
+## Props
+
+The table is generated from the exported carousel types. Docgen lists `variant`, `size`, `orientation`, `opts`, `plugins`, and `setApi` on `Carousel`. `variant` and `size` include `null` because that is what `VariantProps` allows; both default in `carouselVariants`. `CarouselPrevious` and `CarouselNext` inherit Button props, including `asChild` and `disabled`, though disabled is driven by scroll position.
+
+<ArgTypes of={CarouselStories} />
+
+## Accessibility results
+
+Ran the Storybook a11y addon's axe check (same setup as the addon: `document.body`, Storybook's `.sb-wrapper` excluded, `region` rule disabled) against Default, States, and AsChild on 2 October 2026. Confirm these in the Accessibility panel.
+
+Default passed with no violations when each size row includes named arrow buttons and slide content with text labels. States passed on the standalone Button row. AsChild passed when the previous control is a native `<button>` with visible text.
+
+Re-check Default after changing slide placeholders. Disabled arrows were not measured at the first slide in every row (axe skips disabled elements). Embla motion is not covered by axe.
+
+## Status
+
+beta
